@@ -12,13 +12,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&display=swap">
-  <link rel="stylesheet" href="__ADMIN_BASE__/assets/admin.css?v=20260819-1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Outfit:wght@600;700&display=swap">
+  <link rel="stylesheet" href="__ADMIN_BASE__/assets/admin.css?v=20260819-2">
 </head>
 <body>
   <header class="admin-header">
     <a class="brand" href="/" aria-label="ONDO 홈">
-      <span class="ondo-symbol" aria-hidden="true"><i></i></span>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="14.5"></circle>
+          <path d="M20 5.5a14.5 14.5 0 1 1-12.4 22"></path>
+        </svg>
+        <i></i>
+      </span>
       <span class="brand-copy"><strong>ONDO<sup>°</sup></strong><small>사용권 관리</small></span>
     </a>
     <div class="admin-header-actions">
@@ -28,31 +34,37 @@
   </header>
 
   <main class="admin-main">
-    <section class="admin-card" id="setupPanel" hidden>
+    <section class="admin-card setup-card" id="setupPanel" hidden>
       <p class="eyebrow">관리자 설정</p>
       <h1>관리자 비밀번호가 없습니다</h1>
       <p>서버 환경 변수 <code>PII_TOOLKIT_ADMIN_PASSWORD</code>에 8자 이상 비밀번호를 넣은 뒤 서비스를 다시 시작하세요. 콘솔 주소는 <code>PII_TOOLKIT_ADMIN_PATH</code>로만 열립니다.</p>
     </section>
 
-    <section class="admin-card admin-login" id="loginPanel" hidden>
-      <p class="eyebrow">관리자</p>
-      <h1>사용권 관리에 들어가려면 비밀번호가 필요합니다</h1>
-      <p>일반 사용권과 다른 관리 비밀번호입니다. 발급·회수는 이 화면에서만 합니다.</p>
-      <form id="loginForm">
-        <label for="adminPassword">관리자 비밀번호</label>
-        <input id="adminPassword" name="password" type="password" autocomplete="current-password" required>
-        <p class="form-error" id="loginError" hidden></p>
-        <button type="submit" class="primary">들어가기</button>
-      </form>
+    <section class="login-shell" id="loginPanel" hidden>
+      <section class="admin-card login-card" id="loginCard">
+        <span class="login-lock" aria-hidden="true"></span>
+        <p class="eyebrow">관리 콘솔</p>
+        <h1>사용권 관리에 들어가려면<br>비밀번호가 필요합니다</h1>
+        <p>일반 사용권과 다른 관리 비밀번호입니다. 발급과 회수는 이 화면에서만 합니다.</p>
+        <form id="loginForm">
+          <label for="adminPassword">관리자 비밀번호</label>
+          <div class="password-field">
+            <input id="adminPassword" name="password" type="password" autocomplete="current-password" required>
+            <button type="button" id="togglePasswordBtn" aria-pressed="false">표시</button>
+          </div>
+          <p class="form-error" id="loginError" hidden></p>
+          <button type="submit" class="primary">들어가기</button>
+        </form>
+      </section>
     </section>
 
     <section id="deskPanel" hidden>
-      <section class="admin-card">
+      <section class="admin-card issue-card">
         <div class="desk-head">
           <div>
             <p class="eyebrow">AI 사용권</p>
             <h1>발급하고 회수합니다</h1>
-            <p>원문 사용권은 발급 직후 한 번만 보입니다. 서버에는 해시만 남습니다.</p>
+            <p>발급한 사용권은 아래 목록에서도 다시 복사할 수 있습니다. 사용자에게만 전달하세요.</p>
           </div>
         </div>
         <form class="issue-form" id="issueForm">
@@ -75,16 +87,19 @@
         <div class="issued-banner" id="issuedBanner" hidden>
           <div>
             <strong>방금 발급한 사용권</strong>
-            <p>이 문자열은 다시 보여주지 않습니다. 지금 복사해 전달하세요.</p>
+            <p>지금 복사해 전달하세요. 목록에서도 다시 확인할 수 있습니다.</p>
             <code id="issuedToken"></code>
           </div>
           <button type="button" id="copyTokenBtn">복사</button>
         </div>
       </section>
 
-      <section class="admin-card">
+      <section class="admin-card list-card">
         <div class="list-head">
-          <h2>발급 목록</h2>
+          <div>
+            <h2>발급 목록</h2>
+            <p class="list-lead">메모, 사용권, 상태와 남은 기간을 한 화면에서 봅니다.</p>
+          </div>
           <p id="passCount">0건</p>
         </div>
         <div class="table-wrap">
@@ -92,6 +107,7 @@
             <thead>
               <tr>
                 <th>메모</th>
+                <th>사용권</th>
                 <th>상태</th>
                 <th>남은 시간</th>
                 <th>기간</th>
@@ -101,7 +117,7 @@
               </tr>
             </thead>
             <tbody id="passTableBody">
-              <tr class="empty-row"><td colspan="7">발급된 사용권이 없습니다.</td></tr>
+              <tr class="empty-row"><td colspan="8">발급된 사용권이 없습니다.</td></tr>
             </tbody>
           </table>
         </div>
@@ -109,6 +125,6 @@
     </section>
   </main>
   <script>window.ADMIN_BASE = "__ADMIN_BASE__";</script>
-  <script type="module" src="__ADMIN_BASE__/assets/admin.js?v=20260819-1"></script>
+  <script type="module" src="__ADMIN_BASE__/assets/admin.js?v=20260819-2"></script>
 </body>
 </html>

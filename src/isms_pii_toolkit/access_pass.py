@@ -299,6 +299,7 @@ def pass_summary(record: dict[str, Any], now: datetime | None = None) -> dict[st
     remaining = remaining_seconds(str(record.get("expiresAt") or ""), now) if status == "active" else 0
     return {
         "id": record.get("id"),
+        "token": str(record.get("token") or ""),
         "note": record.get("note") or "",
         "durationDays": record.get("durationDays"),
         "createdAt": record.get("createdAt"),
@@ -360,6 +361,7 @@ def issue_pass_record(
     record = {
         "id": secrets.token_hex(8),
         "tokenHash": hash_secret(token),
+        "token": token,
         "note": normalize_note(note),
         "durationDays": days,
         "createdAt": to_iso(created),

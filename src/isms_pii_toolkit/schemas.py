@@ -818,6 +818,7 @@ class AdminPassNoteRequest(ApiModel):
 
 class AdminPassRecordResponse(ApiModel):
     id: str
+    token: str = ""
     note: str = ""
     duration_days: int | None = Field(default=None, alias="durationDays")
     created_at: str | None = Field(default=None, alias="createdAt")

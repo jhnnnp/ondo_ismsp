@@ -9,6 +9,14 @@ function el(id) {
   return document.getElementById(id);
 }
 
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
 function formatRemaining(seconds) {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   if (!total) return "-";
@@ -57,21 +65,37 @@ function show(id, visible) {
   if (node) node.hidden = !visible;
 }
 
+function setMode(mode) {
+  document.body.classList.toggle("is-login", mode === "login");
+}
+
+function tokenCell(token) {
+  const value = String(token || "").trim();
+  if (!value) return '<span class="token-missing">이전 발급분</span>';
+  return `
+    <div class="token-row">
+      <code>${escapeHtml(value)}</code>
+      <button type="button" data-copy-token="${escapeHtml(value)}">복사</button>
+    </div>
+  `;
+}
+
 function renderPasses(passes) {
   const body = el("passTableBody");
   const count = el("passCount");
   if (count) count.textContent = `${passes.length}건`;
   if (!body) return;
   if (!passes.length) {
-    body.innerHTML = '<tr class="empty-row"><td colspan="7">발급된 사용권이 없습니다.</td></tr>';
+    body.innerHTML = '<tr class="empty-row"><td colspan="8">발급된 사용권이 없습니다.</td></tr>';
     return;
   }
   body.innerHTML = passes.map((item) => {
     const revoked = item.status === "revoked";
-    const note = String(item.note || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+    const note = escapeHtml(item.note);
     return `
       <tr data-pass-id="${item.id}">
         <td><input class="note-input" data-note-input value="${note}" maxlength="80" aria-label="메모"></td>
+        <td class="token-cell">${tokenCell(item.token)}</td>
         <td><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
         <td>${formatRemaining(item.remainingSeconds)}</td>
         <td>${item.durationDays || "-"}일</td>
@@ -83,12 +107,25 @@ function renderPasses(passes) {
   }).join("");
 }
 
+async function copyText(value, button) {
+  const token = String(value || "").trim();
+  if (!token) return;
+  await navigator.clipboard.writeText(token);
+  if (!button) return;
+  const previous = button.textContent;
+  button.textContent = "복사됨";
+  window.setTimeout(() => {
+    button.textContent = previous;
+  }, 1200);
+}
+
 async function refreshPasses() {
   const payload = await api("/passes");
   renderPasses(payload.passes || []);
 }
 
 async function showDesk() {
+  setMode("desk");
   show("setupPanel", false);
   show("loginPanel", false);
   show("deskPanel", true);
@@ -97,6 +134,7 @@ async function showDesk() {
 }
 
 function showLogin() {
+  setMode("login");
   show("setupPanel", false);
   show("loginPanel", true);
   show("deskPanel", false);
@@ -104,6 +142,7 @@ function showLogin() {
 }
 
 function showSetup() {
+  setMode("setup");
   show("setupPanel", true);
   show("loginPanel", false);
   show("deskPanel", false);
@@ -140,6 +179,16 @@ el("loginForm")?.addEventListener("submit", async (event) => {
   }
 });
 
+el("togglePasswordBtn")?.addEventListener("click", () => {
+  const input = el("adminPassword");
+  const button = el("togglePasswordBtn");
+  if (!input || !button) return;
+  const hidden = input.type === "password";
+  input.type = hidden ? "text" : "password";
+  button.textContent = hidden ? "숨김" : "표시";
+  button.setAttribute("aria-pressed", hidden ? "true" : "false");
+});
+
 el("logoutBtn")?.addEventListener("click", async () => {
   await api("/logout", { method: "POST", body: "{}" });
   showLogin();
@@ -170,16 +219,15 @@ el("issueForm")?.addEventListener("submit", async (event) => {
 });
 
 el("copyTokenBtn")?.addEventListener("click", async () => {
-  const token = el("issuedToken")?.textContent || "";
-  if (!token) return;
-  await navigator.clipboard.writeText(token);
-  el("copyTokenBtn").textContent = "복사됨";
-  window.setTimeout(() => {
-    el("copyTokenBtn").textContent = "복사";
-  }, 1200);
+  await copyText(el("issuedToken")?.textContent || "", el("copyTokenBtn"));
 });
 
 el("passTableBody")?.addEventListener("click", async (event) => {
+  const copyButton = event.target.closest("[data-copy-token]");
+  if (copyButton) {
+    await copyText(copyButton.dataset.copyToken, copyButton);
+    return;
+  }
   const button = event.target.closest("[data-revoke]");
   if (!button || button.disabled) return;
   const row = button.closest("tr");

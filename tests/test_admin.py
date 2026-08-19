@@ -72,6 +72,9 @@ def test_admin_page_is_served_only_on_secret_path(monkeypatch: pytest.MonkeyPatc
     js = client.get(_prefix("/assets/admin.js"))
     assert css.status_code == 200
     assert ".issued-banner" in css.text
+    assert ".login-card" in css.text
+    assert 'id="loginCard"' in response.text
+    assert "사용권" in response.text
     assert js.status_code == 200
     assert "ADMIN_BASE" in js.text
     assert "/admin/passes" not in js.text
@@ -115,7 +118,7 @@ def test_admin_can_issue_list_note_and_revoke(tmp_path: Path, monkeypatch: pytes
     rows = listed.json()["passes"]
     assert len(rows) == 1
     assert rows[0]["id"] == pass_id
-    assert "token" not in rows[0]
+    assert rows[0]["token"] == token
     assert "tokenHash" not in str(listed.json())
 
     renamed = client.patch(_prefix(f"/passes/{pass_id}"), json={"note": "김민수"})
