@@ -1,0 +1,109 @@
+{
+  "controlId": "1.3.3",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "officialChecks": [
+    {
+      "checkId": "official-1",
+      "label": "관리체계 운영을 위하여 주기적 또는 상시적으로 수행하여야 하는 정보보호 및 개인정보보호 활동을 문서화하여 관리하고 있다",
+      "mapsToCheckKey": "reviewed",
+      "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)"
+    },
+    {
+      "checkId": "official-2",
+      "label": "경영진은 주기적으로 관리체계 운영활동의 효과성을 확인하고 이를 관리하고 있다",
+      "mapsToCheckKey": "policy",
+      "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)"
+    },
+    {
+      "checkId": "evidence",
+      "label": "준비할 증적 예시: 정보보호 및 개인정보보호 연간계획서",
+      "mapsToCheckKey": "evidence",
+      "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)"
+    }
+  ],
+  "casebookProblems": [
+    {
+      "problem": "체크 미충족 시 운영현황 관리 기준이 문서화되지 않으면 클라우드 이벤트 페이지 처리 시 운영 일관성이 깨집니다",
+      "checklistItemId": "1",
+      "checkKey": "reviewed",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "심사 관점: 1.3.3 심사에서 정책-지침-운영 불일치 결함이 발생할 수 있습니다",
+      "checklistItemId": "1",
+      "checkKey": "reviewed",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "운영현황 관리(1.3.3) 체크리스트 1번 항목 미이행으로 운영/증적 공백",
+      "checklistItemId": "1",
+      "checkKey": "reviewed",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "체크 미충족 시 증적 없이는 운영현황 관리이 실제 작동하는지 사고 후 설명할 수 없습니다",
+      "checklistItemId": "2",
+      "checkKey": "policy",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "심사 관점: 이행 증적 부재 시 운영현황 관리은 부분 이행 또는 미이행으로 판단될 수 있습니다",
+      "checklistItemId": "2",
+      "checkKey": "policy",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "운영현황 관리(1.3.3) 체크리스트 2번 항목 미이행으로 운영/증적 공백",
+      "checklistItemId": "2",
+      "checkKey": "policy",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    }
+  ],
+  "quest": {
+    "plainQuestion": "운영현황 관리 관련 문서와 승인/운영 기록을 지금 바로 꺼낼 수 있나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "관리체계 운영을 위하여 주기적 또는 상시적으로 수행하여야 하는 정보보호 및 개인정보보호 활동을 문서화하여 관리하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "경영진은 주기적으로 관리체계 운영활동의 효과성을 확인하고 이를 관리하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "준비할 증적 예시: 정보보호 및 개인정보보호 연간계획서",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "통제별 담당자와 점검 주기를 RACI 형태로 정리하세요.",
+      "guideRef": "official-1.3.3",
+      "whenDone": "확인한 운영현황 관리 화면/문서를 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

@@ -1,0 +1,13 @@
+{
+  "controlId": "2.4.7",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 4,
+  "evidenceExamples": [
+    "사무실 및 공용공간 보안점검 보고서",
+    "사무실 및 공용공간 보안점검표",
+    "미준수자에 대한 조치 사항(교육,상벌 등)",
+    "복사물보호조치현황"
+  ],
+  "existingPlainQuestion": "책상/공용PC/서류함에 개인정보/중요문서가 방치되지 않게 점검하나요?"
+}

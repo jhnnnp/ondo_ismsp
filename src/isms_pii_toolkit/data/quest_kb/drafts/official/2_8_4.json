@@ -1,0 +1,44 @@
+{
+  "controlId": "2.8.4",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "시험 데이터 보안을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보시스템의 개발 및 시험 과정에서 실제 운영 데이터의 사용을 제한하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "불가피하게 운영데이터를 시험 환경에서 사용할 경우 책임자 승인,접근 및 유출 모니터링,시험 후 데이터 삭제 등의 통제 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (시험데이터 현황)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "SDLC에 보안 검토 게이트를 추가하세요.",
+      "guideRef": "official-2.8.4",
+      "whenDone": "다음 증적 예시를 준비하세요: 시험데이터 현황"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

@@ -1,0 +1,51 @@
+{
+  "controlId": "2.6.5",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "무선 네트워크 접근을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "무선네트워크를 업무적으로 사용하는 경우 무선 AP 및 네트워크 구간 보안을 위하여 인증,송수신 데이터 암호화 등 보호대책을 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "인가된 임직원만이 무선네트워크를 사용할 수 있도록 사용 신청 및 해지 절차를 수립■ 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "AD Hoc 접속 및 조직 내 허가받지 않은 무선 AP 탐지■차단 등 비인가된 무선네트워크에 대한 보호대책을 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (1 예시)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "운영 DB 직접 접근을 차단하고 bastion을 경유하세요.",
+      "guideRef": "official-2.6.5",
+      "whenDone": "다음 증적 예시를 준비하세요: 1 예시"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

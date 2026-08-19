@@ -1,0 +1,108 @@
+{
+  "controlId": "2.4.5",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "officialChecks": [
+    {
+      "checkId": "official-1",
+      "label": "정보시스템 도입, 유지보수 등으로 보호구역 내 작업이 필요한 경우에 대한 공식적인 작업신청 및 수행 절차를 수립 이행하고 있다",
+      "mapsToCheckKey": "reviewed",
+      "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)"
+    },
+    {
+      "checkId": "official-2",
+      "label": "보호구역 내 작업이 통제 절차에 따라 적절히 수행되었는지 여부를 확인하기 위하여 작업 기록을 주기적으로 검토하고 있다",
+      "mapsToCheckKey": "policy",
+      "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)"
+    },
+    {
+      "checkId": "evidence",
+      "label": "준비할 증적 예시: 작업신청서, 작업일지",
+      "mapsToCheckKey": "evidence",
+      "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)"
+    }
+  ],
+  "casebookProblems": [
+    {
+      "problem": "체크 미충족 시 보호구역 내 작업 기준이 문서화되지 않으면 외주 개발자 운영 접근 처리 시 운영 일관성이 깨집니다",
+      "checklistItemId": "1",
+      "checkKey": "reviewed",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "심사 관점: 2.4.5 심사에서 정책-지침-운영 불일치 결함이 발생할 수 있습니다",
+      "checklistItemId": "1",
+      "checkKey": "reviewed",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "보호구역 내 작업(2.4.5) 체크리스트 1번 항목 미이행으로 운영/증적 공백",
+      "checklistItemId": "1",
+      "checkKey": "reviewed",
+      "sourceRef": null,
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "[사례집 2.4.5.1] 전산실 출입로그에는 외부 유지보수 업체 직원의 출입기록이 남아 있으나, 이에 대한 보호구역 작업 신청 및 승인 내역은 존재하지 않은 경우(내부 규정에 따른 보호구역 작업 신청 없이 보호구역 출입 및 작업이 이루어지고 있는 경우)",
+      "checklistItemId": "2",
+      "checkKey": "policy",
+      "sourceRef": "사례집.md#2.4.5.1",
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "[사례집 2.4.5.2] 내부 규정에는 보호구역 내 작업기록에 대하여 분기별 1회 이상 점검하도록 되어 있으나, 특별한 사유 없이 장기간 동안 보호구역 내 직업기록에 대한 점검이 이루어자고 있지 않은 경우",
+      "checklistItemId": "3",
+      "checkKey": "implemented",
+      "sourceRef": "사례집.md#2.4.5.2",
+      "sourceDoc": "사례집.md"
+    },
+    {
+      "problem": "[사례집 2.4.5.3] (CELA)보호구역 내 반출입 기기에 대한 보안점검을 수행하고 있지 않은 경우",
+      "checklistItemId": "4",
+      "checkKey": "evidence",
+      "sourceRef": "사례집.md#2.4.5.3",
+      "sourceDoc": "사례집.md"
+    }
+  ],
+  "quest": {
+    "plainQuestion": "보호구역 내 작업을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보시스템 도입, 유지보수 등으로 보호구역 내 작업이 필요한 경우에 대한 공식적인 작업신청 및 수행 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "보호구역 내 작업이 통제 절차에 따라 적절히 수행되었는지 여부를 확인하기 위하여 작업 기록을 주기적으로 검토하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "준비할 증적 예시: 작업신청서, 작업일지",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "클라우드만 사용하고 자체 전산실/IDC가 없으면 해당 없음으로 표시하세요. 물리 시설이 있으면 DC/사무실 출입권한을 직무별로 최소화하세요.",
+      "guideRef": "official-2.4.5",
+      "whenDone": "확인한 보호구역 내 작업 화면/문서를 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

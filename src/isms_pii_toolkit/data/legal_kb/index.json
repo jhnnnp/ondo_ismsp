@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "description": "법제처 법령해석례 정규화 저장소. 외부 API는 사용자 요청 중 호출하지 않는다.",
+  "interpretationCount": 0
+}

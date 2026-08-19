@@ -1,0 +1,60 @@
+{
+  "controlId": "2.9.4",
+  "locked": false,
+  "quality": "casebook-draft",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "defectCount": 4,
+    "caseCount": 12,
+    "sourceRefs": [
+      "사례집.md#2.9.4.1",
+      "사례집.md#2.9.4.2",
+      "사례집.md#2.9.4.3"
+    ],
+    "generatedBy": "scripts/build_quest_drafts_from_casebook.py"
+  },
+  "quest": {
+    "plainQuestion": "로그 기록 대상, 방법, 보존기간, 검토 주기… 상태를 피하고 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "case-1",
+        "label": "사례 1 대비 조치됨: 로그 기록 대상, 방법, 보존기간, 검토 주기…",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "case-2",
+        "label": "사례 2형 공백 없음: 중요 Linux/UNIX 계열 서버에 대한 로그 기록을 별도로 백업하거나 적절히…",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "case-3",
+        "label": "사례 3 대비 조치됨: 보안 이벤트 로그, 응용 프로그램 및 서비스 로그(윈도우 2008 서버 이상) 등 중요 로그에 대한…",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "사례집 2.9.4 유형을 점검표에 넣고, 대표 공백(로그 기록 대상, 방법, 보존기간, 검토 주기, 담당자 등에 대한 세부 기준 및 절차가 수립되어 있지 않은 경우)부터 정책/설정/기록을 맞추세요.",
+      "guideRef": "casebook-2.9.4",
+      "whenDone": "2.9.4 관련 사례집 유형 점검 증적 파일명을 아래에 남겨 두세요."
+    },
+    "evidenceSlots": [
+      {
+        "slotId": "casebook-2-9-4-memo",
+        "title": "로그 및 접속기록 관리 사례집형 점검 파일명 메모",
+        "accepts": [
+          "image",
+          "pdf"
+        ],
+        "requiredForLevel": "evidenced"
+      }
+    ]
+  }
+}

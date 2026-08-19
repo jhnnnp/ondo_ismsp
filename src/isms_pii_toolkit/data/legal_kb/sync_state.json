@@ -1,0 +1,12 @@
+{
+  "status": "SUCCESS",
+  "lastSuccessfulSync": "2026-08-11T14:08:04+09:00",
+  "saved": 0,
+  "totalRecords": 59,
+  "errorCount": 0,
+  "sources": {
+    "data_go_kr_expc": {
+      "syncedAt": "2026-08-11T14:16:23+09:00"
+    }
+  }
+}

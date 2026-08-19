@@ -1,0 +1,57 @@
+{
+  "controlId": "3.1.6",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 영상정보처리기기 설치/운영을 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "서비스 운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "공개된 장소에 고정형 영상정보처리기기를 설치■운영할 경우 법적 허용 요건에 해당하는지를 검토하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "공공기관 등이 공개된 장소에 고정형 영상정보처리기기를 설치 운영하려는 경우 공청회•설명회 개최 등의 법령에 따른 절차를 거쳐 관계 전문가 및 이해관계자의 의견을 수렴하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "고정형 영상정보처리기기 설치 운영 시 정보주체가 쉽게 인식할 수 있도록 안내판 설치 등 필요한 조치를 하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "업무를 목적으로 공개된 장소에서 이동형 영상정보처리기기를 운영하는 경우 법적 허용 요건에 해당하는지를 검토하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (영상정보처리기기운영 현황)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "수집 화면별 동의 항목과 실제 DB 컬럼을 대조하세요.",
+      "guideRef": "official-3.1.6",
+      "whenDone": "다음 증적 예시를 준비하세요: 영상정보처리기기운영 현황"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

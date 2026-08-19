@@ -1,0 +1,12 @@
+{
+  "controlId": "2.5.6",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "접근권한검토기준및절차",
+    "접근권한검토이력",
+    "접근권한 검토 결과보고서 및 후속조치 내역"
+  ],
+  "existingPlainQuestion": "장기 미사용/퇴직/직무변경 계정의 권한을 주기적으로 검토하고 회수하나요?"
+}

@@ -1,0 +1,48 @@
+{
+  "controlId": "2.5.5",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.5.5.1",
+      "사례집.md#2.5.5.2",
+      "사례집.md#2.5.5.3"
+    ],
+    "promotedFrom": "thin-stub"
+  },
+  "quest": {
+    "plainQuestion": "관리자/유지보수 특수계정은 승인/기간 제한/정기 검토가 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "admin-list",
+        "label": "특수권한자 목록을 관리한다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "temp-limit",
+        "label": "유지보수 계정은 사용기간을 제한한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "review-priv",
+        "label": "직무변경 후 특수권한을 회수/검토한다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "관리자/유지보수 계정 목록을 뽑아 상시 활성/미회수 권한을 잠그고 승인 이력을 맞추세요.",
+      "guideRef": "privileged-accounts",
+      "whenDone": "특수계정 목록/승인/회수 기록을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

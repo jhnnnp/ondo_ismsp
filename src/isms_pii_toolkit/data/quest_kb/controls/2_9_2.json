@@ -1,0 +1,57 @@
+{
+  "controlId": "2.9.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "성능 및 장애관리를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보시스템의 가용성 보장을 위하여 성능 및 용량을 지속적으로 모니터링할 수 있는 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "정보시스템 장애를 즉시 인지하고 대응하기 위한 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "장애 발생 시 절차에 따라 조치하고 장애조치보고서 등을 통하여 장애조치내역을 기록하여 관리하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "심각도가 높은 장애의 경우 원인분석을 통한 재발방지 대책을 마련하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (성능및용량모니터링절차)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "운영 로그 보관 기간과 점검 주기를 정책에 명시하세요.",
+      "guideRef": "official-2.9.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 성능및용량모니터링절차"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

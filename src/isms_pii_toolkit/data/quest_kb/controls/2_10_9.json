@@ -1,0 +1,48 @@
+{
+  "controlId": "2.10.9",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.10.9.1",
+      "사례집.md#2.10.9.3",
+      "사례집.md#2.10.9.5"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "PC/서버에 백신이 켜져 있고, 탐지 이벤트를 실제로 보고 조치하나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "av-install",
+        "label": "대상 PC/서버에 백신이 설치/최신이다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "av-lock",
+        "label": "사용자가 실시간검사 설정을 마음대로 끄지 못한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "incident-follow",
+        "label": "감염/탐지 이벤트 조치 기록이 있다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "백신 미설치/오래된 엔진 단말을 찾아 업데이트하고, 중앙관리에서 탐지 이벤트 조치 이력을 남기세요.",
+      "guideRef": "malware-control",
+      "whenDone": "백신 현황 또는 탐지 조치 기록을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "controlId": "2.10.5",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "정보전송 보안을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "외부 조직에 개인정보 및 중요정보를 전송할 경우 안전한 전송 정책을 수립하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "업무상 조직 간 개인정보 및 중요정보를 상호교환하는 경우 안전한 전송을 위한 협약체결 등 보호대책을 수립■이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (정보전송 협약서 또는 계약서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "WAF/EDR/취약점 스캔 결과를 월간 리포트로 관리하세요.",
+      "guideRef": "official-2.10.5",
+      "whenDone": "다음 증적 예시를 준비하세요: 정보전송 협약서 또는 계약서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

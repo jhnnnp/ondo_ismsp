@@ -1,0 +1,48 @@
+{
+  "controlId": "2.4.7",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.4.7.1",
+      "사례집.md#2.4.7.2",
+      "사례집.md#2.4.7.4"
+    ],
+    "promotedFrom": "thin-stub"
+  },
+  "quest": {
+    "plainQuestion": "책상/공용PC/서류함에 개인정보/중요문서가 방치되지 않게 점검하나요?",
+    "audience": [
+      "총무/사무",
+      "보안(겸직)",
+      "개인정보 담당"
+    ],
+    "checks": [
+      {
+        "checkId": "clean-desk",
+        "label": "클린데스크/생활보안 점검을 정기 수행한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "screen-lock",
+        "label": "화면보호기/자리 비움 잠금이 켜져 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "lock-cabinet",
+        "label": "개인정보 서류는 잠금 보관한다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "자리/공용PC/문서함을 한 바퀴 돌며 방치 서류/미잠금 PC를 확인하고 점검일지를 남기세요.",
+      "guideRef": "workplace-security",
+      "whenDone": "클린데스크 점검일지를 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

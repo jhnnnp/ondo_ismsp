@@ -1,0 +1,48 @@
+{
+  "controlId": "2.5.6",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.5.6.1",
+      "사례집.md#2.5.6.2",
+      "사례집.md#2.5.6.8"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "장기 미사용/퇴직/직무변경 계정의 권한을 주기적으로 검토하고 회수하나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "review-cycle",
+        "label": "접근권한 검토 주기/방법이 지침에 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "dormant",
+        "label": "6개월 이상 미사용 계정은 잠금/삭제한다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "hr-sync",
+        "label": "인사 이동/퇴사 후 권한 회수를 확인한다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "IAM/어드민 사용자 목록에서 장기 미사용/퇴직자/공용 계정을 찾아 잠그고, 검토 결과를 보고서로 남기세요.",
+      "guideRef": "access-review",
+      "whenDone": "접근권한 검토 결과(미사용 계정 조치 포함) 관련 증적을 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

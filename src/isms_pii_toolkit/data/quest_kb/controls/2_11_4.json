@@ -1,0 +1,44 @@
+{
+  "controlId": "2.11.4",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "사고 대응 훈련 및 개선을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "침해사고 및 개인정보 유출사고 대응 절차에 관한 모의훈련계획을 수립하고 이에 따라 연 1 회 이상 주기적으로 훈련을 실시하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "침해사고 및 개인정보 유출사고 훈련 결과를 반영하여 침해사고 및 개인정보 유출사고 대응체계를 개선하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (침해사고 및 개인정보 유출사고 대응 모의훈련 계획서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "개인정보 유출 시나리오 모의훈련을 연 1회 이상 수행하세요.",
+      "guideRef": "official-2.11.4",
+      "whenDone": "다음 증적 예시를 준비하세요: 침해사고 및 개인정보 유출사고 대응 모의훈련 계획서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

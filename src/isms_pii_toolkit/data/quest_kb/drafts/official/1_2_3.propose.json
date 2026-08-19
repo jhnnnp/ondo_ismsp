@@ -1,0 +1,14 @@
+{
+  "controlId": "1.2.3",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 5,
+  "evidenceExamples": [
+    "위험관리지침",
+    "위험관리 매뉴얼",
+    "가이드",
+    "위험관리계획서",
+    "위험평가결과보고서"
+  ],
+  "existingPlainQuestion": "올해 위험평가를 했고, 기술 취약점만이 아니라 관리/물리/법무 위험도 넣었나요?"
+}

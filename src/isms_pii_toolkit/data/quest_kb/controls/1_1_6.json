@@ -1,0 +1,51 @@
+{
+  "controlId": "1.1.6",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "자원 할당 관련 문서와 승인/운영 기록을 지금 바로 꺼낼 수 있나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보보호 및 개인정보보호 분야별 전문성을 갖춘 인력을 확보하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "정보보호 및 개인정보보호 관리체계의 효과적 구현과 지속적 운영을 위하여 필요한 자원을 평가하여 필요한 예산과 인력을 지원하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "연도별 정보보호 및 개인정보보호 업무 세부추진 계획을 수립 ■시행하고,그 추진결과에 대한 심사분석 평가를 실시하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (정보보호 및 개인정보보호 활동 연간 추진계획서(예산 및 인력운영계획))",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "정보보호위원회 또는 유사 협의체 운영 기록을 남기세요.",
+      "guideRef": "official-1.1.6",
+      "whenDone": "다음 증적 예시를 준비하세요: 정보보호 및 개인정보보호 활동 연간 추진계획서(예산 및 인력운영계획)"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

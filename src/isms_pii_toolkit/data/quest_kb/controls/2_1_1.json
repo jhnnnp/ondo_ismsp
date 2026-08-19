@@ -1,0 +1,56 @@
+{
+  "controlId": "2.1.1",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "정책의 유지관리를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보보호 및 개인정보보호 관련 정책 및 시행문서에 대한 정기적인 타당성 검토 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "조직의 대내외 환경에 중대한 변화 발생 시 정보보호 및 개인정보보호 관련 정책 및 시행문서에 미치는 영향을 검토하고 필요시 제 개정하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "정보보호 및 개인정보보호 관련 정책 및 시행문서의 제/개정 시 이해 관계자의 검토를 받고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "정보보호 및 개인정보보호 관련 정책 및 시행문서의 제/개정 내역에 대하여 이력관리를 하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (를 남기고 정책 지침 등에 관련 사항 반영 정보보호 및 개인정보보호 관련)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "정책-지침-가이드 3단계 체계를 정리하세요.",
+      "guideRef": "official-2.1.1",
+      "whenDone": "관련 증적(정책/설정 화면/점검 기록)을 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

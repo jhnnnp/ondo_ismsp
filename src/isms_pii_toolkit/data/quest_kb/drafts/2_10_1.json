@@ -1,0 +1,60 @@
+{
+  "controlId": "2.10.1",
+  "locked": false,
+  "quality": "casebook-draft",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "defectCount": 20,
+    "caseCount": 15,
+    "sourceRefs": [
+      "사례집.md#2.10.1.1",
+      "사례집.md#2.10.1.2",
+      "사례집.md#2.10.1.3"
+    ],
+    "generatedBy": "scripts/build_quest_drafts_from_casebook.py"
+  },
+  "quest": {
+    "plainQuestion": "보안시스템 운영: 정책관리대장을 주기적으로 작성하지 않고 있거나 정책관리대장에 기록된 보안… — 해당 없음을 확인했나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "case-1",
+        "label": "사례 1형 공백 없음: 정책관리대장을 주기적으로 작성하지 않고 있거나 정책관리대장에 기록된 보안 정책과 실제…",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "case-2",
+        "label": "사례 2 대비 조치됨: 보안시스템의 관리자 지정 및 권한 부여 현황에 대한 관리감독이 적절히 이행되고 있지 않은",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "case-3",
+        "label": "사례 3형 공백 없음: 이를 준수하지 않은",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "사례집 2.10.1 유형을 점검표에 넣고, 대표 공백(내부 지침에는 정보보호담당자가 보안시스템의 보안정책 변경 이력을 기록…)부터 정책/설정/기록을 맞추세요.",
+      "guideRef": "casebook-2.10.1",
+      "whenDone": "2.10.1 관련 사례집 유형 점검 증적 파일명을 아래에 남겨 두세요."
+    },
+    "evidenceSlots": [
+      {
+        "slotId": "casebook-2-10-1-memo",
+        "title": "보안시스템 운영 사례집형 점검 파일명 메모",
+        "accepts": [
+          "image",
+          "pdf"
+        ],
+        "requiredForLevel": "evidenced"
+      }
+    ]
+  }
+}

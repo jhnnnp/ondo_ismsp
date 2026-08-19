@@ -1,0 +1,39 @@
+{
+  "controlId": "2.6.2",
+  "quest": {
+    "plainQuestion": "AWS 콘솔/어드민/DB처럼 중요 시스템에 누가 들어갈 수 있는지, 권한을 나눠 두셨나요?",
+    "audience": [
+      "인프라",
+      "개발리드",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "least-privilege",
+        "label": "업무에 필요한 최소 권한만 부여했다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "admin-separate",
+        "label": "관리자 계정과 일반 업무 계정을 분리했다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "access-review",
+        "label": "퇴사/직무변경 시 접근 권한을 회수하는 절차가 있다",
+        "recommended": true,
+        "mapsToCheckKey": "policy"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "IAM 사용자/역할에서 AdminAccess 남용을 줄이고, 퇴사자 Access Key를 비활성화하세요.",
+      "guideRef": "aws-iam-access",
+      "whenDone": "IAM 사용자 목록/권한 정책 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": true,
+  "quality": "handcrafted"
+}

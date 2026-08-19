@@ -1,0 +1,48 @@
+{
+  "controlId": "2.5.3",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.5.3.1",
+      "사례집.md#2.5.3.2",
+      "사례집.md#2.5.3.4"
+    ],
+    "promotedFrom": "thin-stub"
+  },
+  "quest": {
+    "plainQuestion": "외부망/관리자 로그인에 비밀번호만이 아니라 추가 인증/실패 제한이 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "mfa-ext",
+        "label": "외부 접근 시 추가 인증(OTP 등)을 켠다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "fail-limit",
+        "label": "로그인 실패 횟수 제한이 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "admin-ip",
+        "label": "관리자 계정은 IP 제한 또는 MFA를 쓴다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "개인정보처리시스템/클라우드 관리자 로그인 설정을 확인하고 MFA/실패제한/IP 제한을 켜세요.",
+      "guideRef": "user-auth",
+      "whenDone": "인증 설정(MFA/실패제한) 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

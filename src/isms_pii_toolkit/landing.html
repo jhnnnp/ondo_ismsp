@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ONDO°</title>
+  <meta name="description" content="101개 ISMS-P 통제항목 자가진단부터 증적 근거 매핑까지, 한 화면에서 인증 준비를 정리하는 플랫폼입니다.">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="/landing/assets/landing.css?v=20260819-45">
+</head>
+
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+  <header class="site-header" id="header">
+    <div class="shell header-inner">
+      <a class="brand" href="#hero" aria-label="ONDO 홈">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="14.5"></circle>
+            <path d="M20 5.5a14.5 14.5 0 1 1-12.4 22"></path>
+          </svg><i></i>
+        </span>
+        <span class="brand-copy"><strong>ONDO<sup>°</sup></strong></span>
+      </a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="siteNav">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="visually-hidden">메뉴 열기</span>
+      </button>
+      <nav class="site-nav" id="siteNav" data-nav aria-label="주요 메뉴">
+        <a href="#workflow" data-nav-link>진단 방식</a>
+        <a href="#product" data-nav-link>제품 화면</a>
+        <a href="#results" data-nav-link>결과 안내</a>
+        <a href="#report" data-nav-link>보고서</a>
+        <a class="btn btn-primary btn-header" href="/controls/map">자가진단 시작 <span class="btn-arrow"
+            aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="hero">
+      <div class="hero-spot" aria-hidden="true"></div>
+      <div class="hero-grid-pattern" aria-hidden="true"></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy" data-reveal>
+          <p class="eyebrow"><span></span>ISMS-P 자가진단</p>
+          <h1>ISMS-P 인증 준비,<br>헤매지 말고<br><span class="hero-close"><em>한 화면에서</em> 끝내세요.</span></h1>
+          <p class="lede">101개 통제항목 자가진단부터 증적 근거 매핑까지.<br>현재 준비 상태와 우선 보완 업무를 한 흐름으로 정리합니다.</p>
+          <p class="value-line"><span>진단</span><span>근거 확인</span><span>우선순위 정리</span></p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="/controls/map">무료 자가진단 시작하기 <span class="btn-arrow"
+                aria-hidden="true">→</span></a>
+            <a class="text-link" href="#product">실제 진단 화면 살펴보기 <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="hero-note">회원가입 없이 시작</p>
+        </div>
+
+        <figure class="product-stage" data-reveal data-hero-demo>
+          <div class="stage-glow" aria-hidden="true"></div>
+          <div class="browser-frame" aria-hidden="true">
+            <div class="browser-chrome">
+              <span><i></i><i></i><i></i></span>
+              <b>ONDO° / SELF-ASSESSMENT</b>
+              <em data-demo-live><i></i>진단 진행 중</em>
+            </div>
+            <div class="mock-app">
+              <span class="mock-cursor" data-demo-cursor></span>
+              <aside class="mock-sidebar">
+                <div class="mock-brand"><b>ONDO<sup>°</sup></b></div>
+                <nav>
+                  <span class="mock-nav-label">진단</span>
+                  <span>점검 범위</span>
+                  <span class="is-active">자가진단</span>
+                  <span>진단 결과</span>
+                  <span class="mock-nav-label">관리</span>
+                  <span>증적 관리</span>
+                  <span>보고서</span>
+                </nav>
+              </aside>
+              <div class="mock-main">
+                <div class="mock-kpis">
+                  <div class="mock-gauge" data-demo-gauge data-temp-band="cold" style="--temp:7">
+                    <i></i>
+                    <strong class="data-num"><span data-demo-temp>7</span><sup>°</sup></strong>
+                    <small>준비 온도 · <span data-demo-temp-band-label>냉랭</span></small>
+                  </div>
+                  <div><b class="data-num" data-demo-kpi="open">91</b><span>미점검</span></div>
+                  <div><b class="data-num" data-demo-kpi="partial">6</b><span>부분 이행</span></div>
+                  <div><b class="data-num" data-demo-kpi="done">4</b><span>이행</span></div>
+                </div>
+                <div class="mock-work">
+                  <div class="mock-list">
+                    <div class="mock-list-head"><strong>통제 항목</strong><em class="data-num">101</em></div>
+                    <div class="mock-list-tools"><i></i><span>전체</span><span>미점검</span><span>부분</span></div>
+                    <p>1.1 관리체계 기반 마련</p>
+                    <div class="is-selected" data-demo-row="0">1.1.1 경영진 참여</div>
+                    <div data-demo-row="1">1.1.2 최고책임자 지정</div>
+                    <p>1.2 위험 관리</p>
+                    <div data-demo-row="2">1.2.4 보호대책 선정</div>
+                    <div data-demo-row="3">1.2.5 보호대책 구현</div>
+                    <div>1.3.1 자원 할당</div>
+                  </div>
+                  <div class="mock-detail">
+                    <small>점검 항목</small>
+                    <h3 data-demo-question>경영진의 정보보호 관리체계 참여 및 의사결정 여부</h3>
+                    <p class="mock-detail-note" data-demo-note>경영진 보고 주기, 의사결정 기록, 자원 배정 근거가 남아 있는지 확인합니다.</p>
+                    <div class="mock-criteria">
+                      <span>선정 기준이 문서화되어 있다</span>
+                      <span>위험평가 결과와 연계되어 있다</span>
+                      <span>이행 일정이 관리되고 있다</span>
+                    </div>
+                    <div class="mock-status">
+                      <em class="is-on" data-demo-status="unknown">미확인</em>
+                      <em data-demo-status="partial">부분 이행</em>
+                      <em data-demo-status="done">이행</em>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="visually-hidden">ONDO 자가진단 화면 구성. 준비 온도와 통제별 판단 기준, 진단 상태 선택 영역을 한 화면에서 보여줍니다.</figcaption>
+          <div class="preview-fact preview-fact-top glass-chip" data-temp-band="cold" aria-hidden="true">
+            <small>현재 준비 온도</small>
+            <strong class="data-num"><span data-demo-temp>7</span><sup>°</sup></strong>
+            <em class="temp-band-label" data-demo-temp-band-label>냉랭</em>
+            <i><b data-demo-temp-bar style="width:7%"></b></i>
+          </div>
+          <div class="preview-fact preview-fact-status glass-chip" data-demo-status-chip data-state="unknown"
+            aria-hidden="true">
+            <span data-demo-status-label>미확인</span>
+            <i><b data-demo-status-bar style="width:8%"></b></i>
+          </div>
+          <div class="preview-fact preview-fact-bottom glass-chip" aria-hidden="true">
+            <span>→</span>
+            <div><strong>다음 검토</strong><small data-demo-next>1.1.2 최고책임자 지정</small></div>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="workflow section" id="workflow">
+      <div class="section-ambient section-ambient-workflow" aria-hidden="true"></div>
+      <div class="shell">
+        <header class="section-intro split-intro" data-reveal>
+          <div>
+            <p class="eyebrow"><span></span>진단 방식</p>
+            <h2>진단에서 보완까지,<br>하나의 흐름으로.</h2>
+          </div>
+          <p>이행 현황 집계에서 끝내지 않습니다.<br>상태를 구조화하고, 근거를 안내하고, 보완 업무를 정리합니다.</p>
+        </header>
+        <div class="process-track" data-reveal>
+          <div class="process-connector" aria-hidden="true"><span></span></div>
+          <ol class="process-line">
+            <li data-reveal data-reveal-delay="0">
+              <div class="process-card-shine" aria-hidden="true"></div>
+              <div class="process-number"><span class="data-num">01</span><b lang="en">DIAGNOSE</b></div>
+              <div class="process-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                  <path d="M7 3h10v4H7zM5 5H3v16h18V5h-2M7 12h10M7 16h7"></path>
+                </svg></div>
+              <h3>현재 상태 진단</h3>
+              <p>101개 ISMS-P 통제를 기준으로 조직의 현재 관리 상태를 확인합니다.</p>
+            </li>
+            <li data-reveal data-reveal-delay="1">
+              <div class="process-card-shine" aria-hidden="true"></div>
+              <div class="process-number"><span class="data-num">02</span><b lang="en">NAVIGATE</b></div>
+              <div class="process-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                  <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"></path>
+                  <path d="m15.5 8.5-2.1 4.9-4.9 2.1 2.1-4.9 4.9-2.1Z"></path>
+                </svg></div>
+              <h3>판단과 준비 안내</h3>
+              <p>통제별 판단 기준, 관련 근거와 준비할 증적 후보를 함께 확인합니다.</p>
+            </li>
+            <li data-reveal data-reveal-delay="2">
+              <div class="process-card-shine" aria-hidden="true"></div>
+              <div class="process-number"><span class="data-num">03</span><b lang="en">OPTIMIZE</b></div>
+              <div class="process-icon" aria-hidden="true"><svg viewBox="0 0 24 24">
+                  <path d="M4 19V9M10 19V5M16 19v-7M22 19V3"></path>
+                </svg></div>
+              <h3>우선 보완</h3>
+              <p>미흡 통제와 연결된 위험을 분석해 먼저 검토할 업무를 정리합니다.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="product section" id="product">
+      <div class="product-panel section-dark">
+        <div class="product-grid-lines" aria-hidden="true"></div>
+        <div class="shell product-grid">
+          <div class="product-copy" data-reveal>
+            <p class="eyebrow eyebrow-light"><span></span>한 화면에서</p>
+            <h2>판단에 필요한 맥락을<br>한 화면에 연결했습니다.</h2>
+            <p>통제 목록을 옮겨 다니며 근거를 따로 찾지 않아도 됩니다. 질문, 판단 기준, 관련 법령과 증적 후보를 같은 작업 흐름에서 확인하세요.</p>
+            <ul class="product-points">
+              <li>
+                <span class="data-num">01</span>
+                <div class="product-point-body">
+                  <strong>통제별 판단 기준</strong>
+                  <p>답변 전에 무엇을 확인해야 하는지 구체적으로 안내합니다.</p>
+                </div>
+              </li>
+              <li>
+                <span class="data-num">02</span>
+                <div class="product-point-body">
+                  <strong>근거 중심 진단</strong>
+                  <p>관련 법령과 공식 참고자료를 판단 맥락과 함께 제공합니다.</p>
+                </div>
+              </li>
+              <li>
+                <span class="data-num">03</span>
+                <div class="product-point-body">
+                  <strong>다음 업무로 연결</strong>
+                  <p>미점검 통제와 우선 보완 항목을 같은 흐름에서 이어갑니다.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="detail-stage" data-reveal data-product-demo>
+            <div class="detail-orbs" aria-hidden="true"><i></i><i></i></div>
+            <aside class="ref-tooltip glass-chip" data-demo-control-chip aria-hidden="true">
+              <b data-demo-control-id>통제항목 2.5.1</b>
+              <span data-demo-control-note>인증 및 권한관리 · 사용자 계정 관리</span>
+            </aside>
+            <div class="detail-card">
+              <div class="detail-card-glow" aria-hidden="true"></div>
+              <div class="detail-card-top">
+                <span>우선 검토</span>
+                <b data-demo-control-name>2.5.1 사용자 계정 관리</b>
+                <em data-demo-card-status data-state="partial">부분 이행</em>
+              </div>
+              <div class="detail-card-body">
+                <small>점검 항목</small>
+                <h3 data-demo-product-question>계정 발급·변경·삭제 절차 수립 및 승인 기록 보존 여부</h3>
+                <p class="mock-detail-note" data-demo-product-note>권한 매트릭스와 발급·회수 이력이 통제 기준과 맞는지 확인합니다.</p>
+                <div class="criteria-list">
+                  <span data-demo-criterion="0" class="is-linked"><i>✓</i><span data-demo-criterion-text>계정 발급/변경/삭제 절차가
+                      있다</span></span>
+                  <span data-demo-criterion="1"><i>✓</i><span data-demo-criterion-text>관리자/특권 계정은 별도 승인 후
+                      발급한다</span></span>
+                  <span data-demo-criterion="2"><i>✓</i><span data-demo-criterion-text>주기적으로 계정/권한을 점검한다</span></span>
+                </div>
+                <div class="evidence-row">
+                  <span>확인할 근거</span>
+                  <b data-demo-evidence="0">계정 발급 대장</b>
+                  <b data-demo-evidence="1">권한 매트릭스</b>
+                  <b data-demo-evidence="2">승인 기록</b>
+                </div>
+              </div>
+            </div>
+            <aside class="ref-card glass-chip" data-demo-law-chip aria-hidden="true">
+              <p class="micro-caption">관련 법령</p>
+              <strong data-demo-law-title>개인정보 보호법 제29조</strong>
+              <span data-demo-law-note>안전조치의무 · 고시 제5조 접근 권한의 관리</span>
+            </aside>
+            <div class="product-dots" role="tablist" aria-label="통제 예시">
+              <button type="button" class="is-on" role="tab" data-product-dot="0" aria-selected="true"
+                aria-label="2.5.1 사용자 계정 관리"></button>
+              <button type="button" role="tab" data-product-dot="1" aria-selected="false"
+                aria-label="2.6.4 데이터베이스 접근"></button>
+              <button type="button" role="tab" data-product-dot="2" aria-selected="false"
+                aria-label="3.1.1 개인정보 수집/이용"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results section" id="results">
+      <div class="section-ambient section-ambient-results" aria-hidden="true"></div>
+      <div class="shell">
+        <header class="section-intro centered" data-reveal>
+          <p class="eyebrow"><span></span>점검 결과</p>
+          <h2>점검 결과에는 수치와<br>다음 업무를 함께 붙입니다.</h2>
+          <p>확인할 근거와 우선 보완 통제를 함께 안내해 실제 준비 업무로 바로 이어지게 합니다.</p>
+        </header>
+        <div class="outcome-grid bento-grid">
+          <article class="outcome-card outcome-temperature" data-reveal>
+            <div class="card-head"><span class="data-num">01</span><b>영역별 준비 온도</b></div>
+            <h3>미흡이 있는 영역을 같은 기준으로 비교합니다.</h3>
+            <div class="temperature-list">
+              <div data-temp-band="ready">
+                <span>관리체계 수립 및 운영</span>
+                <strong class="data-num" data-count="84" data-suffix="°">84°</strong>
+                <p class="temp-calc">16개 중 이행 13 · 부분 1 · 미점검 2</p>
+                <i data-bar="84"><b></b></i>
+              </div>
+              <div data-temp-band="warming">
+                <span>보호대책 요구사항</span>
+                <strong class="data-num" data-count="48" data-suffix="°">48°</strong>
+                <p class="temp-calc">64개 중 이행 28 · 부분 5 · 미점검 31</p>
+                <i data-bar="48"><b></b></i>
+              </div>
+              <div data-temp-band="cold">
+                <span>개인정보 처리단계</span>
+                <strong class="data-num" data-count="12" data-suffix="°">12°</strong>
+                <p class="temp-calc">21개 중 이행 2 · 부분 1 · 미점검 18</p>
+                <i data-bar="12"><b></b></i>
+              </div>
+            </div>
+          </article>
+          <article class="outcome-card outcome-priority" data-reveal data-reveal-delay="1" data-priority-cycle>
+            <div class="card-head"><span class="data-num">02</span><b>보완 우선순위</b></div>
+            <h3>다음 검토 업무를 명확하게 정리합니다.</h3>
+            <ol>
+              <li class="is-hot"><b class="data-num">01</b><span>접근권한 정기점검</span><em>높음</em></li>
+              <li><b class="data-num">02</b><span>개인정보 보유기간</span><em>높음</em></li>
+              <li><b class="data-num">03</b><span>처리방침 현행화</span><em class="medium">중간</em></li>
+            </ol>
+            <p class="card-note">미흡 정도와 법적 근거 연결을 기준으로 정렬합니다.</p>
+          </article>
+          <article class="outcome-card outcome-evidence" data-reveal data-reveal-delay="2">
+            <div class="card-head"><span class="data-num">03</span><b>판단 근거와 증적 후보</b></div>
+            <h3>확인해야 할 자료를 통제와 연결합니다.</h3>
+            <div class="evidence-map">
+              <div class="evidence-map-control">
+                <small>우선 보완</small>
+                <strong>2.5.3 접근권한 정기점검</strong>
+              </div>
+              <div class="evidence-map-law">
+                <small>관련 근거</small>
+                <b>개인정보 보호법 제29조</b>
+                <span>안전조치의무</span>
+              </div>
+              <div class="evidence-map-docs">
+                <span>권한 부여 대장</span>
+                <span>정기점검 기록</span>
+                <span>회수 이력</span>
+              </div>
+            </div>
+            <p class="card-note">통제를 열면 판단 기준과 증적 후보가 함께 열립니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="product section" id="report">
+      <div class="product-panel section-dark report-panel">
+        <div class="product-grid-lines" aria-hidden="true"></div>
+        <div class="shell product-grid report-grid">
+          <div class="product-copy" data-reveal>
+            <p class="eyebrow eyebrow-light"><span></span>보고서</p>
+            <h2>진단이 끝나면,<br>보고서 초안이 생성됩니다.</h2>
+            <p>대시보드 수치에서 끝내지 않습니다. 현재 진단 기준으로 점검 범위, 미흡, 우선 보완 순서를 문서로 만들고 Word로 내보냅니다.</p>
+            <ul class="product-points">
+              <li>
+                <span class="data-num">01</span>
+                <div class="product-point-body">
+                  <strong>초안 생성</strong>
+                  <p>입력한 통제 상태를 기준으로 점검 범위, 미흡, 우선 보완 순서를 구조화합니다. 판정은 바꾸지 않습니다.</p>
+                </div>
+              </li>
+              <li>
+                <span class="data-num">02</span>
+                <div class="product-point-body">
+                  <strong>AI 문장 재작성</strong>
+                  <p>선택 사항입니다. 수치와 판정은 유지한 채, 보고서 문맥만 교정합니다.</p>
+                </div>
+              </li>
+              <li>
+                <span class="data-num">03</span>
+                <div class="product-point-body">
+                  <strong>내보내기</strong>
+                  <p>검토한 본문을 Markdown 또는 Word(.docx)로 저장합니다.</p>
+                </div>
+              </li>
+            </ul>
+            <p class="report-limit">인증 심사 문서가 아닙니다. 자체 점검 참고용 보고서 초안입니다.</p>
+          </div>
+          <figure class="report-stage" data-reveal>
+            <div class="report-stage-glow" aria-hidden="true"></div>
+            <div class="browser-frame report-frame" aria-hidden="true">
+              <div class="browser-chrome">
+                <span><i></i><i></i><i></i></span>
+                <b>ONDO° / REPORT</b>
+                <em>초안 준비됨</em>
+              </div>
+              <div class="report-studio-mock">
+                <div class="report-mock-main">
+                  <header class="report-mock-toolbar">
+                    <div>
+                      <strong>진단 결과 보고서</strong>
+                      <span>초안 준비됨</span>
+                    </div>
+                    <div>
+                      <em>AI로 재작성</em>
+                      <b>Word</b>
+                    </div>
+                  </header>
+                  <div class="report-mock-canvas">
+                    <article class="report-mock-page">
+                      <header>
+                        <span>ISMS-P 자체 점검</span>
+                        <strong>결과 보고서</strong>
+                        <small>현재 진단 50/101 기준 · 참고용</small>
+                      </header>
+                      <span class="visually-hidden">ISMS-P 자체 점검 결과 보고서</span>
+                      <dl class="report-mock-kpis">
+                        <div>
+                          <dt>점검</dt>
+                          <dd>50 / 101</dd>
+                        </div>
+                        <div>
+                          <dt>참고 구간</dt>
+                          <dd>46% <em>보완 필요</em></dd>
+                        </div>
+                        <div>
+                          <dt>우선 보완</dt>
+                          <dd>2.5.6 · 3.2.1</dd>
+                        </div>
+                      </dl>
+                      <div class="report-mock-sections">
+                        <section>
+                          <h4>1. 점검 개요 및 범위</h4>
+                          <p>점검 대상: 적용 통제 101개. 진행 현황: 50개 점검 완료(미점검 51개). 미점검 항목은 이번 문서에서 적합 여부를 판단하지 않음.</p>
+                        </section>
+                        <section>
+                          <h4>2. 종합 점검 결과</h4>
+                          <p>보조 참고 구간: 46%(보완 필요). 인증 배점·심사 결론이 아님.</p>
+                        </section>
+                        <section>
+                          <h4>4. 미흡이 집중된 영역</h4>
+                          <p>보호대책 요구사항의 미점검 비중이 높고, 개인정보 처리 단계 점검은 초반 수준.</p>
+                        </section>
+                        <section>
+                          <h4>7. 우선 보완 순서</h4>
+                          <ul>
+                            <li><b>01</b><span>2.5.6 접근권한 검토</span></li>
+                            <li><b>02</b><span>3.2.1 개인정보 현황관리</span></li>
+                          </ul>
+                        </section>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="start">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="cta-grid" aria-hidden="true"></div>
+      <div class="shell final-cta-inner" data-reveal>
+        <span class="cta-mark" aria-hidden="true"><i></i></span>
+        <h2>조직의 준비 상태를 진단하고,<br>다음 보완 업무를 확인하세요.</h2>
+        <a class="btn btn-light btn-lg" href="/controls/map">무료 자가진단 시작하기 <span class="btn-arrow"
+            aria-hidden="true">→</span></a>
+        <small class="cta-micro">회원가입 없이 시작</small>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand"><strong>ONDO<sup>°</sup></strong></div>
+      <nav class="footer-nav" aria-label="푸터 메뉴">
+        <a href="#workflow">진단 방식</a>
+        <a href="#report">보고서</a>
+        <button type="button" data-dialog="terms">이용약관</button>
+        <button type="button" data-dialog="privacy">개인정보처리방침</button>
+      </nav>
+      <hr class="footer-divider">
+      <p class="disclaimer">본 서비스의 결과는 사용자가 입력한 답변을 기반으로 한 자체 점검 결과이며, ISMS-P 인증 획득 또는 실제 심사 결과를 보장하지 않습니다.</p>
+      <p class="copyright">© 2026 ONDO°. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <dialog class="legal-dialog" id="terms" aria-labelledby="termsTitle">
+    <form method="dialog">
+      <h2 id="termsTitle">이용약관</h2>
+      <div class="legal-body">
+        <p>ONDO°는 ISMS-P 인증기준을 참고한 자가진단 서비스입니다.</p>
+        <p>진단 결과는 이용자가 입력한 답변을 바탕으로 한 자체 점검이며 인증 심사를 대체하지 않습니다.</p>
+        <p>본 서비스는 한국인터넷진흥원 또는 인증기관의 공식 서비스가 아닙니다.</p>
+      </div>
+      <button class="btn btn-primary" value="close">닫기</button>
+    </form>
+  </dialog>
+  <dialog class="legal-dialog" id="privacy" aria-labelledby="privacyTitle">
+    <form method="dialog">
+      <h2 id="privacyTitle">개인정보처리방침</h2>
+      <div class="legal-body">
+        <p>진단 진행 상태는 이용자의 브라우저에 저장됩니다.</p>
+        <p>분석 기능을 사용할 경우 점검 항목 상태가 서버로 전달되어 준비 온도와 보완 항목을 계산합니다.</p>
+        <p>입력 내용은 인증 제출 자료로 사용되지 않습니다.</p>
+      </div>
+      <button class="btn btn-primary" value="close">닫기</button>
+    </form>
+  </dialog>
+  <script src="/landing/assets/landing.js?v=20260819-42" defer></script>
+</body>
+
+</html>

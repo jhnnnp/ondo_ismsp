@@ -1,0 +1,14 @@
+{
+  "controlId": "2.10.1",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 6,
+  "evidenceExamples": [
+    "보안시스템구성",
+    "네트워크구성",
+    "보안시스템운영절차",
+    "방화벽정책",
+    "방화벽정책 설정"
+  ],
+  "existingPlainQuestion": "방화벽/Security Group 같은 보안시스템 정책을 누가 바꾸고, 변경 이력을 남기고 있나요?"
+}

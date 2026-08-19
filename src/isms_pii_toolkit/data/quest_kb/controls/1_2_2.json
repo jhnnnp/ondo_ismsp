@@ -1,0 +1,51 @@
+{
+  "controlId": "1.2.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "현황 및 흐름분석 관련 문서와 승인/운영 기록을 지금 바로 꺼낼 수 있나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "관리체계 전 영역에 대한 정보서비스 현황을 식별하고 업무 절차와 흐름을 파악하여 문서화하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "관리체계 범위 내 개인정보 처리 현황을 식별하고 개인정보의 흐름을 파악하여 개인정보 흐름도 등으로 문서화하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "서비스 및 업무,정보자산 등의 변화에 따른 업무절차 및 개인정보 흐름을 주기적으로 검토하여 흐름도 등 관련 문서의 최신성을 유지하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (정보서비스현황표)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "고객센터 로그/멤버십 DB 등 핵심 자산부터 흐름도를 작성하세요.",
+      "guideRef": "official-1.2.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 정보서비스현황표"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

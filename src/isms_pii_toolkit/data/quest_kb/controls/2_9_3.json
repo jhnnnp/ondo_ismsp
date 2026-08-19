@@ -1,0 +1,51 @@
+{
+  "controlId": "2.9.3",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "백업 및 복구관리를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "백업 대상,주기,방법,절차 등이 포함된 백업 및 복구절차를 수립■이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "백업된 정보의 완전성과 정확성,복구절차의 적절성을 확인하기 위하여 정기적으로 복구 테스트를 실시하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "중요정보가 저장된 백업매체의 경우 재해•재난에 대처할 수 있도록 백업매체를 물리적으로 떨어진 장소에 소산하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (백업 및 복구 절차)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "운영 로그 보관 기간과 점검 주기를 정책에 명시하세요.",
+      "guideRef": "official-2.9.3",
+      "whenDone": "다음 증적 예시를 준비하세요: 백업 및 복구 절차"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

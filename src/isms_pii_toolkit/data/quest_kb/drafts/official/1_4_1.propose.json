@@ -1,0 +1,14 @@
+{
+  "controlId": "1.4.1",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "법적준거성검토내역",
+    "정보보호및개인정보보호 정책",
+    "지침검토및 개정이력",
+    "지침신구대조표",
+    "법 개정사항내부공유 자료"
+  ],
+  "existingPlainQuestion": "최근 법 개정(개인정보 보호법 등)이 우리 정책/보험/공시에 반영됐는지 올해 검토했나요?"
+}

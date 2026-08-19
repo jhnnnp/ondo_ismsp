@@ -1,0 +1,10 @@
+{
+  "controlId": "2.8.5",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "130 정보보호 및 개인정보보호 관리체계 인증제도 안내서"
+  ],
+  "existingPlainQuestion": "소스코드가 Git 등 형상관리에만 있고, 접근/변경 이력이 남나요?"
+}

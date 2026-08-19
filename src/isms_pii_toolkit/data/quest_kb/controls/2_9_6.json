@@ -1,0 +1,39 @@
+{
+  "controlId": "2.9.6",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "시간 동기화를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보시스템의 시간을 표준시간으로 동기화하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "시간 동기화가 정상적으로 이루어지고 있는지 주기적으로 점검하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "운영 로그 보관 기간과 점검 주기를 정책에 명시하세요.",
+      "guideRef": "official-2.9.6",
+      "whenDone": "확인한 시간 동기화 화면/문서를 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

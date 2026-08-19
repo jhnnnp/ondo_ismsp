@@ -1,0 +1,57 @@
+{
+  "controlId": "2.10.3",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "공개서버 보안을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "공개서버를 운영하는 경우 이에 대한 보호대책을 수립/이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "공개서버는 내부 네트워크와 분리된 DMZ 영역에 설치하고 침입차단시스템 등 보안시스템을 통하여 보호하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "공개서버에 개인정보 및 중요정보를 게시하거나 저장하여야 할 경우 책임자 승인 등 허가 및 게시절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "조직의 중요정보가 웹사이트 및 웹서버를 통하여 노출되고 있는지 여부를 주기적으로 확인하여 중요정보 노출을 인지한 경우 이를 즉시 차단하는 등의 조치를 취하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (네트워크구성도)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "WAF/EDR/취약점 스캔 결과를 월간 리포트로 관리하세요.",
+      "guideRef": "official-2.10.3",
+      "whenDone": "다음 증적 예시를 준비하세요: 네트워크구성도"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

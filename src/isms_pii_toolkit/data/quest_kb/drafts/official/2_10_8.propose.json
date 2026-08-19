@@ -1,0 +1,12 @@
+{
+  "controlId": "2.10.8",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 5,
+  "evidenceExamples": [
+    "패치 적용 관리정책",
+    "시스템별패치적용 현황",
+    "패치 적용 관련 영향도 분석 결과"
+  ],
+  "existingPlainQuestion": "서버/오픈소스/클라우드까지 패치 담당과 적용 주기가 정해져 있고, 미적용 사유를 남기나요?"
+}

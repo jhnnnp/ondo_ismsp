@@ -1,0 +1,48 @@
+{
+  "controlId": "2.9.5",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.9.5.1",
+      "사례집.md#2.9.5.2",
+      "사례집.md#2.9.5.7"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "이상 접속/대량 조회 같은 로그를 실제로 점검하고, 알림 후 조치 기록을 남기나요?",
+    "audience": [
+      "보안(겸직)",
+      "인프라",
+      "개인정보 담당"
+    ],
+    "checks": [
+      {
+        "checkId": "monitor-rule",
+        "label": "이상접속/이상행위 점검 기준이 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "review-done",
+        "label": "주기적으로 접속기록을 검토한 내역이 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "follow-up",
+        "label": "알림/이상징후 후속조치 기록이 있다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "CloudTrail/접속기록에서 휴일/대량조회 이벤트를 샘플 점검하고, 조치 결과를 점검일지에 남기세요. 점검은 반기 1회보다 짧게 잡으세요.",
+      "guideRef": "log-review",
+      "whenDone": "접속기록 점검일지 또는 알림 조치 기록을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

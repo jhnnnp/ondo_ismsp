@@ -1,0 +1,45 @@
+{
+  "controlId": "3.3.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 개인정보 처리 업무 위탁을 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "계약/총무",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "개인정보 처리업무를 제3자에게 위탁(재위탁 포함)하는 경우 인터넷 홈페이지 등에 위탁하는 업무의 내용과 수탁자를 현행화하여 공개하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "재화 또는 서비스를 홍보하거나 판매를 권유하는 업무를 위탁하는 경우에는 서면, 전자우편,문자전송 등의 방법으로 위탁하는 업무의 내용과 수탁자를 정보주체에게 알리고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (개인정보 처리방침(개인정보 처리업무 위탁 관련 공개 내역))",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "위탁 계약서에 재위탁/파기/사고통지 조항을 포함하세요.",
+      "guideRef": "official-3.3.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 개인정보 처리방침(개인정보 처리업무 위탁 관련 공개 내역)"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

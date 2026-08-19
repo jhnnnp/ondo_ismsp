@@ -1,0 +1,49 @@
+{
+  "controlId": "2.9.4",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.9.4.1",
+      "사례집.md#2.9.4.4",
+      "사례집.md#2.9.4.5"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "누가/언제/무엇을 했는지 남도록 로그를 남기고, 법정 기간만큼 보관하나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)",
+      "개인정보 담당"
+    ],
+    "checks": [
+      {
+        "checkId": "log-policy",
+        "label": "기록 대상/보존기간/담당자가 정해져 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "pii-fields",
+        "label": "계정/IP/일시/처리대상/수행업무가 남는다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "retention",
+        "label": "보존기간/백업이 기준에 맞게 유지된다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "개인정보처리 접속기록 필드를 확인하고, 보존기간/CloudTrail/S3 보관 설정을 점검해 부족하면 늘리세요.",
+      "guideRef": "log-retention",
+      "whenDone": "로그 설정/보존기간 화면 또는 정책 관련 증적을 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

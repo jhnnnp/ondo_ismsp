@@ -1,0 +1,14 @@
+{
+  "controlId": "1.2.1",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "정보자산 및 개인정보 자산분류 기준",
+    "정보자산 및 개인정보 자산목록(자산관리시스템 화면)",
+    "정보자산 및 개인정보 보안등급",
+    "자산실사내역",
+    "위험분석보고서(자산식별내역)"
+  ],
+  "existingPlainQuestion": "클라우드/위탁/개발도구(Git/Jenkins)까지 포함해 자산 목록이 최신인가요?"
+}

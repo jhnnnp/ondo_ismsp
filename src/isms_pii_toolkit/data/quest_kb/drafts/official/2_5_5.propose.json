@@ -1,0 +1,14 @@
+{
+  "controlId": "2.5.5",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "1 예시",
+    "특수권한관련지침",
+    "특수권한신청",
+    "승인내역",
+    "특수권한자목록"
+  ],
+  "existingPlainQuestion": "관리자/유지보수 특수계정은 승인/기간 제한/정기 검토가 있나요?"
+}

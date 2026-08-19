@@ -1,0 +1,50 @@
+{
+  "controlId": "2.8.1",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "보안 요구사항 정의를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보시스템을 신규로 도입 •개발 또는 변경하는 경우 정보보호 및 개인정보보호 측면의 타당성 검토 및 인수 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "정보시스템을 신규로 도입■개발 또는 변경하는 경우 법적 요구사항,최신 취약점 등을 포함한 보안 요구사항을 명확히 정의하고 설계 단계에서부터 반영하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "정보시스템의 안전한 구현을 위한 코딩 표준을 수립하여 적용하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (정보시스템인수 기준및절차)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "SDLC에 보안 검토 게이트를 추가하세요.",
+      "guideRef": "official-2.8.1",
+      "whenDone": "다음 증적 예시를 준비하세요: 정보시스템인수 기준및절차"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

@@ -1,0 +1,57 @@
+{
+  "controlId": "3.1.5",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 개인정보 간접수집을 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "서비스 운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보주체 이외의 제3자로부터 개인정보를 제공받는 경우 개인정보 수집에 대한 동의획득 책임이 개인정보를 제공하는 자에게 있음을 계약을 통하여 명시하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "공개된 매체 및 장소에서 개인정보를 수집하는 경우 정보주체의 공개 목적 범위 및 사회 통념상 동의 의사가 있다고 인정되는 범위 내에서만 수집 이용하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "서비스 계약 이행을 위해 필요한 경우로서,서비스 제공 과정에서 자동수집장치 등에 의하여 수집•생성하는 개인정보의 경우에도 최소수집 원칙을 적용하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "정보주체 이외로부터 수집하는 개인정보에 대해 정보주체의 요구가 있는 경우 즉시 필요한 사항을 정보주체에게 알리고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (개인정보 제공 관련 계약서(제공하는 자와의 계약 사항))",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "수집 화면별 동의 항목과 실제 DB 컬럼을 대조하세요.",
+      "guideRef": "official-3.1.5",
+      "whenDone": "다음 증적 예시를 준비하세요: 개인정보 제공 관련 계약서(제공하는 자와의 계약 사항)"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

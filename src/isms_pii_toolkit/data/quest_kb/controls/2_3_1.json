@@ -1,0 +1,48 @@
+{
+  "controlId": "2.3.1",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.3.1.1",
+      "사례집.md#2.3.1.2"
+    ],
+    "promotedFrom": "thin-stub"
+  },
+  "quest": {
+    "plainQuestion": "클라우드/위탁/외부 시설 현황 목록이 최신이고, 빠진 서비스는 없나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자",
+      "인프라"
+    ],
+    "checks": [
+      {
+        "checkId": "vendor-list",
+        "label": "외부자/위탁/클라우드 현황 목록이 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "fresh",
+        "label": "변경된 업체가 목록에 반영돼 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "risk-new",
+        "label": "새로 옮긴 클라우드/위탁에 위험평가가 있다",
+        "recommended": true,
+        "mapsToCheckKey": "policy"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "위탁/클라우드 목록을 계약/청구 내역과 맞춰 현행화하고, 누락 서비스는 식별/위험평가를 붙이세요.",
+      "guideRef": "third-party-inventory",
+      "whenDone": "외부자 현황 목록을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

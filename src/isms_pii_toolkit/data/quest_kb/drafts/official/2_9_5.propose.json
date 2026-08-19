@@ -1,0 +1,14 @@
+{
+  "controlId": "2.9.5",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "로그검토및모니터링절차",
+    "로그 검토 및 모니터링 결과(검토 내역,보고서 등)",
+    "개인정보 접속기록 점검 내역",
+    "개인정보 다운로드 시 사유 확인 기준 및 결과",
+    "이상징후 발견 시 대응 증거자료"
+  ],
+  "existingPlainQuestion": "이상 접속/대량 조회 같은 로그를 실제로 점검하고, 알림 후 조치 기록을 남기나요?"
+}

@@ -1,0 +1,45 @@
+{
+  "controlId": "1.4.3",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "관리체계 개선 관련 문서와 승인/운영 기록을 지금 바로 꺼낼 수 있나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "법적 요구사항 준수검토 및 관리체계 점검을 통하여 식별된 관리체계상의 문제점에 대한 근본 원인을 분석하여 재발방지 및 개선 대책을 수립■이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "재발방지 및 개선 결과의 정확성 및 효과성 여부를 확인하기 위한 기준과 절차를 마련하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (관리체계점검결과보고서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "분기별 자체 점검 체크리스트를 운영하세요.",
+      "guideRef": "official-1.4.3",
+      "whenDone": "다음 증적 예시를 준비하세요: 관리체계점검결과보고서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

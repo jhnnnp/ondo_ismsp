@@ -1,0 +1,45 @@
+{
+  "controlId": "2.3.4",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "외부자 계약 변경 및 만료 시 보안을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "계약/총무",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "외부자 계약만료,업무 종료,담당자 변경 시 공식적인 절차에 따른 정보자산 반납, 정보시스템 접근계정 삭제,비밀유지 확약서 징구등이 이루어질 수 있도록 보안대책을 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "외부자 계약 만료 시 위탁 업무와 관련하여 외부자가 중요정보 및 개인정보를 보유하고 있는지 확인하고 이를 회수■파기할 수 있도록 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (정보보호 및 개인정보보호 서약서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "수탁사/외주 개발자 접근은 별도 계정/기간 제한을 적용하세요.",
+      "guideRef": "official-2.3.4",
+      "whenDone": "다음 증적 예시를 준비하세요: 정보보호 및 개인정보보호 서약서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

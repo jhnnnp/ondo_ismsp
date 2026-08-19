@@ -1,0 +1,614 @@
+{
+  "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+  "controlCount": 101,
+  "controlsWithQuestions": 101,
+  "missingQuestions": [],
+  "controls": [
+    {
+      "controlId": "1.1.1",
+      "title": "경영진의 참여",
+      "questionCount": 2,
+      "file": "controls/1_1_1.json"
+    },
+    {
+      "controlId": "1.1.2",
+      "title": "최고책임자의 지정",
+      "questionCount": 2,
+      "file": "controls/1_1_2.json"
+    },
+    {
+      "controlId": "1.1.3",
+      "title": "조직 구성",
+      "questionCount": 3,
+      "file": "controls/1_1_3.json"
+    },
+    {
+      "controlId": "1.1.4",
+      "title": "범위 설정",
+      "questionCount": 3,
+      "file": "controls/1_1_4.json"
+    },
+    {
+      "controlId": "1.1.5",
+      "title": "정책 수립",
+      "questionCount": 4,
+      "file": "controls/1_1_5.json"
+    },
+    {
+      "controlId": "1.1.6",
+      "title": "자원 할당",
+      "questionCount": 3,
+      "file": "controls/1_1_6.json"
+    },
+    {
+      "controlId": "1.2.1",
+      "title": "정보자산 식별",
+      "questionCount": 3,
+      "file": "controls/1_2_1.json"
+    },
+    {
+      "controlId": "1.2.2",
+      "title": "현황 및 흐름분석",
+      "questionCount": 3,
+      "file": "controls/1_2_2.json"
+    },
+    {
+      "controlId": "1.2.3",
+      "title": "위험 평가",
+      "questionCount": 5,
+      "file": "controls/1_2_3.json"
+    },
+    {
+      "controlId": "1.2.4",
+      "title": "보호대책 선정",
+      "questionCount": 2,
+      "file": "controls/1_2_4.json"
+    },
+    {
+      "controlId": "1.3.1",
+      "title": "보호대책 구현",
+      "questionCount": 2,
+      "file": "controls/1_3_1.json"
+    },
+    {
+      "controlId": "1.3.2",
+      "title": "보호대책 공유",
+      "questionCount": 2,
+      "file": "controls/1_3_2.json"
+    },
+    {
+      "controlId": "1.3.3",
+      "title": "운영현황 관리",
+      "questionCount": 2,
+      "file": "controls/1_3_3.json"
+    },
+    {
+      "controlId": "1.4.1",
+      "title": "법적 요구사항 준수 검토",
+      "questionCount": 2,
+      "file": "controls/1_4_1.json"
+    },
+    {
+      "controlId": "1.4.2",
+      "title": "관리체계 점검",
+      "questionCount": 2,
+      "file": "controls/1_4_2.json"
+    },
+    {
+      "controlId": "1.4.3",
+      "title": "관리체계 개선",
+      "questionCount": 2,
+      "file": "controls/1_4_3.json"
+    },
+    {
+      "controlId": "2.1.1",
+      "title": "정책의 유지관리",
+      "questionCount": 4,
+      "file": "controls/2_1_1.json"
+    },
+    {
+      "controlId": "2.1.2",
+      "title": "조직의 유지관리",
+      "questionCount": 3,
+      "file": "controls/2_1_2.json"
+    },
+    {
+      "controlId": "2.1.3",
+      "title": "정보자산 관리",
+      "questionCount": 2,
+      "file": "controls/2_1_3.json"
+    },
+    {
+      "controlId": "2.2.1",
+      "title": "주요 직무자 지정 및 관리",
+      "questionCount": 4,
+      "file": "controls/2_2_1.json"
+    },
+    {
+      "controlId": "2.2.2",
+      "title": "직무 분리",
+      "questionCount": 2,
+      "file": "controls/2_2_2.json"
+    },
+    {
+      "controlId": "2.2.3",
+      "title": "보안 서약",
+      "questionCount": 4,
+      "file": "controls/2_2_3.json"
+    },
+    {
+      "controlId": "2.2.4",
+      "title": "인식제고 및 교육훈련",
+      "questionCount": 5,
+      "file": "controls/2_2_4.json"
+    },
+    {
+      "controlId": "2.2.5",
+      "title": "퇴직 및 직무변경 관리",
+      "questionCount": 2,
+      "file": "controls/2_2_5.json"
+    },
+    {
+      "controlId": "2.2.6",
+      "title": "보안 위반 시 조치",
+      "questionCount": 2,
+      "file": "controls/2_2_6.json"
+    },
+    {
+      "controlId": "2.3.1",
+      "title": "외부자 현황 관리",
+      "questionCount": 2,
+      "file": "controls/2_3_1.json"
+    },
+    {
+      "controlId": "2.3.2",
+      "title": "외부자 계약 시 보안",
+      "questionCount": 3,
+      "file": "controls/2_3_2.json"
+    },
+    {
+      "controlId": "2.3.3",
+      "title": "외부자 보안 이행 관리",
+      "questionCount": 3,
+      "file": "controls/2_3_3.json"
+    },
+    {
+      "controlId": "2.3.4",
+      "title": "외부자 계약 변경 및 만료 시 보안",
+      "questionCount": 2,
+      "file": "controls/2_3_4.json"
+    },
+    {
+      "controlId": "2.4.1",
+      "title": "보호구역 지정",
+      "questionCount": 2,
+      "file": "controls/2_4_1.json"
+    },
+    {
+      "controlId": "2.4.2",
+      "title": "출입통제",
+      "questionCount": 2,
+      "file": "controls/2_4_2.json"
+    },
+    {
+      "controlId": "2.4.3",
+      "title": "정보시스템 보호",
+      "questionCount": 3,
+      "file": "controls/2_4_3.json"
+    },
+    {
+      "controlId": "2.4.4",
+      "title": "보호설비 운영",
+      "questionCount": 2,
+      "file": "controls/2_4_4.json"
+    },
+    {
+      "controlId": "2.4.5",
+      "title": "보호구역 내 작업",
+      "questionCount": 2,
+      "file": "controls/2_4_5.json"
+    },
+    {
+      "controlId": "2.4.6",
+      "title": "반출입 기기 통제",
+      "questionCount": 2,
+      "file": "controls/2_4_6.json"
+    },
+    {
+      "controlId": "2.4.7",
+      "title": "업무환경 보안",
+      "questionCount": 4,
+      "file": "controls/2_4_7.json"
+    },
+    {
+      "controlId": "2.5.1",
+      "title": "사용자 계정 관리",
+      "questionCount": 3,
+      "file": "controls/2_5_1.json"
+    },
+    {
+      "controlId": "2.5.2",
+      "title": "사용자 식별",
+      "questionCount": 2,
+      "file": "controls/2_5_2.json"
+    },
+    {
+      "controlId": "2.5.3",
+      "title": "사용자 인증",
+      "questionCount": 2,
+      "file": "controls/2_5_3.json"
+    },
+    {
+      "controlId": "2.5.4",
+      "title": "비밀번호 관리",
+      "questionCount": 3,
+      "file": "controls/2_5_4.json"
+    },
+    {
+      "controlId": "2.5.5",
+      "title": "특수 계정 및 권한관리",
+      "questionCount": 2,
+      "file": "controls/2_5_5.json"
+    },
+    {
+      "controlId": "2.5.6",
+      "title": "접근권한 검토",
+      "questionCount": 3,
+      "file": "controls/2_5_6.json"
+    },
+    {
+      "controlId": "2.6.1",
+      "title": "네트워크 접근",
+      "questionCount": 4,
+      "file": "controls/2_6_1.json"
+    },
+    {
+      "controlId": "2.6.2",
+      "title": "정보시스템 접근",
+      "questionCount": 4,
+      "file": "controls/2_6_2.json"
+    },
+    {
+      "controlId": "2.6.3",
+      "title": "응용프로그램 접근",
+      "questionCount": 5,
+      "file": "controls/2_6_3.json"
+    },
+    {
+      "controlId": "2.6.4",
+      "title": "데이터베이스 접근",
+      "questionCount": 2,
+      "file": "controls/2_6_4.json"
+    },
+    {
+      "controlId": "2.6.5",
+      "title": "무선 네트워크 접근",
+      "questionCount": 3,
+      "file": "controls/2_6_5.json"
+    },
+    {
+      "controlId": "2.6.6",
+      "title": "원격접근 통제",
+      "questionCount": 4,
+      "file": "controls/2_6_6.json"
+    },
+    {
+      "controlId": "2.6.7",
+      "title": "인터넷 접속 통제",
+      "questionCount": 3,
+      "file": "controls/2_6_7.json"
+    },
+    {
+      "controlId": "2.7.1",
+      "title": "암호정책 적용",
+      "questionCount": 2,
+      "file": "controls/2_7_1.json"
+    },
+    {
+      "controlId": "2.7.2",
+      "title": "암호키 관리",
+      "questionCount": 2,
+      "file": "controls/2_7_2.json"
+    },
+    {
+      "controlId": "2.8.1",
+      "title": "보안 요구사항 정의",
+      "questionCount": 3,
+      "file": "controls/2_8_1.json"
+    },
+    {
+      "controlId": "2.8.2",
+      "title": "보안 요구사항 검토 및 시험",
+      "questionCount": 4,
+      "file": "controls/2_8_2.json"
+    },
+    {
+      "controlId": "2.8.3",
+      "title": "시험과 운영 환경 분리",
+      "questionCount": 2,
+      "file": "controls/2_8_3.json"
+    },
+    {
+      "controlId": "2.8.4",
+      "title": "시험 데이터 보안",
+      "questionCount": 2,
+      "file": "controls/2_8_4.json"
+    },
+    {
+      "controlId": "2.8.5",
+      "title": "소스 프로그램 관리",
+      "questionCount": 3,
+      "file": "controls/2_8_5.json"
+    },
+    {
+      "controlId": "2.8.6",
+      "title": "운영환경 이관",
+      "questionCount": 3,
+      "file": "controls/2_8_6.json"
+    },
+    {
+      "controlId": "2.9.1",
+      "title": "변경관리",
+      "questionCount": 2,
+      "file": "controls/2_9_1.json"
+    },
+    {
+      "controlId": "2.9.2",
+      "title": "성능 및 장애관리",
+      "questionCount": 4,
+      "file": "controls/2_9_2.json"
+    },
+    {
+      "controlId": "2.9.3",
+      "title": "백업 및 복구관리",
+      "questionCount": 3,
+      "file": "controls/2_9_3.json"
+    },
+    {
+      "controlId": "2.9.4",
+      "title": "로그 및 접속기록 관리",
+      "questionCount": 3,
+      "file": "controls/2_9_4.json"
+    },
+    {
+      "controlId": "2.9.5",
+      "title": "로그 및 접속기록 점검",
+      "questionCount": 3,
+      "file": "controls/2_9_5.json"
+    },
+    {
+      "controlId": "2.9.6",
+      "title": "시간 동기화",
+      "questionCount": 2,
+      "file": "controls/2_9_6.json"
+    },
+    {
+      "controlId": "2.9.7",
+      "title": "정보자산의 재사용 및 폐기",
+      "questionCount": 5,
+      "file": "controls/2_9_7.json"
+    },
+    {
+      "controlId": "2.10.1",
+      "title": "보안시스템 운영",
+      "questionCount": 6,
+      "file": "controls/2_10_1.json"
+    },
+    {
+      "controlId": "2.10.2",
+      "title": "클라우드 보안",
+      "questionCount": 4,
+      "file": "controls/2_10_2.json"
+    },
+    {
+      "controlId": "2.10.3",
+      "title": "공개서버 보안",
+      "questionCount": 4,
+      "file": "controls/2_10_3.json"
+    },
+    {
+      "controlId": "2.10.4",
+      "title": "전자거래 및 핀테크 보안",
+      "questionCount": 2,
+      "file": "controls/2_10_4.json"
+    },
+    {
+      "controlId": "2.10.5",
+      "title": "정보전송 보안",
+      "questionCount": 2,
+      "file": "controls/2_10_5.json"
+    },
+    {
+      "controlId": "2.10.6",
+      "title": "업무용 단말기기 보안",
+      "questionCount": 4,
+      "file": "controls/2_10_6.json"
+    },
+    {
+      "controlId": "2.10.7",
+      "title": "보조저장매체 관리",
+      "questionCount": 5,
+      "file": "controls/2_10_7.json"
+    },
+    {
+      "controlId": "2.10.8",
+      "title": "패치관리",
+      "questionCount": 5,
+      "file": "controls/2_10_8.json"
+    },
+    {
+      "controlId": "2.10.9",
+      "title": "악성코드 통제",
+      "questionCount": 4,
+      "file": "controls/2_10_9.json"
+    },
+    {
+      "controlId": "2.11.1",
+      "title": "사고 예방 및 대응체계 구축",
+      "questionCount": 3,
+      "file": "controls/2_11_1.json"
+    },
+    {
+      "controlId": "2.11.2",
+      "title": "취약점 점검 및 조치",
+      "questionCount": 4,
+      "file": "controls/2_11_2.json"
+    },
+    {
+      "controlId": "2.11.3",
+      "title": "이상행위 분석 및 모니터링",
+      "questionCount": 2,
+      "file": "controls/2_11_3.json"
+    },
+    {
+      "controlId": "2.11.4",
+      "title": "사고 대응 훈련 및 개선",
+      "questionCount": 2,
+      "file": "controls/2_11_4.json"
+    },
+    {
+      "controlId": "2.11.5",
+      "title": "사고 대응 및 복구",
+      "questionCount": 4,
+      "file": "controls/2_11_5.json"
+    },
+    {
+      "controlId": "2.12.1",
+      "title": "재해/재난 대비 안전조치",
+      "questionCount": 3,
+      "file": "controls/2_12_1.json"
+    },
+    {
+      "controlId": "2.12.2",
+      "title": "재해 복구 시험 및 개선",
+      "questionCount": 2,
+      "file": "controls/2_12_2.json"
+    },
+    {
+      "controlId": "3.1.1",
+      "title": "개인정보 수집/이용",
+      "questionCount": 9,
+      "file": "controls/3_1_1.json"
+    },
+    {
+      "controlId": "3.1.2",
+      "title": "개인정보 수집 제한",
+      "questionCount": 3,
+      "file": "controls/3_1_2.json"
+    },
+    {
+      "controlId": "3.1.3",
+      "title": "주민등록번호 처리 제한",
+      "questionCount": 3,
+      "file": "controls/3_1_3.json"
+    },
+    {
+      "controlId": "3.1.4",
+      "title": "민감정보 및 고유식별정보의 처리 제한",
+      "questionCount": 3,
+      "file": "controls/3_1_4.json"
+    },
+    {
+      "controlId": "3.1.5",
+      "title": "개인정보 간접수집",
+      "questionCount": 6,
+      "file": "controls/3_1_5.json"
+    },
+    {
+      "controlId": "3.1.6",
+      "title": "영상정보처리기기 설치/운영",
+      "questionCount": 8,
+      "file": "controls/3_1_6.json"
+    },
+    {
+      "controlId": "3.1.7",
+      "title": "마케팅 목적의 개인정보 수집/이용",
+      "questionCount": 4,
+      "file": "controls/3_1_7.json"
+    },
+    {
+      "controlId": "3.2.1",
+      "title": "개인정보 현황관리",
+      "questionCount": 3,
+      "file": "controls/3_2_1.json"
+    },
+    {
+      "controlId": "3.2.2",
+      "title": "개인정보 품질보장",
+      "questionCount": 2,
+      "file": "controls/3_2_2.json"
+    },
+    {
+      "controlId": "3.2.3",
+      "title": "이용자 단말기 접근 보호",
+      "questionCount": 3,
+      "file": "controls/3_2_3.json"
+    },
+    {
+      "controlId": "3.2.4",
+      "title": "개인정보 목적 외 이용 및 제공",
+      "questionCount": 6,
+      "file": "controls/3_2_4.json"
+    },
+    {
+      "controlId": "3.2.5",
+      "title": "가명정보 처리",
+      "questionCount": 6,
+      "file": "controls/3_2_5.json"
+    },
+    {
+      "controlId": "3.3.1",
+      "title": "개인정보 제3자 제공",
+      "questionCount": 7,
+      "file": "controls/3_3_1.json"
+    },
+    {
+      "controlId": "3.3.2",
+      "title": "개인정보 처리 업무 위탁",
+      "questionCount": 2,
+      "file": "controls/3_3_2.json"
+    },
+    {
+      "controlId": "3.3.3",
+      "title": "영업의 양도 등에 따른 개인정보 이전",
+      "questionCount": 3,
+      "file": "controls/3_3_3.json"
+    },
+    {
+      "controlId": "3.3.4",
+      "title": "개인정보 국외이전",
+      "questionCount": 4,
+      "file": "controls/3_3_4.json"
+    },
+    {
+      "controlId": "3.4.1",
+      "title": "개인정보 파기",
+      "questionCount": 4,
+      "file": "controls/3_4_1.json"
+    },
+    {
+      "controlId": "3.4.2",
+      "title": "처리목적 달성 후 보유 시 조치",
+      "questionCount": 4,
+      "file": "controls/3_4_2.json"
+    },
+    {
+      "controlId": "3.5.1",
+      "title": "개인정보 처리방침 공개",
+      "questionCount": 2,
+      "file": "controls/3_5_1.json"
+    },
+    {
+      "controlId": "3.5.2",
+      "title": "정보주체 권리보장",
+      "questionCount": 6,
+      "file": "controls/3_5_2.json"
+    },
+    {
+      "controlId": "3.5.3",
+      "title": "정보주체에 대한 통지",
+      "questionCount": 2,
+      "file": "controls/3_5_3.json"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "controlId": "3.5.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 정보주체 권리보장을 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "서비스 운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보주체 또는그 대리인이 개인정보에 대한열람,정정•삭제,처리정지 및 동의 철회 등(이하 '열람등요구|라 함)을 개인정보 수집방법■절차보다 어렵지 아니하도록 권리 행사 방법 및 절차를 마련하여 공개하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "정보주체 또는 그 대리인이 개인정보 열람등요구를 하는 경우 기간 내에 열람등요구에 따른 필요한 조치를 하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "정보주체 또는 그 대리인이 개인정보 수집■이용•제공 등의 동의를 철회하는 경우 지체 없이 수집된 개인정보를 파기하는 등 필요한 조치를 취하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "정보주체의 열람등요구에 대한 조치에 불복이 있는 경우 이의를 제기할 수 있도록 필요한 절차를 마련하여 안내하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (개인정보처리방침)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "고객센터/웹 채널별 권리 행사 처리 SLA를 정하세요.",
+      "guideRef": "official-3.5.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 개인정보처리방침"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

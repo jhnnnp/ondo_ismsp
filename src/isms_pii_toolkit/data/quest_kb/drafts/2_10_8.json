@@ -1,0 +1,60 @@
+{
+  "controlId": "2.10.8",
+  "locked": false,
+  "quality": "casebook-draft",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "defectCount": 11,
+    "caseCount": 8,
+    "sourceRefs": [
+      "사례집.md#2.10.8.1",
+      "사례집.md#2.10.8.2",
+      "사례집.md#2.10.8.3"
+    ],
+    "generatedBy": "scripts/build_quest_drafts_from_casebook.py"
+  },
+  "quest": {
+    "plainQuestion": "상용 소프트웨어 및 OS에 대해서는 최신패치가 적용되고 있으나… 상태를 피하고 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "case-1",
+        "label": "사례 1 대비 조치됨: 상용 소프트웨어 및 OS에 대해서는 최신패치가 적용되고 있으나, 오픈소스 프로그램(openssl…",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "case-2",
+        "label": "사례 2 대비 조치됨: 일부 시스템에서 타당한 사유나 책임자 승인 없이 OS패치가 장기간 적용되고 있지 않은",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "case-3",
+        "label": "사례 3 대비 조치됨: 일부 시스템에 서비스 지원이 종료(EOS)된 OS버전을 사용 중이나…",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "사례집 2.10.8 유형을 점검표에 넣고, 대표 공백(상용 소프트웨어 및 OS에 대해서는 최신패치가 적용되고 있으나, 오픈소스 프로그램(openssl, openssh…)부터 정책/설정/기록을 맞추세요.",
+      "guideRef": "casebook-2.10.8",
+      "whenDone": "2.10.8 관련 사례집 유형 점검 증적 파일명을 아래에 남겨 두세요."
+    },
+    "evidenceSlots": [
+      {
+        "slotId": "casebook-2-10-8-memo",
+        "title": "패치관리 사례집형 점검 파일명 메모",
+        "accepts": [
+          "image",
+          "pdf"
+        ],
+        "requiredForLevel": "evidenced"
+      }
+    ]
+  }
+}

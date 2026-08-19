@@ -1,0 +1,60 @@
+{
+  "controlId": "1.2.3",
+  "locked": false,
+  "quality": "casebook-draft",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "defectCount": 6,
+    "caseCount": 13,
+    "sourceRefs": [
+      "사례집.md#1.2.3.1",
+      "사례집.md#1.2.3.2",
+      "사례집.md#1.2.3.3"
+    ],
+    "generatedBy": "scripts/build_quest_drafts_from_casebook.py"
+  },
+  "quest": {
+    "plainQuestion": "위험 평가: 수립된 위험관리계획서에 위험평가 기간 및 위험관리 대상과 방법이 정의 되어… — 해당 없음을 확인했나요?",
+    "audience": [
+      "보안(겸직)",
+      "경영지원",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "case-1",
+        "label": "사례 1 대비 조치됨: 수립된 위험관리계획서에 위험평가 기간 및 위험관리 대상과 방법이 정의 되어 있으나…",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "case-2",
+        "label": "사례 2 대비 조치됨: 내부 지침에 정의한 위험 평가 방법과 실제 수행한 위험 평가 방법이 상이할",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "case-3",
+        "label": "사례 3 대비 조치됨: 전년도에는 위험평가를 수행하였으나, 금년도에는 자산의 변경이 없었다는 사유로 위험 평가를 수행하지…",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "사례집 1.2.3 유형을 점검표에 넣고, 대표 공백(수립된 위험관리계획서에 위험평가 기간 및 위험관리 대상과 방법이 정의 되어 있으나, 위험관리 수행 인력과 소요 예산 등 구체적인 실행계획이 누락되어 있는 경우)부터 정책/설정/기록을 맞추세요.",
+      "guideRef": "casebook-1.2.3",
+      "whenDone": "1.2.3 관련 사례집 유형 점검 증적 파일명을 아래에 남겨 두세요."
+    },
+    "evidenceSlots": [
+      {
+        "slotId": "casebook-1-2-3-memo",
+        "title": "위험 평가 사례집형 점검 파일명 메모",
+        "accepts": [
+          "image",
+          "pdf"
+        ],
+        "requiredForLevel": "evidenced"
+      }
+    ]
+  }
+}

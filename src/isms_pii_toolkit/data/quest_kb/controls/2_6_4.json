@@ -1,0 +1,49 @@
+{
+  "controlId": "2.6.4",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.6.4.1",
+      "사례집.md#2.6.4.3",
+      "사례집.md#2.6.4.4"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 DB는 누가 어떤 테이블에 붙는지 알고, 공용 계정/인터넷 노출을 막았나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)",
+      "개발/운영"
+    ],
+    "checks": [
+      {
+        "checkId": "table-map",
+        "label": "개인정보 테이블 현황을 파악했다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "no-shared",
+        "label": "개발/운영이 앱 계정을 공유해 DB에 붙지 않는다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "obj-priv",
+        "label": "필요 없는 운영자에게 개인정보 테이블 권한을 주지 않는다",
+        "recommended": true,
+        "mapsToCheckKey": "policy"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "임시/미사용 개인정보 테이블을 정리하고, DB 접근은 개인 계정/최소 권한/접근제어로만 허용하세요.",
+      "guideRef": "db-access",
+      "whenDone": "DB 권한 현황 또는 접근제어 설정 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

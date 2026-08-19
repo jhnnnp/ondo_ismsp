@@ -1,0 +1,57 @@
+{
+  "controlId": "3.3.4",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 개인정보 국외이전을 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "계약/총무",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "개인정보를 국외로 이전하는 경우 정보주체에게 국외 이전에 관한 고지 사항을 모두 알리고 별도 동의를 받거나,인증 또는 인정 등 적법 요건을 준수하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "정보주체와의 계약의 체결 및 이행을 위한 개인정보의 국외 처리위탁•보관에 대해 정보주체에게 알리는 경우 필요한 사항을 모두 포함하여 적절한 방법으로 알리고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "개인정보 보호 관련 법령 준수 및 개인정보 보호 등에 관한 사항을 포함하여 국외 이전에 관한 계약을 체결하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "개인정보를 국외로 이전하는 경우 개인정보 보호를 위하여 필요한 조치를 취하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (개인정보 국외 이전 관련 동의 양식)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "위탁 계약서에 재위탁/파기/사고통지 조항을 포함하세요.",
+      "guideRef": "official-3.3.4",
+      "whenDone": "다음 증적 예시를 준비하세요: 개인정보 국외 이전 관련 동의 양식"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

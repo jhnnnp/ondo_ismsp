@@ -1,0 +1,14 @@
+{
+  "controlId": "1.1.5",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 4,
+  "evidenceExamples": [
+    "정보보호 및 개인정보보호 정책 지침■절차서(제",
+    "개정 내역 포함)",
+    "정보보호 및 개인정보보호 정책 지침절차서 제",
+    "개정 시 이해관계자 검토 회의록",
+    "개인정보내부관리계획"
+  ],
+  "existingPlainQuestion": "정책/지침을 최근에 고쳤다면, 위원회 의결과 전 직원 공유까지 했나요?"
+}

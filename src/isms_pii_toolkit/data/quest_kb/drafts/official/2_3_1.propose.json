@@ -1,0 +1,14 @@
+{
+  "controlId": "2.3.1",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "외부위탁및외부시설",
+    "서비스현황",
+    "오I부위탁계약서",
+    "위험분석 보고서 및 보호대책",
+    "위탁보안관리지침,체크리스트등"
+  ],
+  "existingPlainQuestion": "클라우드/위탁/외부 시설 현황 목록이 최신이고, 빠진 서비스는 없나요?"
+}

@@ -1,0 +1,38 @@
+{
+  "controlId": "2.6.1",
+  "quest": {
+    "plainQuestion": "회사 네트워크/VPN/클라우드 VPC에 누가 들어올 수 있는지 막아 두고, 허용 경로를 남겨 두셨나요?",
+    "audience": [
+      "인프라",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "net-segment",
+        "label": "운영/개발/관리용 네트워크 구간을 나눠 두었다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "allowlist",
+        "label": "관리자 접근은 VPN 또는 허용 IP로만 들어온다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "net-evidence",
+        "label": "보안그룹/방화벽 규칙을 캡처/문서로 남겼다",
+        "recommended": true,
+        "mapsToCheckKey": "policy"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "Security Group에서 관리 포트(22/3389 등)의 0.0.0.0/0 개방을 제거하고 VPN/허용 IP만 남기세요.",
+      "guideRef": "aws-sg-network",
+      "whenDone": "Security Group inbound 규칙 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": true,
+  "quality": "handcrafted"
+}

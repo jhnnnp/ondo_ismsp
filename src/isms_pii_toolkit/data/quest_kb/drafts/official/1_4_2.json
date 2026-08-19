@@ -1,0 +1,45 @@
+{
+  "controlId": "1.4.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "관리체계 점검 관련 문서와 승인/운영 기록을 지금 바로 꺼낼 수 있나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "법적 요구사항 및 수립된 정책에 따라 정보보호 및 개인정보보호 관리체계가 효과적으로 운영되는지를 점검하기 위한 관리체계 점검기준,범위,주기,점검인력 자격요건 등을 포함한 관리체계 점검 계획을 수립하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "관리체계 점검 계획에 따라 독립성,객관성 및 전문성이 확보된 인력을 구성하여 연 1 회 이상 점검을 수행하고 발견된 문제점을 경영진에게 보고하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (관리체계 점검 계획서(내부점검 계획서,내부감사 계획서))",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "분기별 자체 점검 체크리스트를 운영하세요.",
+      "guideRef": "official-1.4.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 관리체계 점검 계획서(내부점검 계획서,내부감사 계획서)"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

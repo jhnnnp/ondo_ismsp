@@ -1,0 +1,48 @@
+{
+  "controlId": "2.6.7",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.6.7.1",
+      "사례집.md#2.6.7.3",
+      "사례집.md#2.6.7.5"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "내부 서버/개인정보취급 PC에서 불필요한 인터넷/P2P 접속을 막아 두셨나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "egress-block",
+        "label": "내부/DMZ 서버의 불필요 인터넷 직접접속을 차단한다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "p2p-block",
+        "label": "P2P/웹하드 예외는 승인/기간 제한한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "net-sep",
+        "label": "망분리 대상 PC에서 우회 접속이 안 된다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "서버 outbound/유해사이트 차단 정책을 확인하고, 개인정보취급자 PC의 인터넷/내부망 동시 접근이 가능한지 점검하세요.",
+      "guideRef": "internet-egress",
+      "whenDone": "인터넷 접속 통제/망분리 설정 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

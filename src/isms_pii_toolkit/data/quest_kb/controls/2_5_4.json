@@ -1,0 +1,38 @@
+{
+  "controlId": "2.5.4",
+  "quest": {
+    "plainQuestion": "업무용 시스템(AWS, 어드민) 로그인 시, 쉬운 비밀번호나 재사용을 막아 두셨나요?",
+    "audience": [
+      "인프라",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "pwd-complexity",
+        "label": "영문/숫자/특수문자를 섞은 8자리 이상을 시스템에 강제한다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "pwd-rotation",
+        "label": "90일마다 비밀번호 변경을 알리거나 강제한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "mfa",
+        "label": "비밀번호 외에 2단계 인증(OTP 등)을 필수로 켠다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "AWS 콘솔 → IAM → 계정 설정 → 암호 정책에서 복잡성/만료를 맞추고 저장하세요.",
+      "guideRef": "aws-password-policy",
+      "whenDone": "AWS 암호 정책 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  },
+  "locked": true,
+  "quality": "handcrafted"
+}

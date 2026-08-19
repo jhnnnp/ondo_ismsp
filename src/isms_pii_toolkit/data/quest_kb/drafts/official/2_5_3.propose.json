@@ -1,0 +1,14 @@
+{
+  "controlId": "2.5.3",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "1 예시",
+    "정보시스템 및 개인정보처리시스템 로그인 화면",
+    "로그인횟수제한설정화면",
+    "로그인 실패 메시지 화면",
+    "외부 접속 시 절차(외부접속 신청서,외부접속자 현황 등)"
+  ],
+  "existingPlainQuestion": "외부망/관리자 로그인에 비밀번호만이 아니라 추가 인증/실패 제한이 있나요?"
+}

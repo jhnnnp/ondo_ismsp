@@ -1,0 +1,50 @@
+{
+  "controlId": "2.8.6",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "운영환경 이관을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "신규 도입■개발 및 변경된 시스템을 운영환경으로 안전하게 이관하기 위한 통제 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "운영환경으로 이관 시 발생할 수 있는 문제에 대한 대응 방안을 마련하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "운영환경에는 서비스 실행에 필요한 파일만을 설치하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (132 정보보호 및 개인정보보호 관리체계 인증제도 안내서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "SDLC에 보안 검토 게이트를 추가하세요.",
+      "guideRef": "official-2.8.6",
+      "whenDone": "다음 증적 예시를 준비하세요: 132 정보보호 및 개인정보보호 관리체계 인증제도 안내서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

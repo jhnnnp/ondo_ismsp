@@ -1,0 +1,13 @@
+{
+  "controlId": "2.3.2",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "위탁계약서",
+    "정보보호 및 개인정보보호 협약서(약정서,부속합의서)",
+    "위탁관련내부지침",
+    "위탁업체 선정 관련 RFP(제안요청서),평가표"
+  ],
+  "existingPlainQuestion": "위탁 계약서에 비밀유지만이 아니라 업무별 보안/관리감독 조항이 들어가 있나요?"
+}

@@ -1,0 +1,51 @@
+{
+  "controlId": "3.2.1",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 개인정보 현황관리를 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "서비스 운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "수집•보유하고 있는 개인정보의 항목,보유량,처리 목적 및 방법,보유기간 등 현황을 정기적으로 관리하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "공공기관이 개인정보파일을 운용하거나 변경하는 경우 관련된 사항을 법률에서 정한 관계기관의 장에게 등록하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "공공기관은 개인정보파일의 보유 현황을 개인정보 처리방침에 공개하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (개인정보현황표)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "시스템/로그/백업까지 포함한 개인정보 보유 현황표를 분기 갱신하세요.",
+      "guideRef": "official-3.2.1",
+      "whenDone": "다음 증적 예시를 준비하세요: 개인정보현황표"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

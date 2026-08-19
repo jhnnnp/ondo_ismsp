@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ONDO°</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260819-7">
+  <link rel="stylesheet" href="/controls/map/assets/react-dist/report-editor.css?v=20260819-5">
+
+</head>
+
+<body>
+  <section class="diagnosis-launcher" id="sessionPicker" aria-labelledby="sessionPickerTitle">
+    <div class="diagnosis-launcher-shell">
+      <header class="diagnosis-launcher-head">
+        <div class="diagnosis-launcher-topbar">
+          <a class="diagnosis-brand" href="/" aria-label="ONDO 서비스 홈">
+            <span class="ondo-symbol" aria-hidden="true"><i></i></span>
+            <span class="ondo-wordmark"><strong>ONDO<sup>°</sup></strong></span>
+          </a>
+          <a class="diagnosis-home-link" href="/">서비스 홈 <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M6 14 14 6M8 6h6v6"/></svg></a>
+        </div>
+        <div class="diagnosis-launcher-intro">
+          <div>
+            <span class="diagnosis-launcher-kicker">DIAGNOSIS WORKSPACE</span>
+            <h1 id="sessionPickerTitle">진단을 선택하세요</h1>
+            <p>진행 중인 진단을 이어가거나 새 프로젝트를 시작하세요.</p>
+          </div>
+        </div>
+      </header>
+      <div class="diagnosis-session-list" id="diagnosisSessionList"></div>
+      <nav class="diagnosis-session-pager" id="diagnosisSessionPager" aria-label="진단 목록 페이지" hidden></nav>
+      <div class="diagnosis-launcher-actions">
+        <div class="diagnosis-backup-copy">
+          <strong>다른 브라우저에서 이어하려면</strong>
+          <span>백업 파일을 가져와 진단을 복원할 수 있습니다.</span>
+        </div>
+        <input type="file" id="importDiagnosisSessionInput" accept="application/json,.json" hidden>
+        <button type="button" id="importDiagnosisSessionBtn"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 13V3M6 7l4-4 4 4M4 11v5h12v-5"/></svg> 백업 가져오기</button>
+        <button type="button" class="primary" id="createDiagnosisSessionBtn"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg> 새 진단 시작</button>
+      </div>
+    </div>
+  </section>
+  <main id="appMain" hidden>
+    <aside class="app-sidebar" aria-label="주요 메뉴">
+      <a class="sidebar-brand" href="/" aria-label="ONDO 홈">
+        <span class="sidebar-brand-mark" aria-hidden="true">
+          <i></i>
+        </span>
+        <span><strong>ONDO<sup>°</sup></strong></span>
+      </a>
+      <nav class="sidebar-nav">
+        <span class="sidebar-nav-label">진단</span>
+        <a href="/controls/map/scope" data-route="scope" data-sidebar-profile>
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span>점검 범위
+        </a>
+        <a href="/controls/map/assessment" class="is-active" data-route="assessment" data-sidebar-section="actions" aria-current="page">
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.2 17 19 7"/></svg></span>자가진단
+        </a>
+        <a href="/controls/map/results" data-route="results" data-sidebar-result>
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V9m7 10V5m7 14v-7"/></svg></span>진단 결과
+        </a>
+        <span class="sidebar-nav-label sidebar-nav-label--secondary">관리</span>
+        <a href="/controls/map/evidence" data-route="evidence" data-sidebar-evidence>
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/></svg></span>증적 관리
+        </a>
+        <a href="/controls/map/report" data-route="report" data-sidebar-report>
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>보고서
+        </a>
+        <a href="/controls/map" data-route="sessions" data-sidebar-sessions>
+          <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1A7 7 0 0 0 15 6l-.3-2.6h-4L10.4 6a7 7 0 0 0-1.5.9l-2.4-1-2 3.4 2 1.5a7 7 0 0 0 0 2.2l-2 1.5 2 3.4 2.4-1a7 7 0 0 0 1.5.9l.3 2.6h4l.3-2.6a7 7 0 0 0 1.5-.9l2.4 1 2-3.4-2-1.5c.1-.3.1-.7.1-1Z"/></svg></span>진단 관리
+        </a>
+      </nav>
+    </aside>
+    <div class="app-workspace">
+      <div class="app-chrome">
+      <div class="top-nav">
+        <div class="brand-mark workspace-context" aria-label="현재 작업 위치">
+          <span class="workspace-context-label">현재 작업</span>
+          <strong id="workspaceContextTitle">점검 범위</strong>
+          <span class="workspace-context-divider" aria-hidden="true"></span>
+          <span id="workspaceContextDetail">진단 환경 설정</span>
+        </div>
+        <div class="page-head-status" id="pageHeadStatus" hidden>
+          <span class="page-head-status-icon" aria-hidden="true"></span>
+          <span class="page-head-status-copy">
+            <strong id="pageHeadStatusLabel">진단 진행 중</strong>
+            <small id="pageHeadStatusMeta">0 / 101</small>
+          </span>
+        </div>
+        <div class="top-nav-links" id="topNavLinks">
+          <button type="button" id="toggleLabBtn" aria-expanded="false" aria-controls="labLinks">랩</button>
+          <span class="lab-links" id="labLinks">
+            <a href="/docs">API</a>
+          </span>
+        </div>
+      </div>
+      </div>
+
+    <header class="page-head">
+      <div class="page-head__copy">
+        <span class="page-head__kicker" id="pageKicker">2단계 · 진단</span>
+        <h1 id="pageTitle">자가진단</h1>
+        <p class="hero-lede" id="heroLede">
+          왼쪽에서 통제를 고르고 진단 상태를 남기세요. 완료한 항목은 목록에 남고 전체 진행이 올라갑니다.
+        </p>
+      </div>
+    </header>
+
+    <div id="view-assess" class="view-panel active is-prestart">
+      <section class="profile-inline" id="profileInline" aria-labelledby="profileTitle">
+        <section class="profile-dialog" id="profileDialog">
+          <header class="profile-dialog-head">
+            <div class="profile-dialog-copy">
+              <span>진단 환경 구성</span>
+              <h2 id="profileTitle">현재 운영 환경을 선택하세요</h2>
+              <p class="profile-lede" id="profileLede">
+                선택한 환경에 따라 적용되는 통제가 자동으로 조정됩니다. 변경되는 범위를 확인한 후 진단을 시작하세요.
+              </p>
+            </div>
+            <ol class="profile-workflow" aria-label="점검 범위 설정 단계">
+              <li class="is-active"><b>1</b><span>환경 선택</span></li>
+              <li><b>2</b><span>범위 확인</span></li>
+              <li><b>3</b><span>진단 시작</span></li>
+            </ol>
+          </header>
+          <div class="profile-dialog-body">
+            <form id="profileForm">
+              <!-- dormant: 내부 기본값. UI 미노출 — 사용자 맞춤 입력이 아님 -->
+              <input type="hidden" id="profileHeadcount" value="1-50" />
+              <input type="hidden" id="profileIndustry" value="technology" />
+              <input type="hidden" id="profilePiiVolume" value="low" />
+              <aside class="profile-env" aria-label="물리 통제 적용 여부">
+                <div class="profile-env-head">
+                  <p class="profile-env-title">운영 환경</p>
+                  <p>하나 이상 선택해야 합니다. 물리·전산실 통제의 적용 여부만 조정됩니다.</p>
+                </div>
+                <div class="profile-flags">
+                  <label class="profile-flag-card">
+                    <input type="checkbox" id="profileCloud" checked>
+                    <span class="profile-flag-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .6-8 6 6 0 0 0-11.3-1.6A4.8 4.8 0 0 0 7 18Z"/></svg></span>
+                    <span class="profile-flag-copy">
+                      <strong>클라우드</strong>
+                      <small>AWS, Azure, SaaS 등 외부 클라우드 환경을 운영합니다.</small>
+                    </span>
+                  </label>
+                  <label class="profile-flag-card">
+                    <input type="checkbox" id="profileOnPrem">
+                    <span class="profile-flag-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 21V5l7-3 7 3v16M9 7h1M14 7h1M9 11h1M14 11h1M9 15h1M14 15h1M10 21v-3h4v3"/></svg></span>
+                    <span class="profile-flag-copy">
+                      <strong>자체 인프라</strong>
+                      <small>IDC, 사내 전산실 또는 서버룸을 직접 운영합니다.</small>
+                    </span>
+                  </label>
+                </div>
+                <div class="profile-impact" id="profileImpact" aria-live="polite"></div>
+                <p class="profile-scope-note">
+                  이 화면은 인증 범위 설계가 아닙니다. 참고용 자가진단의 점검 범위만 정합니다.
+                </p>
+              </aside>
+              <div class="profile-actions">
+                <button type="submit" class="primary" id="applyProfileBtn">범위 적용하고 계속 <span aria-hidden="true">→</span></button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </section>
+
+      <div class="assess-shell">
+        <section class="panel assess-main">
+          <div class="profile-context-panel" id="profileContextPanel"></div>
+        </section>
+      </div>
+    </div>
+
+    <div id="view-analyze" class="view-panel" hidden>
+      <aside class="report-return-bar" id="reportReturnBar" aria-label="확인 목록 복귀 안내" hidden>
+        <div class="report-return-copy">
+          <span>확인 목록에서 이동함</span>
+          <strong id="reportReturnTitle">확인 항목</strong>
+          <small id="reportReturnStatus">이 통제를 점검한 뒤 원래 카드로 돌아갈 수 있습니다.</small>
+        </div>
+        <button type="button" class="primary" id="returnToReportBtn">확인 목록으로 돌아가기</button>
+      </aside>
+
+      <div class="analyze-grid" id="analyzeContent" style="display:none;">
+        <div class="analyze-sec active" data-analyze-panel="actions">
+          <section class="panel actions-panel">
+            <div class="panel-header">
+              <h2>지금 진단할 통제</h2>
+              <div class="assessment-header-status">
+                <span class="gap-count-label" id="confirmationActionCount"></span>
+                <div class="analysis-stale-notice analysis-stale-notice--compact" id="analysisStaleNoticeInline"
+                  role="status" aria-live="polite" hidden>
+                  <span>분석 갱신 필요</span>
+                  <button type="button" data-run-analysis aria-label="변경된 진단 상태로 분석 결과 갱신">갱신</button>
+                </div>
+              </div>
+            </div>
+            <p class="panel-desc">왼쪽에서 통제를 고르고, 오른쪽 카드에 <strong>진단 상태</strong>를 남기세요. 완료한 항목은 지도에 남고, 다음 미완료로 이동합니다.</p>
+            <div id="assessmentProgressStrip" class="assessment-progress-strip"></div>
+            <div class="session-md" id="sessionMasterDetail">
+              <aside class="session-master" aria-label="통제 항목">
+                <div class="session-master-head">
+                  <strong>통제 항목</strong>
+                  <span id="sessionMasterCount"></span>
+                </div>
+                <div class="session-master-tools" id="sessionMasterTools">
+                  <input type="search" id="sessionSearch" class="session-search" placeholder="계정 제거, 패치, 2.5.1"
+                    aria-label="통제 검색. 점검 내용, 통제 ID, 이름으로 검색합니다." />
+                  <div class="session-filter-row" role="group" aria-label="상태 필터">
+                    <button type="button" class="session-filter-chip is-active" data-session-level="all">전체</button>
+                    <button type="button" class="session-filter-chip" data-session-level="unknown">미점검</button>
+                    <button type="button" class="session-filter-chip" data-session-level="none">미이행</button>
+                    <button type="button" class="session-filter-chip" data-session-level="partial">부분</button>
+                    <button type="button" class="session-filter-chip" data-session-level="done">이행</button>
+                    <button type="button" class="session-filter-chip" data-session-level="evidenced">증적</button>
+                  </div>
+                  <div class="session-bulk-row" role="group" aria-label="일괄 체크">
+                    <button type="button" data-session-bulk-preset="reviewed">검토 전체</button>
+                    <button type="button" data-session-bulk-preset="all">전체 체크</button>
+                    <button type="button" data-session-bulk-preset="none">전체 해제</button>
+                  </div>
+                </div>
+                <div id="sessionMasterTree" class="session-master-tree"></div>
+              </aside>
+              <div class="session-detail" id="sessionDetailPane" aria-live="polite">
+                <p class="detail-empty">환경 적용 후 진단을 시작하면 통제가 표시됩니다.</p>
+              </div>
+            </div>
+          </section>
+          <section class="panel" id="applicabilityNotesPanel" style="margin-top:12px;display:none;">
+            <div class="panel-header">
+              <h2>해당 없음(N/A)</h2>
+            </div>
+            <div id="applicabilityNotesList"></div>
+          </section>
+        </div>
+
+        <div class="analyze-sec" data-analyze-panel="overview">
+          <div class="analyze-overview">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>점검 진행 현황</h2>
+                <div class="category-view-actions" id="categoryViewActions" aria-label="중분류 목록 보기 설정">
+                  <span id="categoryListCount">중분류 목록</span>
+                  <button type="button" data-category-view="expand">전체 펼치기</button>
+                  <button type="button" data-category-view="collapse">전체 접기</button>
+                </div>
+              </div>
+              <p class="panel-desc">전체 통제 상태와 1.1~3.5 중분류별 진행률입니다. 각 영역을 접거나 펼쳐 확인할 수 있습니다.</p>
+              <div class="coverage-overview-strip">
+                <div class="category-coverage-summary" id="categoryCoverageSummary"></div>
+                <div class="status-breakdown" id="statusBreakdown"></div>
+              </div>
+              <div class="category-coverage-list" id="categoryCoverageList"></div>
+            </section>
+          </div>
+          <section class="panel" id="gapClustersPanel" style="margin-top:12px;">
+            <div class="panel-header">
+              <h2>중분류별 미흡 통제</h2>
+            </div>
+            <p class="panel-desc">미이행·부분 이행 통제가 많은 중분류부터 최대 6개를 표시합니다. 미점검 통제는 제외되며, 우선 보완 통제에서 바로 점검을 이어갈 수 있습니다.</p>
+            <div class="gap-cluster-grid" id="gapClusters"></div>
+            <p class="detail-empty" id="gapClustersEmpty">같은 중분류에서 함께 보완할 미흡 통제가 없습니다.</p>
+          </section>
+          <section class="panel" id="linkedProblemsPanel" style="margin-top:12px;">
+            <div class="linked-problems-head">
+              <div>
+                <h2>연계 문제</h2>
+                <p>확인된 미흡 통제가 다른 통제에 미칠 수 있는 경로와 영향을 함께 보여줍니다.</p>
+              </div>
+              <span id="linkedProblemsCount">0건</span>
+            </div>
+            <div class="linked-problem-list" id="linkedProblemsSummary"></div>
+          </section>
+        </div>
+
+      </div>
+
+      <section class="panel analysis-report-panel report-studio" id="analysisReportPanel" style="display:none;"
+        aria-labelledby="analysisReportTitle">
+        <div class="report-studio-shell">
+          <aside class="report-studio-rail" aria-label="보고서 작성 흐름">
+            <p class="report-studio-kicker">작성 흐름</p>
+            <ol class="report-flow">
+              <li data-report-flow="basis">진단 기준</li>
+              <li data-report-flow="draft">AI 초안</li>
+              <li data-report-flow="edit">검토 편집</li>
+              <li data-report-flow="export">내보내기</li>
+            </ol>
+            <dl class="report-studio-facts">
+              <div>
+                <dt>출처</dt>
+                <dd id="reportSourceBadge">초안 없음</dd>
+              </div>
+              <div>
+                <dt>진단 범위</dt>
+                <dd id="reportEditorBasis">현재 진단 기준</dd>
+              </div>
+            </dl>
+            <p class="report-studio-note">AI는 진단 수치와 판정을 변경하지 않습니다. 문장 재작성만 수행하며, 본 문서는 참고용입니다.</p>
+          </aside>
+          <div class="report-studio-main">
+            <header class="report-studio-toolbar">
+              <div class="report-studio-title">
+                <h2 id="analysisReportTitle">진단 결과 보고서</h2>
+                <span class="report-editor-state" id="reportEditorState">초안 대기</span>
+              </div>
+              <div class="report-studio-actions" aria-label="보고서 작성 및 내보내기">
+                <button type="button" class="primary" id="writeAiReportBtn" data-write-ai-report>AI로 초안 작성</button>
+                <button type="button" id="resetReportBtn">원문 복원</button>
+                <button type="button" id="exportReportBtn">Markdown</button>
+                <button type="button" id="exportReportDocxBtn">Word</button>
+              </div>
+            </header>
+            <p class="report-ai-status" id="aiReportStatus" hidden></p>
+            <div class="report-canvas">
+              <textarea class="report-editor-bridge" id="executiveReportStream" hidden></textarea>
+              <div id="reportEditorReactRoot" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <span class="toast-icon" aria-hidden="true">✓</span>
+    <div class="toast-copy"><strong>완료</strong><p></p></div>
+    <button type="button" class="toast-close" aria-label="알림 닫기">×</button>
+    <i class="toast-timer" aria-hidden="true"></i>
+  </div>
+
+  <script type="module" src="/controls/map/assets/react-dist/report-editor.js?v=20260819-5"></script>
+  <script type="module" src="/controls/map/assets/app.js?v=20260819-4"></script>
+
+</body>
+
+</html>

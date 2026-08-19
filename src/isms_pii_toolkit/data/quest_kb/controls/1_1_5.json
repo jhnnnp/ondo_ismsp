@@ -1,0 +1,48 @@
+{
+  "controlId": "1.1.5",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#1.1.5.1",
+      "사례집.md#1.1.5.2",
+      "사례집.md#1.1.5.4"
+    ],
+    "promotedFrom": "thin-stub"
+  },
+  "quest": {
+    "plainQuestion": "정책/지침을 최근에 고쳤다면, 위원회 의결과 전 직원 공유까지 했나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "committee",
+        "label": "제/개정 시 위원회 의결/보고를 거쳤다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "publish",
+        "label": "임직원이 최신본을 볼 수 있게 게시했다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "cloud-policy",
+        "label": "클라우드 운영이 있으면 관련 보안 지침이 있다",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "최신 정책서 개정 안건/공유 게시 기록을 확인하고, 구버전을 쓰는 부서가 없는지 물어보세요.",
+      "guideRef": "policy-publish",
+      "whenDone": "정책 개정 의결/공유 게시 화면/문서를 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

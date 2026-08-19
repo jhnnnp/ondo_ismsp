@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+dist/
+build/
+*.egg-info/
+.env
+.server.pid
+.server.log
+.coverage
+htmlcov/
+.DS_Store
+src/isms_pii_toolkit/data/official_kb/_cache/
+node_modules/
+reference-library/
+reference-library 2/
+*.pdf
+*.zip
+to do.md
+사례집.md
+결함*.png
+frontend/.DS_Store

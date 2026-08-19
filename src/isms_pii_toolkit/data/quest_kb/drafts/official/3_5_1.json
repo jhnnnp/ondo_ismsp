@@ -1,0 +1,45 @@
+{
+  "controlId": "3.5.1",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 개인정보 처리방침 공개를 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "서비스 운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "개인정보 처리방침을 정보주체가 쉽게 확인할수 있도록 인터넷 홈페이지 등에 지속적으로 현행화하여 공개하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "개인정보 처리방침이 변경되는 경우 사유 및 변경 내용을 지체 없이 공지하고 정보주체가 언제든지 변경된 사항을 쉽게 알아 볼 수 있도록 조치하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (사례 1 : 개인정보 처리방침에 공개되어 있는 개인정보 수집,제3자 제공)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "고객센터/웹 채널별 권리 행사 처리 SLA를 정하세요.",
+      "guideRef": "official-3.5.1",
+      "whenDone": "다음 증적 예시를 준비하세요: 사례 1 : 개인정보 처리방침에 공개되어 있는 개인정보 수집,제3자 제공 내역이 실제 수집 및 제공하는 내역과 다른 경우"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

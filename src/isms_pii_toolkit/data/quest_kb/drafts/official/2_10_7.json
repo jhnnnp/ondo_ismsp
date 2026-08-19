@@ -1,0 +1,57 @@
+{
+  "controlId": "2.10.7",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "보조저장매체 관리를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "외장하드,니SB메모리,CD 등 보조저장매체 취급(사용),보관,폐기,재사용에 대한 정책 및 절차를 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "보조저장매체 보유현황,사용 및 관리실태를 주기적으로 점검하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "주요 정보시스템이 위치한 통제구역,중요 제한구역 등에서 보조저장매체 사용을 제한하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "보조저장매체를 통한 악성코드 감염 및 중요정보 유출 방지를 위한 대책을 마련하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (,보유 현황,관리 대장,사용이력 확인 등 관리 실태 점검 ■ 주요 정보시)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "WAF/EDR/취약점 스캔 결과를 월간 리포트로 관리하세요.",
+      "guideRef": "official-2.10.7",
+      "whenDone": "다음 증적 예시를 준비하세요: ,보유 현황,관리 대장,사용이력 확인 등 관리 실태 점검 ■ 주요 정보시스템이 위치한 통제구역,중요 제한구역 등에서 보조저장매체 사용을 제한하여야 한다. 불가피하게 사용할 경우 책임자의 허가절차를 거친 후 적법한 절차에 따른 사용 통제구역,중요 제한구역 내 보조저장매체 사용 현황에 대한 정기적인 검토 수행 ■ 보조저장매체를 통한 악성코드 감염 및 중요정보 유출 방지를 위한 대책을 마련하여야 한다. | 보조저장매체 자동실행 방지 및 백신프로그램 검사 후 사용 등 보호대책 수립■이행 164 정보보호 및 개인정보보호 관리체계 인증제도 안내서 ■ 개인정보 또는 중요정보가 포함된 보조저장매체를 잠금장지가 있는 안전한 장소에 보관하여야 한다. ► 개인정보 또는 중요정보가 포함된 보조저장매체(이동형 하드디스크,USB메모리,SSD 등)는 금고, 잠금장치가 있는 안전한 장소에 보관 증거자료 예시"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

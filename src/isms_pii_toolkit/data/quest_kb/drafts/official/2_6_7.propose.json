@@ -1,0 +1,14 @@
+{
+  "controlId": "2.6.7",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "비업무사이트(P2P 등) 차단정책(비업무사이트 차단시스템 관리화면 등)",
+    "인터넷접속내역모니터링이력",
+    "인터넷망 차단조치 대상자 목록",
+    "망간 자료전송절차및처리내역(신청■승인내역등)",
+    "네트워크구성도"
+  ],
+  "existingPlainQuestion": "내부 서버/개인정보취급 PC에서 불필요한 인터넷/P2P 접속을 막아 두셨나요?"
+}

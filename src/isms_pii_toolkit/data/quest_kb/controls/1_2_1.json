@@ -1,0 +1,49 @@
+{
+  "controlId": "1.2.1",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#1.2.1.2",
+      "사례집.md#1.2.1.4",
+      "사례집.md#1.2.1.6"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "클라우드/위탁/개발도구(Git/Jenkins)까지 포함해 자산 목록이 최신인가요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자",
+      "인프라"
+    ],
+    "checks": [
+      {
+        "checkId": "asset-scope",
+        "label": "인증범위 자산(클라우드/위탁 포함)이 목록에 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "grade-align",
+        "label": "보안등급 기준과 자산대장 분류가 일치한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "pii-asset",
+        "label": "개인정보/백업/개발시스템이 빠지지 않았다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "자산대장에 AWS/Azure 리소스, 위탁 호스팅, GitLab/Jenkins 등 개발 시스템을 추가하고 등급을 다시 맞춰 보세요.",
+      "guideRef": "asset-inventory",
+      "whenDone": "최신 자산대장(또는 클라우드 인벤토리 export) 관련 증적을 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

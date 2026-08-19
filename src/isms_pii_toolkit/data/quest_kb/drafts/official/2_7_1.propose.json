@@ -1,0 +1,13 @@
+{
+  "controlId": "2.7.1",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "암호통제 정책(대상,방식,알고리즘 등)",
+    "암호화 적용현황(저장 및 전송 시)",
+    "위험도 분석 결고ᅡ(내부망에서 주민등록번호 이외의 고유식별정보 암호화 미적용 시)",
+    "암호화솔루션관리화면 118 정보보호 및 개인정보보호 관리체계 인증제도 안내서"
+  ],
+  "existingPlainQuestion": "개인정보 저장/전송에 쓰는 암호 방식과 대상이 정책/실제 설정과 맞나요?"
+}

@@ -1,0 +1,51 @@
+{
+  "controlId": "2.3.3",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "외부자 보안 이행 관리를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "계약/총무",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "외부자가 계약서,협정서,내부정책에 명시된 정보보호 및 개인정보보호 요구사항을 준수하고 있는지 주기적으로 점검 또는 감사를 수행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "외부자에 대한 점검 또는 감사 시 발견된 문제점에 대하여 개선계획을 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "개인정보 처리업무를 위탁받은 수탁자가 관련 업무를 제3자에게 재위탁하는 경우 위탁자의 동의를 받도록 하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (외부자 및 수탁자 보안점검 결과)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "수탁사/외주 개발자 접근은 별도 계정/기간 제한을 적용하세요.",
+      "guideRef": "official-2.3.3",
+      "whenDone": "다음 증적 예시를 준비하세요: 외부자 및 수탁자 보안점검 결과"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

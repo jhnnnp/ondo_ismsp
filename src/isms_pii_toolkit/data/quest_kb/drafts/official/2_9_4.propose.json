@@ -1,0 +1,13 @@
+{
+  "controlId": "2.9.4",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "로그관리절차",
+    "로그기록내역",
+    "로그 저장장치에 대한 접근통제 내역",
+    "개인정보접속기록내역 141 1 관 리 체 계 수리！! 및 운여O 2 봏 대 책 요 구 사 항 3 개 인 정 보 처 리 단 계 별 요 구 사 항 제2장 정보보호 및 개인정보보호 관리체계(ISMS-P) 인증기준 설명"
+  ],
+  "existingPlainQuestion": "누가/언제/무엇을 했는지 남도록 로그를 남기고, 법정 기간만큼 보관하나요?"
+}

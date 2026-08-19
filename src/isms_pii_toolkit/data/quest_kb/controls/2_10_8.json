@@ -1,0 +1,48 @@
+{
+  "controlId": "2.10.8",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.10.8.1",
+      "사례집.md#2.10.8.2",
+      "사례집.md#2.10.8.3"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "서버/오픈소스/클라우드까지 패치 담당과 적용 주기가 정해져 있고, 미적용 사유를 남기나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "patch-owner",
+        "label": "OS/오픈소스/상용 SW 패치 담당자가 지정돼 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "eos-plan",
+        "label": "EOS(지원종료) OS/SW에 대한 대응계획이 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "patch-evidence",
+        "label": "미적용 시 승인/보완대책 기록이 있다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "패치 대상 목록(서버/오픈소스 포함)을 만들고, 장기간 미적용/EOS 항목은 승인/보완대책을 남긴 뒤 적용하세요.",
+      "guideRef": "patch-mgmt",
+      "whenDone": "패치 현황표 또는 미적용 승인 기록을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

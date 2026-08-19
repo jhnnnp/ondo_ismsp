@@ -1,0 +1,57 @@
+{
+  "controlId": "2.10.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "클라우드 보안을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "클라우드 서비스 제공자와 정보보호 및 개인정보보호에 대한 책임과 역할을 명확히 정의하고 이를 계약서(SLA 등)에 반영하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "클라우드 서비스 이용 시 서비스 유형에 따른 보안위험을 평가하여 비인가 접근, 설정오류 등을 방지할 수 있도록 보안 구성 및 설정 기준,보안설정 변경 및 승인 절차, 안전한 접속방법,권한 체계 등 보안 통제 정책을 수립/이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "클라우드 서비스 관리자 권한은 역할에 따라 최소화하여 부여하고 관리자 권한에 대한 비인가 접근,권한 오 남용 등을 방지할 수 있도록 강화된 인증,암호화,접근통제, 감사기록 등 보호대책을 적용하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "클라우드서비스의 보안 설정 변경,운영 현황등을 모니터링하고그 적절성을 정기적으로 검토하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (클라우드 서비스 관련 계약서 및 SLA)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "WAF/EDR/취약점 스캔 결과를 월간 리포트로 관리하세요.",
+      "guideRef": "official-2.10.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 클라우드 서비스 관련 계약서 및 SLA"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

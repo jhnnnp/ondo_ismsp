@@ -1,0 +1,14 @@
+{
+  "controlId": "2.6.2",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 4,
+  "evidenceExamples": [
+    "정보시스템 운영체제 계정 목록",
+    "서버보안설정",
+    "서버접근제어정책(Sec니reOS 관리화면등)",
+    "서버 및 네트워크 구성도",
+    "정보자산목록"
+  ],
+  "existingPlainQuestion": "AWS 콘솔/어드민/DB처럼 중요 시스템에 누가 들어갈 수 있는지, 권한을 나눠 두셨나요?"
+}

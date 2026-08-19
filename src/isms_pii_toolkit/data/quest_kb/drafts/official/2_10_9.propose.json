@@ -1,0 +1,14 @@
+{
+  "controlId": "2.10.9",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 4,
+  "evidenceExamples": [
+    "악성프로그램 대응지침■절차",
+    "매뉴얼",
+    "백신프로그램설치현황",
+    "백신프로그램설정화면",
+    "악성프로그램 대응 이력(대응 보고서 등)"
+  ],
+  "existingPlainQuestion": "PC/서버에 백신이 켜져 있고, 탐지 이벤트를 실제로 보고 조치하나요?"
+}

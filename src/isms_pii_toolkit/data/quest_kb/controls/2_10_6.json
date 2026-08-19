@@ -1,0 +1,57 @@
+{
+  "controlId": "2.10.6",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "업무용 단말기기 보안을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "PC, 노트북,가상PC,태블릿 등 업무에 사용되는 단말기에 대하여 기기인증,승인, 접근범위 설정,기기 보안설정 등의 보안 통제 정책을 수립 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "업무용 단말기를 통하여 개인정보 및 중요정보가 유출되는 것을 방지하기 위하여 자료공유프로그램 사용 금지,공유설정 제한,무선망 이용 통제 등의 정책을 수립■ 이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "업무용 모바일 기기의 분실,도난 등으로 인한 개인정보 및 중요정보의 유•노출을 방지하기 위하여 보안대책을 적용하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "업무용 단말기기에 대한 접근통제 대책의 적절성에 대하여 주기적으로 점검하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (업무용 단말기 보안통제 지침 및 절차)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "WAF/EDR/취약점 스캔 결과를 월간 리포트로 관리하세요.",
+      "guideRef": "official-2.10.6",
+      "whenDone": "다음 증적 예시를 준비하세요: 업무용 단말기 보안통제 지침 및 절차"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

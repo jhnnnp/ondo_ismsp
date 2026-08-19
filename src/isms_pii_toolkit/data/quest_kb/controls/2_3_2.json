@@ -1,0 +1,48 @@
+{
+  "controlId": "2.3.2",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.3.2.1",
+      "사례집.md#2.3.2.2",
+      "사례집.md#2.3.2.3"
+    ],
+    "promotedFrom": "thin-stub"
+  },
+  "quest": {
+    "plainQuestion": "위탁 계약서에 비밀유지만이 아니라 업무별 보안/관리감독 조항이 들어가 있나요?",
+    "audience": [
+      "계약/총무",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "contract",
+        "label": "위탁계약서가 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "sec-req",
+        "label": "업무 특성별 보안요구사항이 반영돼 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "law-items",
+        "label": "법령 필수 항목(관리/감독 등)이 빠지지 않았다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "위탁계약 샘플을 열어 보안요구/관리감독/SLA 조항을 체크리스트로 대조하세요.",
+      "guideRef": "vendor-contract-security",
+      "whenDone": "위탁계약서(보안조항) 관련 증적을 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

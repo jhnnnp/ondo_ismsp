@@ -1,0 +1,14 @@
+{
+  "controlId": "1.1.3",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 3,
+  "evidenceExamples": [
+    "정보보호 및 개인정보보호 위원회 규정",
+    "회의록",
+    "정보보호 및 개인정보보호 실무 협의체 규정",
+    "회의록",
+    "정보보호 및 개인정보보호 조직도"
+  ],
+  "existingPlainQuestion": "정보보호/개인정보 위원회에 경영진이 들어가고, 실제로 열어 결정하나요?"
+}

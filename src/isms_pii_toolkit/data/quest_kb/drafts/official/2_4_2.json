@@ -1,0 +1,44 @@
+{
+  "controlId": "2.4.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "출입통제를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "보호구역은 출입절차에 따라 출입이 허가된 자만 출입하도록 통제하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "각 보호구역에 대한 내•외부자 출입기록을 일정기간 보존하고 출입기록 및 출입권한을 주기적으로 검토하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (출입 관리대장및출입로그)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "클라우드만 사용하고 자체 전산실/IDC가 없으면 해당 없음으로 표시하세요. 물리 시설이 있으면 DC/사무실 출입권한을 직무별로 최소화하세요.",
+      "guideRef": "official-2.4.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 출입 관리대장및출입로그"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

@@ -1,0 +1,60 @@
+{
+  "controlId": "2.6.6",
+  "locked": false,
+  "quality": "casebook-draft",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "defectCount": 4,
+    "caseCount": 5,
+    "sourceRefs": [
+      "사례집.md#2.6.6.1",
+      "사례집.md#2.6.6.2",
+      "사례집.md#2.6.6.3"
+    ],
+    "generatedBy": "scripts/build_quest_drafts_from_casebook.py"
+  },
+  "quest": {
+    "plainQuestion": "원격접근 통제: 내부 규정에는 시스템에 대한 원격 접근은 원칙적으로 금지하고 불가피한 경우… — 해당 없음을 확인했나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "case-1",
+        "label": "사례 1 대비 조치됨: 시스템에 대한 원격 데스크톱 연결, SSH 접속이 IP주소 등으로 제한되어 있지 않아 모든 PC에서…",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "case-2",
+        "label": "사례 2 대비 조치됨: VPN에 대한 사용 승인 또는 접속 기간 제한 없이 상시 허용하고 있는",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "case-3",
+        "label": "사례 3 대비 조치됨: 악성코드, 분실/도난 등에 의한 개인정보 유출을 방지하기 위한 적절한 보호대책(백신, 초기화…",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "사례집 2.6.6 유형을 점검표에 넣고, 대표 공백(내부 규정에는 시스템에 대한 원격 접근은 원칙적으로 금지하고 불가피한 경우 IP 기반의 접근통제를 통하여 승인된 사용자만 접근할 수 있도록 명시하고 있으나…)부터 정책/설정/기록을 맞추세요.",
+      "guideRef": "casebook-2.6.6",
+      "whenDone": "2.6.6 관련 사례집 유형 점검 증적 파일명을 아래에 남겨 두세요."
+    },
+    "evidenceSlots": [
+      {
+        "slotId": "casebook-2-6-6-memo",
+        "title": "원격접근 통제 사례집형 점검 파일명 메모",
+        "accepts": [
+          "image",
+          "pdf"
+        ],
+        "requiredForLevel": "evidenced"
+      }
+    ]
+  }
+}

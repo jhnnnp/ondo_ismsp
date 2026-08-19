@@ -1,0 +1,60 @@
+{
+  "controlId": "2.5.6",
+  "locked": false,
+  "quality": "casebook-draft",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "defectCount": 9,
+    "caseCount": 9,
+    "sourceRefs": [
+      "사례집.md#2.5.6.1",
+      "사례집.md#2.5.6.2",
+      "사례집.md#2.5.6.3"
+    ],
+    "generatedBy": "scripts/build_quest_drafts_from_casebook.py"
+  },
+  "quest": {
+    "plainQuestion": "접근권한 검토와 관련된 방법, 점검주기, 보고체계… 상태를 피하고 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "case-1",
+        "label": "사례 1 대비 조치됨: 접근권한 검토와 관련된 방법, 점검주기, 보고체계…",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "case-2",
+        "label": "사례 2 대비 조치됨: 6개월 이상 미접속한 사용자의 계정이 활성화 되어 있는 경우(접근권한 검토가 충실히 수행되지 않아…",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "case-3",
+        "label": "사례 3 대비 조치됨: 접근권한 검토 시 접근권한의 과다 부여 및 오/남용 의심사례가 발견되었으나 이에 대한 상세조사…",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "사례집 2.5.6 유형을 점검표에 넣고, 대표 공백(접근권한 검토와 관련된 방법, 점검주기, 보고체계, 오/남용 기준 등이 관련 지침에 구체적으로 정의되어 있지 않아 접근권한 검토가 정기적으로 수행되지 않은 경우)부터 정책/설정/기록을 맞추세요.",
+      "guideRef": "casebook-2.5.6",
+      "whenDone": "2.5.6 관련 사례집 유형 점검 증적 파일명을 아래에 남겨 두세요."
+    },
+    "evidenceSlots": [
+      {
+        "slotId": "casebook-2-5-6-memo",
+        "title": "접근권한 검토 사례집형 점검 파일명 메모",
+        "accepts": [
+          "image",
+          "pdf"
+        ],
+        "requiredForLevel": "evidenced"
+      }
+    ]
+  }
+}

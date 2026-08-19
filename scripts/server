@@ -1,0 +1,431 @@
+#!/usr/bin/env bash
+# ISMS-P PII Toolkit API server control (interactive menu)
+# Usage:
+#   ./scripts/server
+#   bash scripts/server
+#   double-click server.command
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PID_FILE="${ROOT_DIR}/.server.pid"
+LOG_FILE="${ROOT_DIR}/.server.log"
+VENV_PYTHON="${ROOT_DIR}/.venv/bin/python"
+VENV_UVICORN="${ROOT_DIR}/.venv/bin/uvicorn"
+
+HOST="${PII_TOOLKIT_API_HOST:-127.0.0.1}"
+PORT="${PII_TOOLKIT_API_PORT:-8000}"
+RELOAD="${PII_TOOLKIT_RELOAD:-0}"
+
+load_env() {
+  local env_file="${ROOT_DIR}/.env"
+  if [[ -f "${env_file}" ]]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "${env_file}"
+    set +a
+    HOST="${PII_TOOLKIT_API_HOST:-${HOST}}"
+    PORT="${PII_TOOLKIT_API_PORT:-${PORT}}"
+  fi
+}
+
+resolve_python() {
+  if [[ -x "${VENV_PYTHON}" ]]; then
+    echo "${VENV_PYTHON}"
+    return
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    command -v python3
+    return
+  fi
+  echo "error: Python not found. Create .venv first: python3 -m venv .venv" >&2
+  exit 1
+}
+
+uniq_pids() {
+  tr ' ' '\n' | awk 'NF && !seen[$0]++' | tr '\n' ' ' | sed 's/[[:space:]]*$//'
+}
+
+pids_on_port() {
+  local port="$1"
+  if command -v lsof >/dev/null 2>&1; then
+    # LISTEN + any TCP use (CLOSED leftovers included)
+    {
+      lsof -nP -iTCP:"${port}" -sTCP:LISTEN -t 2>/dev/null || true
+      lsof -nP -iTCP:"${port}" -t 2>/dev/null || true
+    } | uniq_pids
+  fi
+}
+
+uvicorn_pids() {
+  # leftover manual uvicorn / previous menu starts
+  {
+    pgrep -f "uvicorn isms_pii_toolkit.api:app" 2>/dev/null || true
+    pgrep -f "isms_pii_toolkit.api:app" 2>/dev/null || true
+  } | uniq_pids
+}
+
+live_pids() {
+  local pid
+  for pid in "$@"; do
+    if [[ -n "${pid}" ]] && kill -0 "${pid}" 2>/dev/null; then
+      echo "${pid}"
+    fi
+  done
+}
+
+related_pids() {
+  local raw
+  raw="$(
+    {
+      echo "$(pids_on_port "${PORT}")"
+      echo "$(uvicorn_pids)"
+      local managed
+      managed="$(read_pid || true)"
+      if [[ -n "${managed}" ]]; then
+        echo "${managed}"
+      fi
+    } | tr ' ' '\n' | uniq_pids
+  )"
+  live_pids ${raw}
+}
+
+is_running() {
+  local pid="$1"
+  [[ -n "${pid}" ]] && kill -0 "${pid}" 2>/dev/null
+}
+
+read_pid() {
+  if [[ -f "${PID_FILE}" ]]; then
+    tr -d '[:space:]' < "${PID_FILE}"
+  fi
+}
+
+wait_until_down() {
+  local pid="$1"
+  local tries=20
+  local i
+  for ((i = 0; i < tries; i++)); do
+    if ! is_running "${pid}"; then
+      return 0
+    fi
+    sleep 0.25
+  done
+  return 1
+}
+
+kill_pids() {
+  local pids="$1"
+  local pid
+  [[ -z "${pids}" ]] && return 0
+  for pid in ${pids}; do
+    if is_running "${pid}"; then
+      kill "${pid}" 2>/dev/null || true
+    fi
+  done
+  sleep 0.4
+  for pid in ${pids}; do
+    if is_running "${pid}"; then
+      kill -9 "${pid}" 2>/dev/null || true
+    fi
+  done
+}
+
+print_status_line() {
+  load_env
+  local pid
+  pid="$(read_pid || true)"
+  local related
+  related="$(related_pids)"
+
+  if [[ -n "${pid}" ]] && is_running "${pid}"; then
+    echo "상태: 실행 중 (pid ${pid})  http://${HOST}:${PORT}/"
+  elif [[ -n "${related}" ]]; then
+    echo "상태: 포트/프로세스 사용 중 (pid ${related})"
+  else
+    echo "상태: 중지됨"
+  fi
+}
+
+wait_for_health() {
+  local url="http://${HOST}:${PORT}/health"
+  local i
+  for ((i = 0; i < 30; i++)); do
+    if curl -fsS --max-time 1 "${url}" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.2
+  done
+  return 1
+}
+
+show_log_tail() {
+  if [[ -f "${LOG_FILE}" ]]; then
+    echo "----- 최근 로그 -----"
+    tail -n 20 "${LOG_FILE}" || true
+    echo "--------------------"
+  fi
+}
+
+start_server() {
+  load_env
+
+  local existing
+  existing="$(read_pid || true)"
+  if [[ -n "${existing}" ]] && is_running "${existing}"; then
+    if wait_for_health; then
+      echo "이미 실행 중입니다 (pid ${existing}) -> http://${HOST}:${PORT}/"
+      return 0
+    fi
+  fi
+
+  local leftovers
+  leftovers="$(related_pids)"
+  if [[ -n "${leftovers}" ]]; then
+    echo "이전 서버/포트 점유 프로세스 정리 중: ${leftovers}"
+    kill_pids "${leftovers}"
+    rm -f "${PID_FILE}"
+    sleep 0.3
+  fi
+
+  leftovers="$(related_pids)"
+  if [[ -n "${leftovers}" ]]; then
+    echo "error: 포트 ${PORT}를 비울 수 없습니다 (pid: ${leftovers})" >&2
+    echo "hint: 메뉴 2) 서버 끄기 후 다시 시도하세요" >&2
+    return 1
+  fi
+
+  local python_bin
+  python_bin="$(resolve_python)"
+
+  cd "${ROOT_DIR}"
+  export PYTHONPATH="${ROOT_DIR}/src${PYTHONPATH:+:${PYTHONPATH}}"
+
+  local cmd=()
+  if [[ -x "${VENV_UVICORN}" ]]; then
+    cmd=("${VENV_UVICORN}")
+  else
+    cmd=("${python_bin}" -m uvicorn)
+  fi
+
+  cmd+=(
+    "isms_pii_toolkit.api:app"
+    --host "${HOST}"
+    --port "${PORT}"
+  )
+
+  if [[ "${RELOAD}" == "1" || "${RELOAD}" == "true" ]]; then
+    cmd+=(
+      --reload
+      --reload-dir "${ROOT_DIR}/src"
+      --reload-exclude "*/node_modules/*"
+      --reload-exclude "*/.git/*"
+      --reload-exclude "*/htmlcov/*"
+      --reload-exclude "*/.pytest_cache/*"
+      --reload-exclude "*/tests/*"
+    )
+  fi
+
+  : >"${LOG_FILE}"
+  echo "서버 시작 중..."
+  # Detach into a new session so the process survives the launcher shell
+  # (Cursor/agent terminals otherwise kill the whole process group).
+  local pid
+  pid="$(
+    PYTHONPATH="${PYTHONPATH}" "${python_bin}" - "${LOG_FILE}" "${cmd[@]}" <<'PY'
+import os
+import subprocess
+import sys
+
+log_path = sys.argv[1]
+cmd = sys.argv[2:]
+with open(log_path, "ab") as log:
+    proc = subprocess.Popen(
+        cmd,
+        stdin=subprocess.DEVNULL,
+        stdout=log,
+        stderr=subprocess.STDOUT,
+        start_new_session=True,
+        env=os.environ.copy(),
+    )
+print(proc.pid)
+PY
+  )"
+  echo "${pid}" >"${PID_FILE}"
+
+  if wait_for_health; then
+    echo "시작 완료 (pid ${pid})"
+    echo "  demo:     http://${HOST}:${PORT}/"
+    echo "  docs:     http://${HOST}:${PORT}/docs"
+    echo "  controls: http://${HOST}:${PORT}/controls/map"
+    echo "  log:      ${LOG_FILE}"
+    return 0
+  fi
+
+  echo "error: 서버 시작 실패" >&2
+  show_log_tail
+  if is_running "${pid}"; then
+    kill_pids "${pid} $(uvicorn_pids)"
+  fi
+  rm -f "${PID_FILE}"
+  return 1
+}
+
+stop_server() {
+  load_env
+
+  local related
+  related="$(related_pids)"
+  if [[ -z "${related}" ]]; then
+    rm -f "${PID_FILE}"
+    echo "실행 중인 서버가 없습니다"
+    return 0
+  fi
+
+  echo "서버 종료 중 (pid ${related})..."
+  kill_pids "${related}"
+  rm -f "${PID_FILE}"
+
+  related="$(related_pids)"
+  if [[ -n "${related}" ]]; then
+    echo "error: 일부 프로세스가 남았습니다 (pid ${related})" >&2
+    return 1
+  fi
+  echo "종료 완료"
+}
+
+status_server() {
+  print_status_line
+  load_env
+  if wait_for_health; then
+    echo "헬스체크: OK"
+    return 0
+  fi
+  local related
+  related="$(related_pids)"
+  if [[ -n "${related}" ]]; then
+    echo "헬스체크: 실패 (프로세스는 있음)"
+    return 1
+  fi
+  return 1
+}
+
+open_browser() {
+  load_env
+  local url="http://${HOST}:${PORT}/controls/map"
+  if ! wait_for_health; then
+    echo "서버가 꺼져 있습니다. 먼저 1) 실행을 선택하세요."
+    echo "주소: ${url}"
+    return 1
+  fi
+  if command -v open >/dev/null 2>&1; then
+    open "${url}"
+    echo "브라우저 열기: ${url}"
+  elif command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "${url}"
+    echo "브라우저 열기: ${url}"
+  else
+    echo "${url}"
+  fi
+}
+
+show_menu() {
+  echo
+  echo "================================"
+  echo "  ISMS-P PII Toolkit 서버"
+  echo "================================"
+  print_status_line
+  echo
+  echo "  1) 실행"
+  echo "  2) 서버 끄기"
+  echo "  3) 재시작"
+  echo "  4) 상태 확인"
+  echo "  5) 브라우저 열기"
+  echo "  0) 종료"
+  echo
+}
+
+interactive_menu() {
+  while true; do
+    show_menu
+    printf "선택: "
+    read -r choice
+    echo
+    case "${choice}" in
+      1)
+        start_server || true
+        ;;
+      2)
+        stop_server || true
+        ;;
+      3)
+        stop_server || true
+        echo
+        start_server || true
+        ;;
+      4)
+        status_server || true
+        ;;
+      5)
+        open_browser || true
+        ;;
+      0|q|Q)
+        echo "메뉴 종료"
+        break
+        ;;
+      *)
+        echo "잘못된 선택입니다. 0~5 숫자를 입력하세요."
+        ;;
+    esac
+    echo
+    printf "Enter를 누르면 메뉴로 돌아갑니다..."
+    # shellcheck disable=SC2034
+    read -r _
+  done
+}
+
+usage() {
+  cat <<'USAGE'
+Usage: ./scripts/server [command]
+
+인자 없이 실행하면 번호 메뉴가 열립니다.
+
+Commands (optional):
+  start | stop | restart | status | open | menu
+USAGE
+}
+
+main() {
+  local action="${1:-menu}"
+  case "${action}" in
+    start)
+      start_server
+      ;;
+    stop|close|kill)
+      stop_server
+      ;;
+    restart)
+      stop_server
+      start_server
+      ;;
+    status)
+      status_server
+      ;;
+    open)
+      open_browser
+      ;;
+    menu|"")
+      interactive_menu
+      ;;
+    -h|--help|help)
+      usage
+      ;;
+    *)
+      echo "unknown command: ${action}" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+}
+
+main "$@"

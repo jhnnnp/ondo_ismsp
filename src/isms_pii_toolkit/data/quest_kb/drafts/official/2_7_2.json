@@ -1,0 +1,45 @@
+{
+  "controlId": "2.7.2",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "암호키 관리를 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "암호키 생성,이용,보관,배포,변경,복구,파기 등에 관한 절차를 수립/이행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "암호키는 필요시 복구가 가능하도록 별도의 안전한 장소에 보관하고 암호키 사용에 관한 접근권한을 최소화하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (120 정보보호 및 개인정보보호 관리체계 인증제도 안내서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "키는 KMS/HSM에 분리 보관하고 소스코드/환경변수 하드코딩 여부를 점검/문서화하세요.",
+      "guideRef": "official-2.7.2",
+      "whenDone": "다음 증적 예시를 준비하세요: 120 정보보호 및 개인정보보호 관리체계 인증제도 안내서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

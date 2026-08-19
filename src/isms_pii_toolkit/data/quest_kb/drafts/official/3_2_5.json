@@ -1,0 +1,57 @@
+{
+  "controlId": "3.2.5",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "개인정보 처리에서 가명정보 처리를 지키고, 근거를 남기고 있나요?",
+    "audience": [
+      "개인정보 담당",
+      "서비스 운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "가명정보를 처리하는 경우 목적 제한,가명처리 방법 및 기준,적정성 검토,재식별 금지 및 재식별 발생 시 조치사항 등 가명정보를 적정하게 처리하기 위한 절차를 수립하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "official-2",
+        "label": "개인정보를 가명처리하여 이용•제공 시 추가 정보의 사용•결합 없이는 개인을 알아볼 수 없도록 적정한 수준으로 가명처리를 수행하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "official-3",
+        "label": "다른 개인정보처리자와 가명정보를 결합하는 경우 결합전문기관 또는 데이터전문기관을 통해 결합하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "official-4",
+        "label": "가명정보를 처리하는 경우 추가 정보를 삭제 또는 별도로 분리하여 보관 관리,관련 기록의 작성•보관 등 안전성 확보에 필요한 기술적•관리적 및 물리적 조치를 하고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (가명처리)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "운영 로그/상담 기록에 대한 PII 탐지/마스킹 파이프라인을 검토하세요.",
+      "guideRef": "official-3.2.5",
+      "whenDone": "다음 증적 예시를 준비하세요: 가명처리"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

@@ -1,0 +1,1979 @@
+{
+  "version": 2,
+  "purpose": "Evidence-tagged control relations for organic/compound analysis",
+  "groundingLevels": {
+    "casebook_cite": "사례집 텍스트에 상대 통제 영역 키워드/명시가 있는 연결",
+    "category_adjacent": "인증기준 분류·시나리오상 인접 연결",
+    "interpret": "결함우선·수동 관계 기반 해석형 연결 (CSV는 인과가 아니라 weight)"
+  },
+  "defectCsvRole": "defect_weights/CSV는 통제별 빈도·우선순위만 제공한다. 유기적 인과(원인→결과)는 사례집/분류/수동 relation으로 정의하고, CSV는 그 연결의 대응 우선순위를 조정하는 weight로만 사용한다.",
+  "sources": [
+    "control_graph.MANUAL_RELATIONS_SEED",
+    "사례집.md",
+    "defect_weights.json",
+    "casebook_crosswalk.json",
+    "official_kb/controls"
+  ],
+  "pilotControls": [
+    "2.10.1",
+    "1.4.1",
+    "2.10.8",
+    "2.5.6",
+    "2.6.1",
+    "2.6.2",
+    "2.6.3",
+    "1.2.3",
+    "1.2.1",
+    "2.5.4",
+    "2.9.4",
+    "2.9.5",
+    "2.7.1",
+    "2.10.2",
+    "3.1.1"
+  ],
+  "titles": {
+    "1.1.1": "경영진의 참여",
+    "1.1.2": "최고책임자의 지정",
+    "1.1.3": "조직 구성",
+    "1.1.4": "범위 설정",
+    "1.1.5": "정책 수립",
+    "1.1.6": "자원 할당",
+    "1.2.1": "정보자산 식별",
+    "1.2.2": "현황 및 흐름분석",
+    "1.2.3": "위험 평가",
+    "1.2.4": "보호대책 선정",
+    "1.3.1": "보호대책 구현",
+    "1.3.2": "보호대책 공유",
+    "1.3.3": "운영현황 관리",
+    "1.4.1": "법적 요구사항 준수 검토",
+    "1.4.2": "관리체계 점검",
+    "1.4.3": "관리체계 개선",
+    "2.1.1": "정책의 유지관리",
+    "2.1.2": "조직의 유지관리",
+    "2.1.3": "정보자산 관리",
+    "2.2.1": "주요 직무자 지정 및 관리",
+    "2.2.2": "직무 분리",
+    "2.2.3": "보안 서약",
+    "2.2.4": "인식제고 및 교육훈련",
+    "2.2.5": "퇴직 및 직무변경 관리",
+    "2.2.6": "보안 위반 시 조치",
+    "2.3.1": "외부자 현황 관리",
+    "2.3.2": "외부자 계약 시 보안",
+    "2.3.3": "외부자 보안 이행 관리",
+    "2.3.4": "외부자 계약 변경 및 만료 시 보안",
+    "2.4.1": "보호구역 지정",
+    "2.4.2": "출입통제",
+    "2.4.3": "정보시스템 보호",
+    "2.4.4": "보호설비 운영",
+    "2.4.5": "보호구역 내 작업",
+    "2.4.6": "반출입 기기 통제",
+    "2.4.7": "업무환경 보안",
+    "2.5.1": "사용자 계정 관리",
+    "2.5.2": "사용자 식별",
+    "2.5.3": "사용자 인증",
+    "2.5.4": "비밀번호 관리",
+    "2.5.5": "특수 계정 및 권한관리",
+    "2.5.6": "접근권한 검토",
+    "2.6.1": "네트워크 접근",
+    "2.6.2": "정보시스템 접근",
+    "2.6.3": "응용프로그램 접근",
+    "2.6.4": "데이터베이스 접근",
+    "2.6.5": "무선 네트워크 접근",
+    "2.6.6": "원격접근 통제",
+    "2.6.7": "인터넷 접속 통제",
+    "2.7.1": "암호정책 적용",
+    "2.7.2": "암호키 관리",
+    "2.8.1": "보안 요구사항 정의",
+    "2.8.2": "보안 요구사항 검토 및 시험",
+    "2.8.3": "시험과 운영 환경 분리",
+    "2.8.4": "시험 데이터 보안",
+    "2.8.5": "소스 프로그램 관리",
+    "2.8.6": "운영환경 이관",
+    "2.9.1": "변경관리",
+    "2.9.2": "성능 및 장애관리",
+    "2.9.3": "백업 및 복구관리",
+    "2.9.4": "로그 및 접속기록 관리",
+    "2.9.5": "로그 및 접속기록 점검",
+    "2.9.6": "시간 동기화",
+    "2.9.7": "정보자산의 재사용 및 폐기",
+    "2.10.1": "보안시스템 운영",
+    "2.10.2": "클라우드 보안",
+    "2.10.3": "공개서버 보안",
+    "2.10.4": "전자거래 및 핀테크 보안",
+    "2.10.5": "정보전송 보안",
+    "2.10.6": "업무용 단말기기 보안",
+    "2.10.7": "보조저장매체 관리",
+    "2.10.8": "패치관리",
+    "2.10.9": "악성코드 통제",
+    "2.11.1": "사고 예방 및 대응체계 구축",
+    "2.11.2": "취약점 점검 및 조치",
+    "2.11.3": "이상행위 분석 및 모니터링",
+    "2.11.4": "사고 대응 훈련 및 개선",
+    "2.11.5": "사고 대응 및 복구",
+    "2.12.1": "재해/재난 대비 안전조치",
+    "2.12.2": "재해 복구 시험 및 개선",
+    "3.1.1": "개인정보 수집/이용",
+    "3.1.2": "개인정보 수집 제한",
+    "3.1.3": "주민등록번호 처리 제한",
+    "3.1.4": "민감정보 및 고유식별정보의 처리 제한",
+    "3.1.5": "개인정보 간접수집",
+    "3.1.6": "영상정보처리기기 설치/운영",
+    "3.1.7": "마케팅 목적의 개인정보 수집/이용",
+    "3.2.1": "개인정보 현황관리",
+    "3.2.2": "개인정보 품질보장",
+    "3.2.3": "이용자 단말기 접근 보호",
+    "3.2.4": "개인정보 목적 외 이용 및 제공",
+    "3.2.5": "가명정보 처리",
+    "3.3.1": "개인정보 제3자 제공",
+    "3.3.2": "개인정보 처리 업무 위탁",
+    "3.3.3": "영업의 양도 등에 따른 개인정보 이전",
+    "3.3.4": "개인정보 국외이전",
+    "3.4.1": "개인정보 파기",
+    "3.4.2": "처리목적 달성 후 보유 시 조치",
+    "3.5.1": "개인정보 처리방침 공개",
+    "3.5.2": "정보주체 권리보장",
+    "3.5.3": "정보주체에 대한 통지"
+  },
+  "edgeCount": 51,
+  "edges": [
+    {
+      "source": "1.1.4",
+      "target": "1.2.1",
+      "reason": "인증 범위가 자산 식별의 경계를 정합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "healthcare-emr-access"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "1.1.4",
+      "target": "1.2.2",
+      "reason": "범위 설정 후 개인정보 흐름을 분석합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "membership-data-lifecycle"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "1.1.5",
+      "target": "2.1.1",
+      "reason": "정책 수립 결과는 운영 정책 유지관리로 이어집니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.1.5",
+      "target": "3.5.1",
+      "reason": "개인정보 처리방침 공개와 정책 체계가 연결됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.2.1",
+      "target": "1.2.2",
+      "reason": "자산 식별 결과는 현황·흐름분석의 입력입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "category_adjacent",
+          "refs": [
+            {
+              "doc": "ISMS-P 인증기준 분류",
+              "controlIds": [
+                "1.2.1",
+                "1.2.2"
+              ],
+              "note": "동일 통제영역 내 인접 항목 + 결함우선 쌍"
+            },
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "1.2.1",
+                "1.2.2"
+              ],
+              "defectCounts": {
+                "1.2.1": 6,
+                "1.2.2": 0
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "retail-cs-log-pii"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "healthcare-emr-access"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "1.2.1",
+      "target": "2.1.3",
+      "reason": "식별된 정보자산은 자산관리 통제의 기준입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.2.1",
+      "target": "3.2.1",
+      "reason": "개인정보 현황관리의 입력값입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.2.2",
+      "target": "3.2.1",
+      "reason": "개인정보 흐름분석은 현황관리와 함께 관리됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.2.2",
+      "target": "3.3.2",
+      "reason": "처리 흐름은 위탁 관계 식별로 이어집니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.2.3",
+      "target": "1.2.4",
+      "reason": "평가된 위험을 기준으로 보호대책을 선정합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.2.3",
+      "target": "2.8.1",
+      "reason": "개발 보안 요구사항은 위험평가 결과를 반영합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "cloud-campaign-page"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "1.2.4",
+      "target": "1.3.1",
+      "reason": "선정한 보호대책은 구현 단계에서 실행됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "security-review-certification"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "1.3.1",
+      "target": "1.4.2",
+      "reason": "구현된 보호대책은 점검 대상이 됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.3.1",
+      "target": "2.8.2",
+      "reason": "구현 결과는 보안 시험으로 검증합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "1.4.1",
+      "target": "1.4.2",
+      "reason": "사례집 1.4.1 사례에서 '점검' 등 표현이 1.4.2 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "1.4.1",
+              "caseNo": 1,
+              "ref": "사례집.md#1.4.1.1",
+              "snippet": "정보통신망법 및 개인정보 보호법이 최근 개정되었으나, 개정사항이 조직에 미치는 영향을 검토하지 않았으며 정책서 및 시행문서에도 해당 내용을 반영하지 않아 정책서 및 시행문서의 내용이 법령의 내용과 일치하지 않은 경우"
+            }
+          ]
+        },
+        {
+          "type": "defect_priority",
+          "refs": [
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "1.4.1",
+                "1.4.2"
+              ],
+              "defectCounts": {
+                "1.4.1": 14,
+                "1.4.2": 0
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "security-review-certification"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "1.4.2",
+      "target": "1.4.3",
+      "reason": "점검 결과는 개선 활동으로 이어집니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "security-review-certification"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "2.10.1",
+      "target": "2.10.8",
+      "reason": "보안시스템 운영과 패치관리는 취약점 차단 흐름으로 이어집니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "defect_priority",
+          "refs": [
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "2.10.1",
+                "2.10.8"
+              ],
+              "defectCounts": {
+                "2.10.1": 20,
+                "2.10.8": 11
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.10.1",
+      "target": "2.11.3",
+      "reason": "사례집 2.10.1 사례에서 '모니터링' 등 표현이 2.11.3 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.10.1",
+              "caseNo": 6,
+              "ref": "사례집.md#2.10.1.6",
+              "snippet": "(CELA)DB 접근통제 시스템의 모니터링 정책에 대량 조회와 같은 이상 징후가 탐지되지 않는 경우"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.10.1",
+      "target": "2.9.4",
+      "reason": "사례집 2.10.1 사례에서 '로그' 등 표현이 2.9.4 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.10.1",
+              "caseNo": 1,
+              "ref": "사례집.md#2.10.1.1",
+              "snippet": "내부 지침에는 정보보호담당자가 보안시스템의 보안정책 변경 이력을 기록/보관하도록 정하고 있으나 정책관리대장을 주기적으로 작성하지 않고 있거나 정책관리대장에 기록된 보안 정책과 실제 운영 중인 시스템의 보안정책이 상이"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.10.2",
+      "target": "2.12.1",
+      "reason": "클라우드 운영은 재해/재난 대비와 함께 검토합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.10.8",
+      "target": "2.10.1",
+      "reason": "사례집 2.10.8 사례에서 '보안시스템' 등 표현이 2.10.1 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.10.8",
+              "caseNo": 5,
+              "ref": "사례집.md#2.10.8.5",
+              "snippet": "(CELA)네트워크 보안시스템을 통한 OS 패치 정책이 일반 PC에는 적용되어 있으나, 망분리 된 가상화 PC에는 적용되지 않은 경우"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.10.8",
+      "target": "2.10.9",
+      "reason": "사례집 2.10.8 사례에서 '백신' 등 표현이 2.10.9 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.10.8",
+              "caseNo": 1,
+              "ref": "사례집.md#2.10.8.1",
+              "snippet": "상용 소프트웨어 및 OS에 대해서는 최신패치가 적용되고 있으나, 오픈소스 프로그램(openssl, openssh, Apache 등)에 대해서는 최신 패치를 확인하고 적용하는 절차 및 담당자가 지정 되어 있지 않아 최"
+            }
+          ]
+        },
+        {
+          "type": "defect_priority",
+          "refs": [
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "2.10.8",
+                "2.10.9"
+              ],
+              "defectCounts": {
+                "2.10.8": 11,
+                "2.10.9": 4
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.10.9",
+      "target": "2.10.8",
+      "reason": "사례집 2.10.9 사례에서 '패치' 등 표현이 2.10.8 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.10.9",
+              "caseNo": 1,
+              "ref": "사례집.md#2.10.9.1",
+              "snippet": "백신 프로그램의 환경설정(실시간 검사, 예약검사, 업데이트 설정 등)을 이용자가 임의로 변경할 수 있음에도 그에 따른 추가 보호대책이 수립되어 있지 않은 경우"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.11.1",
+      "target": "2.11.4",
+      "reason": "대응체계는 훈련으로 검증합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.11.1",
+      "target": "2.11.5",
+      "reason": "대응체계는 실제 사고 대응과 복구의 기준입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.12.1",
+      "target": "2.12.2",
+      "reason": "재해 대비 조치는 복구 시험으로 확인합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.5.1",
+      "target": "2.5.6",
+      "reason": "사례집 2.5.1 사례에서 '장기 미사용' 등 표현이 2.5.6 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.5.1",
+              "caseNo": 1,
+              "ref": "사례집.md#2.5.1.1",
+              "snippet": "사용자 및 개인정보취급자에 대한 계정 및 권한에 대한 사용자 등록, 해지 및 승인절차 없이 구두 요청, 이메일 등으로 처리하여 이에 대한 승인 및 처리 이력이 확인되지 않는 경우"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "healthcare-emr-access"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.5.2",
+      "target": "2.5.3",
+      "reason": "인증기준 안내서 2.5.2 결함 예시에 2.5.3 관련 서술이 있습니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "official",
+          "refs": [
+            {
+              "doc": "official_kb",
+              "controlId": "2.5.2",
+              "file": "2_5_2.json"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "2.5.3",
+      "target": "2.5.4",
+      "reason": "사례집 2.5.3 사례에서 '비밀번호' 등 표현이 2.5.4 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.5.3",
+              "caseNo": 1,
+              "ref": "사례집.md#2.5.3.1",
+              "snippet": "개인정보취급자가 공개된 외부 인터넷망을 통해서 개인정보처리시스템에 접근 시 안전한 인증수단을 적용하지 않고 아이디/비밀번호 방식으로만 인증하고 있는 경우"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.5.5",
+      "target": "2.5.6",
+      "reason": "사례집 2.5.5 사례에서 '정기적으로 검토' 등 표현이 2.5.6 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.5.5",
+              "caseNo": 3,
+              "ref": "사례집.md#2.5.5.3",
+              "snippet": "관리자 및 특수 권한의 사용 여부를 정기적으로 검토하지 않아 일부 특수권한자의 업무가 변경되었음에도 불구하고 기존 관리자 및 특수 권한을 계속 보유하고 있는 경우"
+            }
+          ]
+        },
+        {
+          "type": "defect_priority",
+          "refs": [
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "2.5.5",
+                "2.5.6"
+              ],
+              "defectCounts": {
+                "2.5.5": 3,
+                "2.5.6": 9
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "external-developer-access"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.6.1",
+      "target": "2.6.2",
+      "reason": "사례집 2.6.1 사례에서 '서버' 등 표현이 2.6.2 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.6.1",
+              "caseNo": 3,
+              "ref": "사례집.md#2.6.1.3",
+              "snippet": "내부망에 위치한 데이터베이스 서버 등 일부 중요 서버의 IP주소가 내부 규정과 달리 공인 IP로 설정 되어 있고, 네트워크 접근 차단이 적용되어 있지 않은 경우"
+            }
+          ]
+        },
+        {
+          "type": "defect_priority",
+          "refs": [
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "2.6.1",
+                "2.6.2"
+              ],
+              "defectCounts": {
+                "2.6.1": 7,
+                "2.6.2": 8
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.6.2",
+      "target": "2.5.5",
+      "reason": "사례집 2.6.2 사례에서 '관리자' 등 표현이 2.5.5 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.6.2",
+              "caseNo": 3,
+              "ref": "사례집.md#2.6.2.3",
+              "snippet": "사무실에서 서버관리자가 IDC에 위치한 윈도우 서버에 접근 시 터미널 서비스를 이용하여 접근하고 있으나 터미널 서비스에 대한 Session Timeout 설정이 되어 있지 않아 장시간 아무런 작업을 하지 않아도 해당"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.6.2",
+      "target": "2.6.1",
+      "reason": "사례집 2.6.2 사례에서 '네트워크' 등 표현이 2.6.1 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.6.2",
+              "caseNo": 18,
+              "ref": "사례집.md#2.6.2.18",
+              "snippet": "(CELA)개인정보처리시스템에 대한 망분리가 미흡하여 외부 인터넷에서 개인정보 다운로드가 가능한 경우"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.6.2",
+      "target": "2.6.3",
+      "reason": "서버 접근과 응용프로그램 접근은 동일 업무 흐름의 인접 통제입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "category_adjacent",
+          "refs": [
+            {
+              "doc": "ISMS-P 인증기준 분류",
+              "controlIds": [
+                "2.6.2",
+                "2.6.3"
+              ],
+              "note": "동일 통제영역 내 인접 항목 + 결함우선 쌍"
+            },
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "2.6.2",
+                "2.6.3"
+              ],
+              "defectCounts": {
+                "2.6.2": 8,
+                "2.6.3": 7
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "external-developer-access"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "2.6.3",
+      "target": "2.8.2",
+      "reason": "응용프로그램 접근통제는 보안 시험으로 검증합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.7.1",
+      "target": "2.7.2",
+      "reason": "암호정책은 키 관리 기준과 함께 운영됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "healthcare-emr-access"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "finance-customer-data"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "2.7.1",
+      "target": "3.1.3",
+      "reason": "주민등록번호 처리 제한과 암호화 통제가 연결됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.7.1",
+      "target": "3.2.1",
+      "reason": "보유 개인정보 현황에 따라 암호화 대상을 정합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.8.1",
+      "target": "2.8.2",
+      "reason": "정의한 보안 요구사항은 검토와 시험으로 확인합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "cloud-campaign-page"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "security-review-certification"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "2.9.4",
+      "target": "2.10.1",
+      "reason": "보안시스템 이벤트/접속기록은 로그 관리 대상입니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "defect_priority",
+          "refs": [
+            {
+              "doc": "defect_weights.json",
+              "controlIds": [
+                "2.9.4",
+                "2.10.1"
+              ],
+              "defectCounts": {
+                "2.9.4": 4,
+                "2.10.1": 20
+              },
+              "note": "priority pair adopted with casebook/keyword/category bridge"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "2.9.4",
+      "target": "2.11.3",
+      "reason": "사례집 2.9.4 사례에서 '이상' 등 표현이 2.11.3 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.9.4",
+              "caseNo": 3,
+              "ref": "사례집.md#2.9.4.3",
+              "snippet": "보안 이벤트 로그, 응용 프로그램 및 서비스 로그(윈도우 2008 서버 이상) 등 중요 로그에 대한 최대 크기를 충분하게 설정하지 않아 내부 기준에 정한 기간 동안 기록/보관되고 있지 않은 경우"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.9.4",
+      "target": "2.9.5",
+      "reason": "사례집 2.9.4 사례에서 '검토 주기' 등 표현이 2.9.5 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.9.4",
+              "caseNo": 1,
+              "ref": "사례집.md#2.9.4.1",
+              "snippet": "로그 기록 대상, 방법, 보존기간, 검토 주기, 담당자 등에 대한 세부 기준 및 절차가 수립되어 있지 않은 경우"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "retail-cs-log-pii"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "healthcare-emr-access"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "finance-customer-data"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "2.9.5",
+      "target": "2.9.4",
+      "reason": "사례집 2.9.5 사례에서 '로그' 등 표현이 2.9.4 통제와 연결됩니다.",
+      "strength": "strong",
+      "evidence": [
+        {
+          "type": "casebook",
+          "refs": [
+            {
+              "doc": "사례집.md",
+              "controlId": "2.9.5",
+              "caseNo": 3,
+              "ref": "사례집.md#2.9.5.3",
+              "snippet": "개인정보처리자 또는 정보통신서비스 제공자가 개인정보처리 시스템의 접속기록 점검 주기를 반기 분기 1회로 정하고 있는 경우 (개정 23.11.23.)"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "casebook_cite"
+    },
+    {
+      "source": "3.1.1",
+      "target": "3.2.1",
+      "reason": "수집한 개인정보는 보유 현황으로 관리됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "public-citizen-service"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "3.1.3",
+      "target": "2.7.1",
+      "reason": "주민등록번호 처리는 암호화 적용 검토 대상입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "3.2.1",
+      "target": "3.4.1",
+      "reason": "보유 현황은 파기 대상 식별의 기준입니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        },
+        {
+          "type": "scenario",
+          "refs": [
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "retail-cs-log-pii"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "healthcare-emr-access"
+            },
+            {
+              "doc": "control_graph.SCENARIOS",
+              "scenarioId": "public-citizen-service"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "category_adjacent"
+    },
+    {
+      "source": "3.2.1",
+      "target": "3.5.1",
+      "reason": "처리 현황은 처리방침 공개와 연결됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "3.2.5",
+      "target": "2.7.1",
+      "reason": "가명정보 처리 시 식별 가능성 완화를 위한 기술적 조치를 함께 검토합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "3.3.2",
+      "target": "2.3.2",
+      "reason": "개인정보 처리 위탁은 외부자 계약 보안과 연결됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "3.4.1",
+      "target": "2.9.7",
+      "reason": "파기와 정보자산 재사용/폐기는 함께 증적화합니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    },
+    {
+      "source": "3.5.2",
+      "target": "3.5.3",
+      "reason": "권리보장 처리 결과는 정보주체 통지와 연결됩니다.",
+      "strength": "medium",
+      "evidence": [
+        {
+          "type": "manual",
+          "refs": [
+            {
+              "doc": "control_graph.MANUAL_RELATIONS_SEED",
+              "note": "curated seed"
+            }
+          ]
+        }
+      ],
+      "groundingLevel": "interpret"
+    }
+  ],
+  "relationMap": {
+    "1.1.4": [
+      {
+        "targetControlId": "1.2.1",
+        "reason": "인증 범위가 자산 식별의 경계를 정합니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      },
+      {
+        "targetControlId": "1.2.2",
+        "reason": "범위 설정 후 개인정보 흐름을 분석합니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      }
+    ],
+    "1.1.5": [
+      {
+        "targetControlId": "2.1.1",
+        "reason": "정책 수립 결과는 운영 정책 유지관리로 이어집니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "3.5.1",
+        "reason": "개인정보 처리방침 공개와 정책 체계가 연결됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "1.2.1": [
+      {
+        "targetControlId": "1.2.2",
+        "reason": "자산 식별 결과는 현황·흐름분석의 입력입니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "category_adjacent",
+          "scenario"
+        ]
+      },
+      {
+        "targetControlId": "2.1.3",
+        "reason": "식별된 정보자산은 자산관리 통제의 기준입니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "3.2.1",
+        "reason": "개인정보 현황관리의 입력값입니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "1.2.2": [
+      {
+        "targetControlId": "3.2.1",
+        "reason": "개인정보 흐름분석은 현황관리와 함께 관리됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "3.3.2",
+        "reason": "처리 흐름은 위탁 관계 식별로 이어집니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "1.2.3": [
+      {
+        "targetControlId": "1.2.4",
+        "reason": "평가된 위험을 기준으로 보호대책을 선정합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "2.8.1",
+        "reason": "개발 보안 요구사항은 위험평가 결과를 반영합니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      }
+    ],
+    "1.2.4": [
+      {
+        "targetControlId": "1.3.1",
+        "reason": "선정한 보호대책은 구현 단계에서 실행됩니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      }
+    ],
+    "1.3.1": [
+      {
+        "targetControlId": "1.4.2",
+        "reason": "구현된 보호대책은 점검 대상이 됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "2.8.2",
+        "reason": "구현 결과는 보안 시험으로 검증합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "1.4.1": [
+      {
+        "targetControlId": "1.4.2",
+        "reason": "사례집 1.4.1 사례에서 '점검' 등 표현이 1.4.2 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook",
+          "defect_priority",
+          "scenario"
+        ]
+      }
+    ],
+    "1.4.2": [
+      {
+        "targetControlId": "1.4.3",
+        "reason": "점검 결과는 개선 활동으로 이어집니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      }
+    ],
+    "2.10.1": [
+      {
+        "targetControlId": "2.10.8",
+        "reason": "보안시스템 운영과 패치관리는 취약점 차단 흐름으로 이어집니다.",
+        "strength": "strong",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "defect_priority"
+        ]
+      },
+      {
+        "targetControlId": "2.11.3",
+        "reason": "사례집 2.10.1 사례에서 '모니터링' 등 표현이 2.11.3 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "manual",
+          "casebook"
+        ]
+      },
+      {
+        "targetControlId": "2.9.4",
+        "reason": "사례집 2.10.1 사례에서 '로그' 등 표현이 2.9.4 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook"
+        ]
+      }
+    ],
+    "2.10.2": [
+      {
+        "targetControlId": "2.12.1",
+        "reason": "클라우드 운영은 재해/재난 대비와 함께 검토합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "2.10.8": [
+      {
+        "targetControlId": "2.10.1",
+        "reason": "사례집 2.10.8 사례에서 '보안시스템' 등 표현이 2.10.1 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook"
+        ]
+      },
+      {
+        "targetControlId": "2.10.9",
+        "reason": "사례집 2.10.8 사례에서 '백신' 등 표현이 2.10.9 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook",
+          "defect_priority"
+        ]
+      }
+    ],
+    "2.10.9": [
+      {
+        "targetControlId": "2.10.8",
+        "reason": "사례집 2.10.9 사례에서 '패치' 등 표현이 2.10.8 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook"
+        ]
+      }
+    ],
+    "2.11.1": [
+      {
+        "targetControlId": "2.11.4",
+        "reason": "대응체계는 훈련으로 검증합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "2.11.5",
+        "reason": "대응체계는 실제 사고 대응과 복구의 기준입니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "2.12.1": [
+      {
+        "targetControlId": "2.12.2",
+        "reason": "재해 대비 조치는 복구 시험으로 확인합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "2.5.1": [
+      {
+        "targetControlId": "2.5.6",
+        "reason": "사례집 2.5.1 사례에서 '장기 미사용' 등 표현이 2.5.6 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "manual",
+          "casebook",
+          "scenario"
+        ]
+      }
+    ],
+    "2.5.2": [
+      {
+        "targetControlId": "2.5.3",
+        "reason": "인증기준 안내서 2.5.2 결함 예시에 2.5.3 관련 서술이 있습니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "official"
+        ]
+      }
+    ],
+    "2.5.3": [
+      {
+        "targetControlId": "2.5.4",
+        "reason": "사례집 2.5.3 사례에서 '비밀번호' 등 표현이 2.5.4 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "manual",
+          "casebook"
+        ]
+      }
+    ],
+    "2.5.5": [
+      {
+        "targetControlId": "2.5.6",
+        "reason": "사례집 2.5.5 사례에서 '정기적으로 검토' 등 표현이 2.5.6 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook",
+          "defect_priority",
+          "scenario"
+        ]
+      }
+    ],
+    "2.6.1": [
+      {
+        "targetControlId": "2.6.2",
+        "reason": "사례집 2.6.1 사례에서 '서버' 등 표현이 2.6.2 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook",
+          "defect_priority"
+        ]
+      }
+    ],
+    "2.6.2": [
+      {
+        "targetControlId": "2.5.5",
+        "reason": "사례집 2.6.2 사례에서 '관리자' 등 표현이 2.5.5 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook"
+        ]
+      },
+      {
+        "targetControlId": "2.6.1",
+        "reason": "사례집 2.6.2 사례에서 '네트워크' 등 표현이 2.6.1 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook"
+        ]
+      },
+      {
+        "targetControlId": "2.6.3",
+        "reason": "서버 접근과 응용프로그램 접근은 동일 업무 흐름의 인접 통제입니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "category_adjacent",
+          "scenario"
+        ]
+      }
+    ],
+    "2.6.3": [
+      {
+        "targetControlId": "2.8.2",
+        "reason": "응용프로그램 접근통제는 보안 시험으로 검증합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "2.7.1": [
+      {
+        "targetControlId": "2.7.2",
+        "reason": "암호정책은 키 관리 기준과 함께 운영됩니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      },
+      {
+        "targetControlId": "3.1.3",
+        "reason": "주민등록번호 처리 제한과 암호화 통제가 연결됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      },
+      {
+        "targetControlId": "3.2.1",
+        "reason": "보유 개인정보 현황에 따라 암호화 대상을 정합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "2.8.1": [
+      {
+        "targetControlId": "2.8.2",
+        "reason": "정의한 보안 요구사항은 검토와 시험으로 확인합니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      }
+    ],
+    "2.9.4": [
+      {
+        "targetControlId": "2.10.1",
+        "reason": "보안시스템 이벤트/접속기록은 로그 관리 대상입니다.",
+        "strength": "strong",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "defect_priority"
+        ]
+      },
+      {
+        "targetControlId": "2.11.3",
+        "reason": "사례집 2.9.4 사례에서 '이상' 등 표현이 2.11.3 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "manual",
+          "casebook"
+        ]
+      },
+      {
+        "targetControlId": "2.9.5",
+        "reason": "사례집 2.9.4 사례에서 '검토 주기' 등 표현이 2.9.5 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "manual",
+          "casebook",
+          "scenario"
+        ]
+      }
+    ],
+    "2.9.5": [
+      {
+        "targetControlId": "2.9.4",
+        "reason": "사례집 2.9.5 사례에서 '로그' 등 표현이 2.9.4 통제와 연결됩니다.",
+        "strength": "strong",
+        "groundingLevel": "casebook_cite",
+        "evidenceTypes": [
+          "casebook"
+        ]
+      }
+    ],
+    "3.1.1": [
+      {
+        "targetControlId": "3.2.1",
+        "reason": "수집한 개인정보는 보유 현황으로 관리됩니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      }
+    ],
+    "3.1.3": [
+      {
+        "targetControlId": "2.7.1",
+        "reason": "주민등록번호 처리는 암호화 적용 검토 대상입니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "3.2.1": [
+      {
+        "targetControlId": "3.4.1",
+        "reason": "보유 현황은 파기 대상 식별의 기준입니다.",
+        "strength": "medium",
+        "groundingLevel": "category_adjacent",
+        "evidenceTypes": [
+          "manual",
+          "scenario"
+        ]
+      },
+      {
+        "targetControlId": "3.5.1",
+        "reason": "처리 현황은 처리방침 공개와 연결됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "3.2.5": [
+      {
+        "targetControlId": "2.7.1",
+        "reason": "가명정보 처리 시 식별 가능성 완화를 위한 기술적 조치를 함께 검토합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "3.3.2": [
+      {
+        "targetControlId": "2.3.2",
+        "reason": "개인정보 처리 위탁은 외부자 계약 보안과 연결됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "3.4.1": [
+      {
+        "targetControlId": "2.9.7",
+        "reason": "파기와 정보자산 재사용/폐기는 함께 증적화합니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ],
+    "3.5.2": [
+      {
+        "targetControlId": "3.5.3",
+        "reason": "권리보장 처리 결과는 정보주체 통지와 연결됩니다.",
+        "strength": "medium",
+        "groundingLevel": "interpret",
+        "evidenceTypes": [
+          "manual"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "controlId": "2.6.4",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "1 예시",
+    "데이터베이스현황(테이블,컬럼등)",
+    "데이터베이스접속자계정■권한목록",
+    "데이터베이스 접근제어 정책(데이터베이스 접근제어시스템 관리화면 등)",
+    "네트워크구성도(데이터베이스존등)"
+  ],
+  "existingPlainQuestion": "개인정보 DB는 누가 어떤 테이블에 붙는지 알고, 공용 계정/인터넷 노출을 막았나요?"
+}

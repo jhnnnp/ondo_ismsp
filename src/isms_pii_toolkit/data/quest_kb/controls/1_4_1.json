@@ -1,0 +1,48 @@
+{
+  "controlId": "1.4.1",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#1.4.1.1",
+      "사례집.md#1.4.1.2",
+      "사례집.md#1.4.1.6"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "최근 법 개정(개인정보 보호법 등)이 우리 정책/보험/공시에 반영됐는지 올해 검토했나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "law-scan",
+        "label": "준수해야 할 법령 목록을 최신으로 유지한다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "policy-align",
+        "label": "개정 내용이 정책/시행문서에 반영돼 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "insurance",
+        "label": "손해배상책임 보험/준비금 등 의무 조치를 확인했다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "올해 법령 개정 체크리스트를 만들고, 정책서 개정/보험 가입/정보보호 공시 대상 여부를 한 장으로 정리해 경영진 보고하세요.",
+      "guideRef": "legal-compliance-review",
+      "whenDone": "법령 준거성 검토 결과(또는 보고 자료) 관련 증적을 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

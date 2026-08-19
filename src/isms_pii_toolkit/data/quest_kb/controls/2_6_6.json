@@ -1,0 +1,48 @@
+{
+  "controlId": "2.6.6",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.6.6.1",
+      "사례집.md#2.6.6.2",
+      "사례집.md#2.6.6.4"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "원격접속(RDP/SSH/VPN)은 승인된 사람만, 필요한 구간만 들어가게 막아 두셨나요?",
+    "audience": [
+      "인프라",
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "remote-deny",
+        "label": "원격접속은 원칙 금지/예외만 허용한다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "vpn-limit",
+        "label": "VPN은 승인/기간/접근 구간을 제한한다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "ip-allow",
+        "label": "허용 IP/사용자 외 원격 접속이 막혀 있다",
+        "recommended": true,
+        "mapsToCheckKey": "implemented"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "서버의 RDP/SSH 공개 여부를 확인하고, VPN 상시 허용/전체망 접근을 사용자/기간/구간 단위로 줄이세요.",
+      "guideRef": "remote-access",
+      "whenDone": "원격접속/VPN 허용 목록 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

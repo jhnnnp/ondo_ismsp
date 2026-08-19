@@ -1,0 +1,13 @@
+{
+  "controlId": "1.2.4",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 2,
+  "evidenceExamples": [
+    "정보보호 및 개인정보보호 이행계획서■위험관리계획서",
+    "정보보호 및 개인정보보호 대책서",
+    "정보보호 및 개인정보보호 마스터플랜",
+    "정보보호 및 개인정보보호 이행계획 경영진 보고 및 승인 내역"
+  ],
+  "existingPlainQuestion": "법정의무/고위험 항목을 ‘그냥 수용’하지 않고, 이행계획과 보고를 남겼나요?"
+}

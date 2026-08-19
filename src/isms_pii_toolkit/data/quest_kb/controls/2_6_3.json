@@ -1,0 +1,48 @@
+{
+  "controlId": "2.6.3",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.6.3.1",
+      "사례집.md#2.6.3.3",
+      "사례집.md#2.6.3.5"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "어드민/개인정보 화면에서 권한 없는 사람이 조회/다운로드하지 못하게 막아 두셨나요?",
+    "audience": [
+      "개발/운영",
+      "보안(겸직)",
+      "개인정보 담당"
+    ],
+    "checks": [
+      {
+        "checkId": "rbac",
+        "label": "화면/메뉴별 권한 제어가 동작한다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "mask-download",
+        "label": "조회 마스킹/다운로드 최소화가 적용돼 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "admin-lock",
+        "label": "관리자 페이지는 외부 오픈을 막고 강한 인증을 켠다",
+        "recommended": true,
+        "mapsToCheckKey": "policy"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "권한 없는 계정으로 개인정보 화면을 열어보고, 관리자 URL/세션 타임아웃/다운로드 항목을 점검해 막으세요.",
+      "guideRef": "app-access-control",
+      "whenDone": "권한 테스트 화면 또는 관리자 접근통제 설정을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

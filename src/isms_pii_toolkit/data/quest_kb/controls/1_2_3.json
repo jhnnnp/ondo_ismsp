@@ -1,0 +1,48 @@
+{
+  "controlId": "1.2.3",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#1.2.3.3",
+      "사례집.md#1.2.3.4",
+      "사례집.md#1.2.3.7"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "올해 위험평가를 했고, 기술 취약점만이 아니라 관리/물리/법무 위험도 넣었나요?",
+    "audience": [
+      "경영지원",
+      "보안(겸직)",
+      "개인정보 보호책임자"
+    ],
+    "checks": [
+      {
+        "checkId": "annual",
+        "label": "올해 위험평가 실행계획(인력/일정)이 있다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "broad-scope",
+        "label": "관리/물리/법적 요구사항 위험을 포함한다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "exec-approve",
+        "label": "목표위험수준(DoA)을 경영진 승인받았다",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "취약점 진단 결과만으로 끝내지 말고, 관리/물리/법령 항목을 포함한 위험평가서를 작성해 최고책임자 승인을 받으세요.",
+      "guideRef": "risk-assessment",
+      "whenDone": "위험평가 결과/승인 기록을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

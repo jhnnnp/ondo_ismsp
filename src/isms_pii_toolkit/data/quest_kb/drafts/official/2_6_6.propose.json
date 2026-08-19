@@ -1,0 +1,14 @@
+{
+  "controlId": "2.6.6",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 4,
+  "evidenceExamples": [
+    "VPN 등 사외접속 신청서",
+    "VPN 계정목록",
+    "VPN 접근제어 정책 설정 현황",
+    "IP 관리대장",
+    "원격 접근제어 설정(서버 설정,보안시스템 설정 등)"
+  ],
+  "existingPlainQuestion": "원격접속(RDP/SSH/VPN)은 승인된 사람만, 필요한 구간만 들어가게 막아 두셨나요?"
+}

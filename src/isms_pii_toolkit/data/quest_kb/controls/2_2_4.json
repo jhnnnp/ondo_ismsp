@@ -1,0 +1,38 @@
+{
+  "controlId": "2.2.4",
+  "source": "thin",
+  "quality": "thin-stub",
+  "meta": {
+    "sourceDoc": "ISMS-P 인증기준 안내서(2023.11.23)",
+    "grounding": "official",
+    "builtFrom": "official_kb"
+  },
+  "quest": {
+    "plainQuestion": "인식제고 및 교육훈련을 실제 설정/운영에 반영했고, 화면으로 보여줄 수 있나요?",
+    "audience": [
+      "담당자",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "official-1",
+        "label": "정보보호 및 개인정보보호 교육의 시기,기간,대상,내용,방법 등의 내용이 포함된 연간 교육 계획을 수립하고 경영진의 승인을 받고 있다",
+        "recommended": false,
+        "mapsToCheckKey": "reviewed"
+      },
+      {
+        "checkId": "evidence",
+        "label": "증적 예시를 제시할 수 있다 (정보보호및개인정보보호교육 계획서)",
+        "recommended": true,
+        "mapsToCheckKey": "evidence"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "입/퇴사 시 계정/권한 회수 절차를 자동화하세요.",
+      "guideRef": "official-2.2.4",
+      "whenDone": "다음 증적 예시를 준비하세요: 정보보호및개인정보보호교육 계획서"
+    },
+    "evidenceSlots": []
+  },
+  "locked": false
+}

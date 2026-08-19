@@ -1,0 +1,47 @@
+{
+  "controlId": "2.8.5",
+  "locked": true,
+  "quality": "handcrafted",
+  "meta": {
+    "sourceDoc": "사례집.md",
+    "sourceRefs": [
+      "사례집.md#2.8.5.1",
+      "사례집.md#2.8.5.2",
+      "사례집.md#2.8.5.3"
+    ],
+    "promotedFrom": "casebook-draft"
+  },
+  "quest": {
+    "plainQuestion": "소스코드가 Git 등 형상관리에만 있고, 접근/변경 이력이 남나요?",
+    "audience": [
+      "개발/운영",
+      "보안(겸직)"
+    ],
+    "checks": [
+      {
+        "checkId": "scm",
+        "label": "형상관리(Git 등)에 최신 소스가 있다",
+        "recommended": false,
+        "mapsToCheckKey": "implemented"
+      },
+      {
+        "checkId": "access-log",
+        "label": "저장소 접근/변경 권한이 제한되고 이력이 남는다",
+        "recommended": false,
+        "mapsToCheckKey": "policy"
+      },
+      {
+        "checkId": "no-local-only",
+        "label": "개발자 PC에만 최신본을 두지 않는다",
+        "recommended": true,
+        "mapsToCheckKey": "reviewed"
+      }
+    ],
+    "actionGuide": {
+      "whenMissing": "Git/GitLab에 최신 소스를 올리고, Commit 권한을 최소화한 뒤 접근/변경 이력을 확인할 수 있게 하세요.",
+      "guideRef": "source-scm",
+      "whenDone": "형상관리 저장소/권한 설정 화면을 심사 때 바로 꺼낼 수 있게 모아 두세요."
+    },
+    "evidenceSlots": []
+  }
+}

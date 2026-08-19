@@ -1,0 +1,14 @@
+{
+  "controlId": "2.6.3",
+  "action": "propose_only",
+  "reason": "locked_or_handcrafted",
+  "officialCheckCount": 5,
+  "evidenceExamples": [
+    "응용프로그램 접근권한 분류 체계",
+    "응용프로그램계정",
+    "권한관리화면",
+    "응용프로그램 사용자 관리자 화면(개인정보 조회 등)",
+    "응용프로그램 세션 타임 및 동시접속 허용 여부 내역"
+  ],
+  "existingPlainQuestion": "어드민/개인정보 화면에서 권한 없는 사람이 조회/다운로드하지 못하게 막아 두셨나요?"
+}
