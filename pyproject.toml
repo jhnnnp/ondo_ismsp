@@ -30,6 +30,7 @@ guides = [
 
 [project.scripts]
 isms-p-api = "isms_pii_toolkit.api:run"
+isms-p-pass = "isms_pii_toolkit.access_pass:main"
 
 [tool.vercel]
 entrypoint = "index:app"
@@ -45,6 +46,8 @@ isms_pii_toolkit = [
   "*.html",
   "web/landing/*.css",
   "web/landing/*.js",
+  "web/admin/*.css",
+  "web/admin/*.js",
   "web/control_map/*.css",
   "web/control_map/styles/*.css",
   "web/control_map/*.js",

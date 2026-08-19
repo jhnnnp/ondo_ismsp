@@ -2,6 +2,7 @@ import { ANALYSIS_HISTORY_KEY } from "../../core/constants.js";
 import { el, escapeHtml, showToast, sleep } from "../../core/dom.js";
 import { state } from "../../core/state.js";
 import { persistActiveDiagnosisSession } from "../../core/storage.js";
+import { ensureAccessPass } from "../../core/access-pass.js";
 import { qualitativeLabelFromPercent, remapScoreTerminology } from "./utils.js";
 
 const ANALYSIS_HISTORY_PAGE_SIZE = 5;
@@ -143,6 +144,7 @@ export function bindReportRewrite() {
   requestBtn.dataset.bound = "1";
 
   requestBtn.addEventListener("click", async () => {
+    if (!(await ensureAccessPass())) return;
     const start = editor.selectionStart;
     const end = editor.selectionEnd;
     const selected = editor.value.slice(start, end).trim();

@@ -29,6 +29,8 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="analyzeHero"' in response.text
     assert 'id="reportReviewQueue"' not in response.text
     assert 'id="executiveReportStream"' in response.text
+    assert 'id="pageHeadPass"' in response.text
+    assert 'id="accessPassDialog"' in response.text
     assert 'id="reportEditorReactRoot"' in response.text
     assert 'class="report-editor-bridge"' in response.text
     assert '/controls/map/assets/react-dist/report-editor.js' in response.text
@@ -267,6 +269,11 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
     assert 'id="verbalizeToggle"' not in html
     assert "AI 리포트" not in html
     assert 'id="writeAiReportBtn"' in html
+    assert 'id="pageHeadPass"' in html
+    assert 'id="accessPassDialog"' in html
+    assert html.index('id="pageHeadPass"') < html.index('id="pageHeadStatus"')
+    assert "initAccessPass" in router
+    assert "ensureAccessPass" in router
     assert "AI로 초안 작성" in html
     assert 'id="reportComposeOverlay"' in html
     assert 'data-write-ai-report' in html

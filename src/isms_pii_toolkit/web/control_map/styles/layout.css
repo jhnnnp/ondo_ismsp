@@ -1646,6 +1646,7 @@ html { scroll-padding-top: 118px; }
 .workspace-context-divider { width:1px; height:14px; background:rgba(15,23,42,.1); }
 .workspace-context > span:last-child { min-width:0; overflow:hidden; color:var(--muted); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
 .app-chrome .page-head-status { grid-area:status; }
+.app-chrome .page-head-cluster { grid-area:status; }
 .app-workspace .top-nav-links { padding:0; border:0; background:transparent; box-shadow:none; }
 .app-workspace .top-nav-links > button,
 .app-workspace .top-nav-links > a { min-height:30px; padding:0 12px; border-left:0; border-radius:8px; background:#fff; font-size:11px; }
@@ -1695,6 +1696,107 @@ html { scroll-padding-top: 118px; }
 .page-head-status small { color:var(--text); font-family:var(--font-display); font-size:13px; font-weight:700; line-height:1; letter-spacing:-.03em; }
 .page-head-status.is-complete .page-head-status-icon { background: #dcf3ec; }
 .page-head-status.is-complete .page-head-status-icon::before { background:#087b66; }
+.page-head-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.page-head-pass {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px 0 6px;
+  border: 1px solid #d7e0e8;
+  border-radius: 999px;
+  background: #f4f7fa;
+  box-sizing: border-box;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+.page-head-pass[hidden] { display:none !important; }
+.page-head-pass-icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e8eef4;
+}
+.page-head-pass-icon::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7b8a99;
+}
+.page-head-pass-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  line-height: 1;
+}
+.page-head-pass strong {
+  color: #526276;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+}
+.page-head-pass small {
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.03em;
+  white-space: nowrap;
+}
+.page-head-pass.is-active {
+  border-color: #cfe7e1;
+  background: #f3faf7;
+}
+.page-head-pass.is-active .page-head-pass-icon { background: #d9f1ea; }
+.page-head-pass.is-active .page-head-pass-icon::before { background: #0d7d65; }
+.page-head-pass.is-active strong,
+.page-head-pass.is-active small { color: #0d7d65; }
+.page-head-pass.is-expired {
+  border-color: #f0ddba;
+  background: #fff8eb;
+}
+.page-head-pass.is-expired .page-head-pass-icon { background: #faedcf; }
+.page-head-pass.is-expired .page-head-pass-icon::before { background: #c68a2d; }
+.page-head-pass.is-expired strong,
+.page-head-pass.is-expired small { color: #a96f1e; }
+.access-pass-shell { grid-template-columns: 36px minmax(0,1fr); }
+.access-pass-field {
+  display: block;
+  margin: 12px 0 6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+.access-pass-shell input {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfd;
+  color: var(--text);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+}
+.access-pass-error {
+  margin: 8px 0 0;
+  color: #be123c;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+.access-pass-error[hidden] { display: none !important; }
 
 @media (max-width: 1050px) {
   #appMain { grid-template-columns:70px minmax(0,1fr); background-size:70px 100%; }
@@ -1711,7 +1813,7 @@ html { scroll-padding-top: 118px; }
   .app-workspace .top-nav-links > a { padding-inline:8px; }
 }
 @media (max-width: 860px) {
-  .app-workspace .app-chrome { grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"brand gnb"; }
+  .app-workspace .app-chrome { grid-template-columns:minmax(0,1fr) auto auto; grid-template-areas:"brand status gnb"; }
   .app-chrome .page-head-status { display:none !important; }
 }
 @media (max-width: 720px) {

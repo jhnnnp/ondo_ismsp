@@ -40,6 +40,10 @@ import {
   rankControlsBySearch,
 } from "../../src/isms_pii_toolkit/web/control_map/features/assessment/search.js";
 import {
+  formatPassRemaining,
+  remainingFromExpires,
+} from "../../src/isms_pii_toolkit/web/control_map/core/access-pass.js";
+import {
   applyWeakReviewState,
   areaReadiness,
   assessmentSummary,
@@ -421,4 +425,14 @@ test("structured intents retrieve compound findings beyond account controls", ()
   assert.ok(controlSearchScore(controls[0], finding) > 0);
   assert.ok(controlSearchScore(controls[1], finding) > 0);
   assert.equal(controlSearchScore(controls[2], finding), 0);
+});
+
+test("access pass remaining labels include days and hours", () => {
+  assert.equal(formatPassRemaining((3 * 86400) + (14 * 3600) + 90), "3일 14시간 남음");
+  assert.equal(formatPassRemaining((5 * 3600) + (12 * 60)), "5시간 12분 남음");
+  assert.equal(formatPassRemaining(90), "1분 남음");
+  assert.equal(formatPassRemaining(20), "1분 미만 남음");
+  const now = Date.parse("2026-08-19T08:00:00Z");
+  assert.equal(remainingFromExpires("2026-08-22T08:00:00+00:00", now), 3 * 86400);
+  assert.equal(remainingFromExpires(null, now), 0);
 });

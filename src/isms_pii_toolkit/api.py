@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+import sys
 from io import BytesIO
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -21,6 +22,29 @@ from .control_graph import (
     list_evidences,
     list_scenarios,
     trace_scenario,
+)
+from .access_pass import (
+    ADMIN_COOKIE_NAME,
+    ADMIN_SESSION_HOURS,
+    COOKIE_NAME,
+    AccessPassError,
+    access_pass_required,
+    admin_configured,
+    admin_console_path,
+    clear_admin_session,
+    create_admin_session,
+    issue_pass_record,
+    list_passes,
+    pass_summary,
+    public_status,
+    register_pass,
+    remaining_seconds,
+    reserve_admin_login,
+    resolve_admin_session,
+    resolve_session,
+    revoke_pass,
+    update_pass_note,
+    verify_admin_password,
 )
 from .llm_report_guard import LlmReportGuard, LlmReportLimitError
 from .organization_profile import normalize_organization_profile
@@ -43,6 +67,15 @@ from .schemas import (
     ControlResponse,
     DashboardResponse,
     EvidenceListResponse,
+    AccessPassRegisterRequest,
+    AccessPassStatusResponse,
+    AdminLoginRequest,
+    AdminPassIssueRequest,
+    AdminPassIssueResponse,
+    AdminPassListResponse,
+    AdminPassNoteRequest,
+    AdminPassRecordResponse,
+    AdminSessionResponse,
     HealthResponse,
     OrganizationProfileRequest,
     OrganizationProfileResponse,
@@ -62,6 +95,7 @@ from .schemas import (
 _DEMO_DIR = Path(__file__).resolve().parent
 _CONTROL_MAP_ASSET_DIR = _DEMO_DIR / "web" / "control_map"
 _LANDING_ASSET_DIR = _DEMO_DIR / "web" / "landing"
+_ADMIN_ASSET_DIR = _DEMO_DIR / "web" / "admin"
 _WEB_ASSET_MEDIA_TYPES = {
     ".css": "text/css",
     ".js": "text/javascript",
@@ -79,6 +113,11 @@ def _load_control_map_html() -> str:
 
 def _load_landing_html() -> str:
     return (_DEMO_DIR / "landing.html").read_text(encoding="utf-8")
+
+
+def _load_admin_html(base_path: str) -> str:
+    html = (_DEMO_DIR / "admin.html").read_text(encoding="utf-8")
+    return html.replace("__ADMIN_BASE__", base_path.rstrip("/"))
 
 
 def _load_web_asset(base_dir: Path, asset_path: str) -> tuple[str | bytes, str]:
@@ -100,6 +139,10 @@ def _load_control_map_asset(asset_path: str) -> tuple[str | bytes, str]:
 
 def _load_landing_asset(asset_path: str) -> tuple[str | bytes, str]:
     return _load_web_asset(_LANDING_ASSET_DIR, asset_path)
+
+
+def _load_admin_asset(asset_path: str) -> tuple[str | bytes, str]:
+    return _load_web_asset(_ADMIN_ASSET_DIR, asset_path)
 
 
 CONTROL_MAP_HTML = _load_control_map_html()
@@ -189,6 +232,66 @@ def _bounded_env_int(name: str, default: int, minimum: int, maximum: int) -> int
     return max(minimum, min(maximum, value))
 
 
+def _cookie_secure(http_request: Request) -> bool:
+    return http_request.url.scheme == "https"
+
+
+def _apply_access_cookie(response: Response, http_request: Request, session_token: str, record: dict[str, object]) -> None:
+    remaining = remaining_seconds(str(record.get("expiresAt") or ""))
+    response.set_cookie(
+        key=COOKIE_NAME,
+        value=session_token,
+        httponly=True,
+        samesite="lax",
+        secure=_cookie_secure(http_request),
+        max_age=max(1, remaining),
+        path="/",
+    )
+
+
+def _admin_cookie_path() -> str:
+    slug = admin_console_path()
+    return f"/{slug}" if slug else "/unavailable"
+
+
+def _admin_response_headers() -> dict[str, str]:
+    return {
+        "Cache-Control": "no-store",
+        "X-Robots-Tag": "noindex, nofollow",
+    }
+
+
+def _apply_admin_cookie(response: Response, http_request: Request, session_token: str) -> None:
+    response.set_cookie(
+        key=ADMIN_COOKIE_NAME,
+        value=session_token,
+        httponly=True,
+        samesite="lax",
+        secure=_cookie_secure(http_request),
+        max_age=ADMIN_SESSION_HOURS * 3600,
+        path=_admin_cookie_path(),
+    )
+
+
+def _clear_admin_cookie(response: Response) -> None:
+    response.delete_cookie(key=ADMIN_COOKIE_NAME, path=_admin_cookie_path())
+
+
+def _enforce_admin(http_request: Request) -> None:
+    if not admin_configured():
+        raise HTTPException(status_code=503, detail="관리자 비밀번호가 설정되지 않았습니다.")
+    if resolve_admin_session(http_request.cookies.get(ADMIN_COOKIE_NAME)) is None:
+        raise HTTPException(status_code=401, detail="관리자 로그인이 필요합니다.")
+
+
+def _enforce_ai_access_pass(http_request: Request) -> None:
+    if not access_pass_required():
+        return
+    record = resolve_session(http_request.cookies.get(COOKIE_NAME))
+    if record is None:
+        raise HTTPException(status_code=403, detail="AI 보고서 사용권이 필요합니다.")
+
+
 def _analyze_control_request(request: AssessRequest) -> dict[str, object]:
     """Recompute trusted structured facts from checklist inputs only."""
     profile = (
@@ -261,6 +364,126 @@ def create_app() -> FastAPI:
     @application.get("/health", response_model=HealthResponse, tags=["system"])
     def health() -> HealthResponse:
         return HealthResponse(status="ok", version=__version__)
+
+    @application.get("/access/status", response_model=AccessPassStatusResponse, tags=["access"])
+    def access_status(http_request: Request) -> AccessPassStatusResponse:
+        record = resolve_session(http_request.cookies.get(COOKIE_NAME))
+        return AccessPassStatusResponse(**public_status(record))
+
+    @application.post("/access/register", response_model=AccessPassStatusResponse, tags=["access"])
+    def access_register(
+        payload: AccessPassRegisterRequest,
+        http_request: Request,
+        response: Response,
+    ) -> AccessPassStatusResponse:
+        try:
+            session_token, record = register_pass(payload.token)
+        except AccessPassError as error:
+            raise HTTPException(status_code=error.status_code, detail=str(error)) from error
+        _apply_access_cookie(response, http_request, session_token, record)
+        return AccessPassStatusResponse(**public_status(record))
+
+    admin_slug = admin_console_path()
+    if admin_slug:
+        admin_prefix = f"/{admin_slug}"
+
+        @application.get(admin_prefix, response_class=HTMLResponse, include_in_schema=False)
+        def admin_page() -> HTMLResponse:
+            return HTMLResponse(
+                content=_load_admin_html(admin_prefix),
+                headers=_admin_response_headers(),
+            )
+
+        @application.get(f"{admin_prefix}/assets/{{asset_path:path}}", include_in_schema=False)
+        def admin_asset(asset_path: str) -> Response:
+            try:
+                content, media_type = _load_admin_asset(asset_path)
+            except FileNotFoundError as error:
+                raise HTTPException(status_code=404, detail="Admin asset not found.") from error
+            return Response(
+                content=content,
+                media_type=media_type,
+                headers=_admin_response_headers(),
+            )
+
+        @application.get(f"{admin_prefix}/session", response_model=AdminSessionResponse, include_in_schema=False)
+        def admin_session(http_request: Request) -> AdminSessionResponse:
+            authenticated = resolve_admin_session(http_request.cookies.get(ADMIN_COOKIE_NAME)) is not None
+            return AdminSessionResponse(configured=admin_configured(), authenticated=authenticated)
+
+        @application.post(f"{admin_prefix}/login", response_model=AdminSessionResponse, include_in_schema=False)
+        def admin_login(
+            payload: AdminLoginRequest,
+            http_request: Request,
+            response: Response,
+        ) -> AdminSessionResponse:
+            client_id = http_request.client.host if http_request.client is not None else "unknown"
+            try:
+                reserve_admin_login(client_id)
+            except AccessPassError as error:
+                raise HTTPException(status_code=error.status_code, detail=str(error)) from error
+            if not admin_configured():
+                raise HTTPException(status_code=503, detail="관리자 비밀번호가 설정되지 않았습니다.")
+            if not verify_admin_password(payload.password):
+                raise HTTPException(status_code=401, detail="관리자 비밀번호가 올바르지 않습니다.")
+            session_token = create_admin_session()
+            _apply_admin_cookie(response, http_request, session_token)
+            return AdminSessionResponse(configured=True, authenticated=True)
+
+        @application.post(f"{admin_prefix}/logout", response_model=AdminSessionResponse, include_in_schema=False)
+        def admin_logout(http_request: Request, response: Response) -> AdminSessionResponse:
+            clear_admin_session(http_request.cookies.get(ADMIN_COOKIE_NAME))
+            _clear_admin_cookie(response)
+            return AdminSessionResponse(configured=admin_configured(), authenticated=False)
+
+        @application.get(f"{admin_prefix}/passes", response_model=AdminPassListResponse, include_in_schema=False)
+        def admin_list_passes(http_request: Request) -> AdminPassListResponse:
+            _enforce_admin(http_request)
+            return AdminPassListResponse(
+                passes=[AdminPassRecordResponse(**item) for item in list_passes()]
+            )
+
+        @application.post(f"{admin_prefix}/passes", response_model=AdminPassIssueResponse, include_in_schema=False)
+        def admin_issue_pass(
+            payload: AdminPassIssueRequest,
+            http_request: Request,
+        ) -> AdminPassIssueResponse:
+            _enforce_admin(http_request)
+            token, record = issue_pass_record(
+                duration_days=payload.duration_days,
+                note=payload.note,
+            )
+            return AdminPassIssueResponse(token=token, record=AdminPassRecordResponse(**pass_summary(record)))
+
+        @application.patch(
+            f"{admin_prefix}/passes/{{pass_id}}",
+            response_model=AdminPassRecordResponse,
+            include_in_schema=False,
+        )
+        def admin_update_pass_note(
+            pass_id: str,
+            payload: AdminPassNoteRequest,
+            http_request: Request,
+        ) -> AdminPassRecordResponse:
+            _enforce_admin(http_request)
+            try:
+                record = update_pass_note(pass_id, payload.note)
+            except AccessPassError as error:
+                raise HTTPException(status_code=error.status_code, detail=str(error)) from error
+            return AdminPassRecordResponse(**pass_summary(record))
+
+        @application.post(
+            f"{admin_prefix}/passes/{{pass_id}}/revoke",
+            response_model=AdminPassRecordResponse,
+            include_in_schema=False,
+        )
+        def admin_revoke_pass(pass_id: str, http_request: Request) -> AdminPassRecordResponse:
+            _enforce_admin(http_request)
+            try:
+                record = revoke_pass(pass_id)
+            except AccessPassError as error:
+                raise HTTPException(status_code=error.status_code, detail=str(error)) from error
+            return AdminPassRecordResponse(**pass_summary(record))
 
     @application.get("/controls/map", response_class=HTMLResponse, include_in_schema=False)
     def control_map_page() -> HTMLResponse:
@@ -359,6 +582,7 @@ def create_app() -> FastAPI:
         from .detail_narrative import apply_detail_narratives
         from .verbalize_inference import apply_verbalizing
 
+        _enforce_ai_access_pass(http_request)
         client_id = http_request.client.host if http_request.client is not None else "unknown"
         try:
             async with report_guard.limit(client_id):
@@ -403,6 +627,7 @@ def create_app() -> FastAPI:
     ) -> ReportRewriteResponse:
         from .report_rewrite import rewrite_report_passage
 
+        _enforce_ai_access_pass(http_request)
         client_id = http_request.client.host if http_request.client is not None else "unknown"
         try:
             async with report_guard.limit(client_id):
@@ -587,12 +812,35 @@ def create_app() -> FastAPI:
     return application
 
 
+def _load_project_env() -> None:
+    if "pytest" in sys.modules:
+        return
+    candidates = [Path.cwd() / ".env", Path(__file__).resolve().parents[2] / ".env"]
+    seen: set[Path] = set()
+    for path in candidates:
+        resolved = path.resolve()
+        if resolved in seen or not path.is_file():
+            continue
+        seen.add(resolved)
+        for raw in path.read_text(encoding="utf-8").splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            key = key.strip()
+            if not key or key in os.environ:
+                continue
+            os.environ[key] = value.strip().strip("'").strip('"')
+
+
+_load_project_env()
 app = create_app()
 
 
 def run() -> None:
     import uvicorn
 
+    _load_project_env()
     uvicorn.run(
         "isms_pii_toolkit.api:app",
         host=os.getenv("PII_TOOLKIT_API_HOST", "127.0.0.1"),

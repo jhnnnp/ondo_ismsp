@@ -7,6 +7,7 @@ import {
   PAGE_KICKER,
   PAGE_TITLE,
 } from "./constants.js";
+import { initAccessPass, ensureAccessPass } from "./access-pass.js";
 import { confirmAction, el, escapeHtml, fetchJson, showToast } from "./dom.js";
 import { state } from "./state.js";
 import {
@@ -593,6 +594,7 @@ function bindEvents() {
   });
   document.querySelectorAll("[data-write-ai-report]").forEach((button) => {
     button.addEventListener("click", async () => {
+      if (!(await ensureAccessPass())) return;
       const editor = el("executiveReportStream");
       if (editor?.dataset.userEdited === "1") {
         const confirmed = await confirmAction({
@@ -663,6 +665,7 @@ export async function bootstrap() {
   });
   setRouteHandler(applyRoute);
   initializeDiagnosisSessions();
+  initAccessPass();
   bindEvents();
   const initial = parsePath(window.location.pathname);
   const routeId = initial?.id || "sessions";

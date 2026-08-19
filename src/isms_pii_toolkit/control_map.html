@@ -10,7 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260819-7">
+  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260819-8">
   <link rel="stylesheet" href="/controls/map/assets/react-dist/report-editor.css?v=20260819-5">
 
 </head>
@@ -87,12 +87,21 @@
           <span class="workspace-context-divider" aria-hidden="true"></span>
           <span id="workspaceContextDetail">진단 환경 설정</span>
         </div>
-        <div class="page-head-status" id="pageHeadStatus" hidden>
-          <span class="page-head-status-icon" aria-hidden="true"></span>
-          <span class="page-head-status-copy">
-            <strong id="pageHeadStatusLabel">진단 진행 중</strong>
-            <small id="pageHeadStatusMeta">0 / 101</small>
-          </span>
+        <div class="page-head-cluster" id="pageHeadCluster">
+          <button type="button" class="page-head-pass is-empty" id="pageHeadPass" hidden aria-label="AI 사용권을 등록하세요.">
+            <span class="page-head-pass-icon" aria-hidden="true"></span>
+            <span class="page-head-pass-copy">
+              <strong id="pageHeadPassLabel">AI 사용권</strong>
+              <small id="pageHeadPassMeta">미등록</small>
+            </span>
+          </button>
+          <div class="page-head-status" id="pageHeadStatus" hidden>
+            <span class="page-head-status-icon" aria-hidden="true"></span>
+            <span class="page-head-status-copy">
+              <strong id="pageHeadStatusLabel">진단 진행 중</strong>
+              <small id="pageHeadStatusMeta">0 / 101</small>
+            </span>
+          </div>
         </div>
         <div class="top-nav-links" id="topNavLinks">
           <button type="button" id="toggleLabBtn" aria-expanded="false" aria-controls="labLinks">랩</button>
@@ -342,8 +351,26 @@
     <i class="toast-timer" aria-hidden="true"></i>
   </div>
 
+  <dialog class="app-confirm-dialog" id="accessPassDialog" aria-labelledby="accessPassTitle">
+    <form class="app-confirm-shell access-pass-shell" id="accessPassForm">
+      <div class="app-confirm-icon" aria-hidden="true">#</div>
+      <div class="app-confirm-copy">
+        <span>AI 사용권</span>
+        <h2 id="accessPassTitle">사용권을 등록하세요</h2>
+        <p>AI 초안 작성과 문장 재작성에만 사용됩니다. 진단 내용은 이 브라우저에 남습니다.</p>
+        <label class="access-pass-field" for="accessPassInput">사용권</label>
+        <input id="accessPassInput" name="token" type="text" autocomplete="off" spellcheck="false" placeholder="ondo_live_ 로 시작하는 문자열">
+        <p class="access-pass-error" id="accessPassError" hidden></p>
+      </div>
+      <div class="app-confirm-actions">
+        <button type="button" class="app-confirm-cancel" id="accessPassCancelBtn">취소</button>
+        <button type="submit" class="app-confirm-submit" id="accessPassSubmitBtn">사용권 등록</button>
+      </div>
+    </form>
+  </dialog>
+
   <script type="module" src="/controls/map/assets/react-dist/report-editor.js?v=20260819-5"></script>
-  <script type="module" src="/controls/map/assets/app.js?v=20260819-4"></script>
+  <script type="module" src="/controls/map/assets/app.js?v=20260819-5"></script>
 
 </body>
 

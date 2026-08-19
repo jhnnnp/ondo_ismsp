@@ -786,6 +786,57 @@ class ReportDocumentRequest(ApiModel):
     content: str = Field(min_length=1, max_length=200_000)
 
 
+class AccessPassRegisterRequest(ApiModel):
+    token: str = Field(min_length=16, max_length=200)
+
+
+class AccessPassStatusResponse(ApiModel):
+    required: bool
+    active: bool
+    remaining_seconds: int | None = Field(default=None, alias="remainingSeconds")
+    expires_at: str | None = Field(default=None, alias="expiresAt")
+    duration_days: int | None = Field(default=None, alias="durationDays")
+
+
+class AdminLoginRequest(ApiModel):
+    password: str = Field(min_length=1, max_length=200)
+
+
+class AdminSessionResponse(ApiModel):
+    configured: bool
+    authenticated: bool
+
+
+class AdminPassIssueRequest(ApiModel):
+    duration_days: int = Field(default=7, alias="durationDays", ge=1, le=90)
+    note: str = Field(default="", max_length=80)
+
+
+class AdminPassNoteRequest(ApiModel):
+    note: str = Field(default="", max_length=80)
+
+
+class AdminPassRecordResponse(ApiModel):
+    id: str
+    note: str = ""
+    duration_days: int | None = Field(default=None, alias="durationDays")
+    created_at: str | None = Field(default=None, alias="createdAt")
+    activated_at: str | None = Field(default=None, alias="activatedAt")
+    expires_at: str | None = Field(default=None, alias="expiresAt")
+    revoked_at: str | None = Field(default=None, alias="revokedAt")
+    status: str
+    remaining_seconds: int = Field(default=0, alias="remainingSeconds")
+
+
+class AdminPassListResponse(ApiModel):
+    passes: list[AdminPassRecordResponse]
+
+
+class AdminPassIssueResponse(ApiModel):
+    token: str
+    record: AdminPassRecordResponse
+
+
 class ReportRewriteRequest(ApiModel):
     text: str = Field(min_length=1, max_length=8_000)
     mode: Literal[

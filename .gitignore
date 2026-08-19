@@ -1,3 +1,6 @@
+.ondo/
+.ondo-access-passes.json
+access-passes.json
 .venv/
 __pycache__/
 .pytest_cache/
