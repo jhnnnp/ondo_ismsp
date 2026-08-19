@@ -169,3 +169,25 @@ def test_corrupted_store_starts_empty(tmp_path: Path, monkeypatch: pytest.Monkey
     assert token.startswith("ondo_live_")
     save_store({"version": 1, "passes": "bad"})
     assert load_store()["passes"] == []
+
+
+def test_blob_store_roundtrip_without_local_file(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("PII_TOOLKIT_ACCESS_PASS_STORE", raising=False)
+    monkeypatch.setenv("BLOB_READ_WRITE_TOKEN", "vercel_blob_rw_testhostid1_secret")
+    remote: dict[str, object] = {}
+
+    def fake_load() -> dict:
+        return remote.get("payload") or {"version": 1, "passes": [], "adminSessions": []}
+
+    def fake_save(payload: dict) -> None:
+        remote["payload"] = payload
+
+    monkeypatch.setattr("isms_pii_toolkit.access_pass._load_blob_store", fake_load)
+    monkeypatch.setattr("isms_pii_toolkit.access_pass._save_blob_store", fake_save)
+    token = issue_pass(duration_days=3, note="배포")
+    payload = remote["payload"]
+    assert isinstance(payload, dict)
+    assert payload["passes"][0]["note"] == "배포"
+    session, _record = register_pass(token)
+    assert session.startswith("ondo_sess_")
+    assert resolve_session(session) is not None

@@ -8,9 +8,13 @@ import json
 import os
 import re
 import secrets
+import ssl
 import sys
 import threading
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -22,6 +26,9 @@ TOKEN_PREFIX = "ondo_live_"
 SESSION_PREFIX = "ondo_sess_"
 ADMIN_SESSION_PREFIX = "ondo_adm_"
 STORE_VERSION = 1
+BLOB_STORE_PATHNAME = "ondo/access-passes.json"
+BLOB_API_VERSION = "12"
+BLOB_HTTP_TIMEOUT = 12
 MIN_DURATION_DAYS = 1
 MAX_DURATION_DAYS = 90
 DEFAULT_DURATION_DAYS = 7
@@ -131,18 +138,25 @@ def store_path() -> Path:
     return Path.home() / ".ondo" / "access-passes.json"
 
 
-def empty_store() -> dict[str, Any]:
-    return {"version": STORE_VERSION, "passes": [], "adminSessions": []}
+def blob_read_write_token() -> str:
+    return os.getenv("BLOB_READ_WRITE_TOKEN", "").strip().strip('"')
 
 
-def load_store() -> dict[str, Any]:
-    path = store_path()
-    if not path.is_file():
-        return empty_store()
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return empty_store()
+def use_blob_store() -> bool:
+    if os.getenv("PII_TOOLKIT_ACCESS_PASS_STORE", "").strip():
+        return False
+    return bool(blob_read_write_token())
+
+
+def blob_store_id() -> str | None:
+    token = blob_read_write_token()
+    parts = token.split("_")
+    if len(parts) >= 4 and parts[:3] == ["vercel", "blob", "rw"]:
+        return parts[3]
+    return None
+
+
+def _normalize_store(payload: dict[str, Any] | None) -> dict[str, Any]:
     if not isinstance(payload, dict):
         return empty_store()
     passes = payload.get("passes")
@@ -158,14 +172,98 @@ def load_store() -> dict[str, Any]:
     }
 
 
+def empty_store() -> dict[str, Any]:
+    return {"version": STORE_VERSION, "passes": [], "adminSessions": []}
+
+
+def _blob_url(pathname: str, *, cache: bool = True) -> str:
+    store_id = blob_store_id()
+    if not store_id:
+        raise AccessPassError("사용권 저장소 토큰이 올바르지 않습니다.", status_code=503)
+    encoded = "/".join(urllib.parse.quote(part, safe="") for part in pathname.split("/") if part)
+    url = f"https://{store_id}.private.blob.vercel-storage.com/{encoded}"
+    if not cache:
+        url = f"{url}?cache=0"
+    return url
+
+
+def _ssl_context() -> ssl.SSLContext:
+    try:
+        import certifi
+    except ImportError:
+        return ssl.create_default_context()
+    return ssl.create_default_context(cafile=certifi.where())
+
+
+def _blob_request(url: str, *, method: str, data: bytes | None = None, extra_headers: dict[str, str] | None = None) -> bytes:
+    headers = {
+        "Authorization": f"Bearer {blob_read_write_token()}",
+        "x-api-version": BLOB_API_VERSION,
+    }
+    if extra_headers:
+        headers.update(extra_headers)
+    request = urllib.request.Request(url, data=data, method=method, headers=headers)
+    try:
+        with urllib.request.urlopen(request, timeout=BLOB_HTTP_TIMEOUT, context=_ssl_context()) as response:
+            return response.read()
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            raise FileNotFoundError(url) from error
+        raise AccessPassError("사용권 저장소에 연결하지 못했습니다.", status_code=503) from error
+    except urllib.error.URLError as error:
+        raise AccessPassError("사용권 저장소에 연결하지 못했습니다.", status_code=503) from error
+
+
+def _load_blob_store() -> dict[str, Any]:
+    try:
+        raw = _blob_request(_blob_url(BLOB_STORE_PATHNAME, cache=False), method="GET")
+    except FileNotFoundError:
+        return empty_store()
+    try:
+        payload = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return empty_store()
+    return _normalize_store(payload)
+
+
+def _save_blob_store(payload: dict[str, Any]) -> None:
+    body = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
+    params = urllib.parse.urlencode({"pathname": BLOB_STORE_PATHNAME})
+    _blob_request(
+        f"https://vercel.com/api/blob/?{params}",
+        method="PUT",
+        data=body,
+        extra_headers={
+            "x-vercel-blob-access": "private",
+            "x-allow-overwrite": "1",
+            "x-add-random-suffix": "0",
+            "x-content-type": "application/json",
+        },
+    )
+
+
+def load_store() -> dict[str, Any]:
+    if use_blob_store():
+        return _load_blob_store()
+    path = store_path()
+    if not path.is_file():
+        return empty_store()
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return empty_store()
+    return _normalize_store(payload)
+
+
 def save_store(payload: dict[str, Any]) -> None:
+    normalized = _normalize_store(payload)
+    if use_blob_store():
+        _save_blob_store(normalized)
+        return
+    if os.getenv("VERCEL"):
+        raise AccessPassError("사용권 저장소가 설정되지 않았습니다.", status_code=503)
     path = store_path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    normalized = {
-        "version": STORE_VERSION,
-        "passes": payload.get("passes") if isinstance(payload.get("passes"), list) else [],
-        "adminSessions": payload.get("adminSessions") if isinstance(payload.get("adminSessions"), list) else [],
-    }
     serialized = json.dumps(normalized, ensure_ascii=False, indent=2)
     tmp = path.with_suffix(f"{path.suffix}.tmp")
     tmp.write_text(serialized, encoding="utf-8")
