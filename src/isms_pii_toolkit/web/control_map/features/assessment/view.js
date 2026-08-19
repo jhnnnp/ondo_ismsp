@@ -31,7 +31,6 @@ function officialLawUrl(value) {
 
 function cleanCasebookSpacing(value) {
   return String(value || "")
-    .replace(/\s+/g, " ")
     .replace(/개인 정보/g, "개인정보")
     .replace(/정보 주체/g, "정보주체")
     .replace(/공동 주택/g, "공동주택")
@@ -40,19 +39,70 @@ function cleanCasebookSpacing(value) {
     .replace(/관리 사무소/g, "관리사무소")
     .replace(/입주자대표 회의/g, "입주자대표회의")
     .replace(/개인정보 처리자/g, "개인정보처리자")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-export function renderCasebookReasoning(value) {
-  const lines = String(value || "")
-    .split(/\r?\n/)
+function normalizeLegalSource(value) {
+  return String(value || "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/\u00a0/g, " ")
+    .replace(/(\d+)\s*[•·]\s*(?:\n|$)/g, "\n")
+    .replace(/(\d+\))\s*\1/g, "$1 ")
+    .replace(/\s*<\s*([^<>]{2,40})\s*>\s*/g, "\n<$1>\n")
+    .replace(/\s+([가나다라마바사아자차카타파하])\.\s+(?=「|[가-힣]|제\d)/g, "\n$1. ")
+    .replace(/(?:^|\n)\s*([①-⑳])\s+/g, "\n$1 ")
+    .replace(/\s+(※)\s+/g, "\n$1 ")
+    .replace(/(?:^|\n)\s*[-–∙·•▪◦]\s+/g, "\n- ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function splitQuestionClauses(line) {
+  if (!/여부와/.test(line)) return [line];
+  const parts = line.split(/\s*여부와\s+/);
+  if (parts.length !== 2) return [line];
+  const left = parts[0].trim();
+  const right = parts[1].trim();
+  if (!left || !right) return [line];
+  if (!/(여부|있는지|할지|인지|「)/.test(left) || !/(여부|「)/.test(right)) return [line];
+  return [
+    /여부\??$/.test(left) ? left : `${left} 여부`,
+    right,
+  ];
+}
+
+function explodeSentences(line) {
+  if (line.length < 160) return [line];
+  const parts = line.split(/(?<=(?:합니다|됩니다|있습니다|없습니다|봅니다|판단됩니다|어렵습니다|해당하지 않습니다|요청함)\.)\s+/);
+  return parts.length > 1 ? parts.map((part) => part.trim()).filter(Boolean) : [line];
+}
+
+function isLegalHeading(line, nextLine) {
+  if (/^(행위 주체 내용|관리주체|질의 배경|관계 법령|결론)$/.test(line)) return true;
+  if (line.length <= 40 && /(?:결정례|판례|구조도|법적 근거)$/.test(line)) return true;
+  return line.length <= 16
+    && !/[.!?。?]$/.test(line)
+    && !/^[①-⑳가나다라마바사\d]/.test(line)
+    && /^[①-⑳]/.test(nextLine || "");
+}
+
+export function renderLegalProse(value) {
+  const lines = normalizeLegalSource(value)
+    .split(/\n+/)
     .map((line) => line.trim())
-    .filter((line) => line && !/^\d+\s*[•·]\s*$/.test(line) && !/^[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+$/.test(line));
+    .filter((line) => line && !/^\d+\s*[•·]\s*$/.test(line) && !/^[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+$/.test(line))
+    .flatMap((line) => (
+      /^([가나다라마바사아자차카타파하]\.|[①-⑳]|\d{1,2}\.|-|※|<)/.test(line)
+        ? [line]
+        : explodeSentences(line)
+    ));
   if (!lines.length) return "";
 
   const blocks = [];
   let paragraph = [];
   let listItems = [];
+  let listKind = "";
   const flushParagraph = () => {
     if (!paragraph.length) return;
     blocks.push(`<p>${escapeHtml(cleanCasebookSpacing(paragraph.join(" ")))}</p>`);
@@ -60,22 +110,69 @@ export function renderCasebookReasoning(value) {
   };
   const flushList = () => {
     if (!listItems.length) return;
-    blocks.push(`<ol class="legal-reasoning-list">${listItems.map((item) => `<li>${escapeHtml(cleanCasebookSpacing(item))}</li>`).join("")}</ol>`);
+    const isHangul = listKind === "hangul";
+    const isBullet = listKind === "bullet";
+    const tag = isBullet ? "ul" : "ol";
+    const cls = isHangul ? "legal-hangul-list" : isBullet ? "legal-bullet-list" : "legal-reasoning-list";
+    blocks.push(`<${tag} class="${cls}">${listItems.map((item) => `<li>${escapeHtml(cleanCasebookSpacing(item))}</li>`).join("")}</${tag}>`);
     listItems = [];
+    listKind = "";
   };
-  const isHeading = (line, nextLine) => (
-    /^(행위 주체 내용|.*(?:결정례|판례|구조도|법적 근거|관련 법령))$/.test(line)
-    || (line.length <= 16 && /^[①-⑳]/.test(nextLine || ""))
-  );
+  const pushListItem = (kind, text) => {
+    if (listKind && listKind !== kind) flushList();
+    listKind = kind;
+    listItems.push(text);
+  };
 
-  lines.forEach((line, index) => {
-    const numbered = line.match(/^[①-⑳]\s*(.+)$/);
-    const bullet = line.match(/^[∙·•▪◦-]\s*(.+)$/);
-    if (numbered || bullet) {
+  lines.forEach((rawLine, index) => {
+    const line = rawLine.replace(/^<\s*([^>]+)\s*>$/, "$1").trim();
+    const markerHeading = /^<\s*([^>]+)\s*>$/.test(rawLine);
+    const hangulItem = line.match(/^([가나다라마바사아자차카타파하])\.\s*(.+)$/);
+    const numbered = line.match(/^(\d{1,2})\.\s+(.+)$/);
+    const circled = line.match(/^([①-⑳])\s*(.+)$/);
+    const bullet = line.match(/^-\s*(.+)$/);
+    const note = line.match(/^※\s*(.+)$/);
+    const omission = /^(?:[①-⑳]|\d{1,2}\.)\s*[∼~～]/.test(line);
+    const nextLine = lines[index + 1] || "";
+
+    if (omission) {
       flushParagraph();
-      listItems.push((numbered || bullet)[1]);
+      flushList();
+      blocks.push(`<p class="legal-note">${escapeHtml(cleanCasebookSpacing(line))}</p>`);
       return;
     }
+
+    if (markerHeading || isLegalHeading(line, nextLine)) {
+      flushParagraph();
+      flushList();
+      blocks.push(`<h5>${escapeHtml(cleanCasebookSpacing(line))}</h5>`);
+      return;
+    }
+    if (note) {
+      flushParagraph();
+      flushList();
+      blocks.push(`<p class="legal-note">${escapeHtml(cleanCasebookSpacing(note[1]))}</p>`);
+      return;
+    }
+    if (hangulItem) {
+      flushParagraph();
+      pushListItem("hangul", hangulItem[2]);
+      return;
+    }
+    if (numbered || circled || bullet) {
+      flushParagraph();
+      const kind = bullet ? "bullet" : "decimal";
+      pushListItem(kind, (numbered || circled || bullet)[numbered || circled ? 2 : 1]);
+      return;
+    }
+
+    const clauses = splitQuestionClauses(line);
+    if (clauses.length > 1) {
+      flushParagraph();
+      clauses.forEach((clause) => pushListItem("decimal", clause));
+      return;
+    }
+
     if (listItems.length) {
       const previous = listItems[listItems.length - 1];
       const startsNewParagraph = /[.)”’]$/.test(previous)
@@ -86,19 +183,24 @@ export function renderCasebookReasoning(value) {
       }
     }
     flushList();
-    if (isHeading(line, lines[index + 1])) {
-      flushParagraph();
-      blocks.push(`<h5>${escapeHtml(cleanCasebookSpacing(line))}</h5>`);
-      return;
-    }
     paragraph.push(line);
-    if (/[.!?。][”’)]?$/.test(line) || /(?:합니다|됩니다|있습니다|없습니다|봅니다|판단됩니다)[.]?$/.test(line)) {
+    if (/[.!?。?][”’)]?$/.test(line) || /(?:합니다|됩니다|있습니다|없습니다|봅니다|판단됩니다|요청함)[.]?$/.test(line)) {
       flushParagraph();
     }
   });
   flushParagraph();
   flushList();
-  return `<div class="legal-reasoning-content">${blocks.join("")}</div>`;
+  return `<div class="legal-prose legal-reasoning-content">${blocks.join("")}</div>`;
+}
+
+export function renderCasebookReasoning(value) {
+  return renderLegalProse(value);
+}
+
+function renderReadingSection(title, value, kind) {
+  const body = renderLegalProse(value);
+  if (!body) return "";
+  return `<section class="legal-reading-section is-${kind}"><h4>${escapeHtml(title)}</h4>${body}</section>`;
 }
 
 export function renderLegalBasisContent(controlId, entry = state.legalBasisCache?.[controlId]) {
@@ -151,9 +253,9 @@ export function renderLegalBasisContent(controlId, entry = state.legalBasisCache
           ${warning ? `<p class="legal-warning">${escapeHtml(warning)}</p>` : ""}
           ${(item.matchReasons || []).length ? `<div class="legal-interpretation-meta"><b>이 통제와 연결된 이유</b><span>${item.matchReasons.map(escapeHtml).join(" · ")}</span></div>` : ""}
           <div class="legal-interpretation-reading">
-            ${item.question ? `<section class="legal-reading-section is-question"><h4>질의 요지</h4><p>${escapeHtml(item.question)}</p></section>` : ""}
-            ${item.answer ? `<section class="legal-reading-section is-answer"><h4>공식 회답</h4><p>${escapeHtml(item.answer)}</p></section>` : ""}
-            ${item.reasoning ? `<section class="legal-reading-section is-reason"><h4>판단 이유</h4><p>${escapeHtml(item.reasoning)}</p></section>` : ""}
+            ${renderReadingSection("질의 요지", item.question, "question")}
+            ${renderReadingSection("공식 회답", item.answer, "answer")}
+            ${renderReadingSection("판단 이유", item.reasoning, "reason")}
           </div>
           ${sourceUrl ? `<div class="legal-interpretation-footer"><span>법령해석은 참고자료이며 현재 사실관계에 대한 적합 판정을 대신하지 않습니다.</span><a class="legal-source-link" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">국가법령정보센터 원문 보기</a></div>` : ""}
         </div>
@@ -176,9 +278,9 @@ export function renderLegalBasisContent(controlId, entry = state.legalBasisCache
         </summary>
         <div class="legal-interpretation-body">
           ${item.warning ? `<p class="legal-warning">${escapeHtml(item.warning)}</p>` : ""}
-          ${item.question ? `<section><h4>질의 요지</h4><p>${escapeHtml(item.question)}</p></section>` : ""}
-          ${item.answer ? `<section><h4>사례집 답변</h4><p>${escapeHtml(item.answer)}</p></section>` : ""}
-          ${item.reasoning ? `<details class="legal-reasoning-more"><summary>판단 이유 자세히 보기</summary>${renderCasebookReasoning(item.reasoning)}</details>` : ""}
+          ${renderReadingSection("질의 요지", item.question, "question")}
+          ${renderReadingSection("사례집 답변", item.answer, "answer")}
+          ${item.reasoning ? `<details class="legal-reasoning-more"><summary>판단 이유 자세히 보기</summary>${renderLegalProse(item.reasoning)}</details>` : ""}
           <p class="legal-casebook-source">출처: ${escapeHtml(source.provider || "개인정보보호위원회·한국인터넷진흥원")} · ${escapeHtml(source.publishedAt || "2023-12")}</p>
         </div>
       </details>
@@ -196,7 +298,7 @@ export function renderLegalBasisContent(controlId, entry = state.legalBasisCache
       </summary>
       <div class="legal-interpretation-body official-guidance-body">
         <p class="official-guidance-applicability">${escapeHtml(item.applicability || "일반 개인정보처리자")}</p>
-        <p>${escapeHtml(item.summary || "")}</p>
+        ${renderLegalProse(item.summary || "")}
         ${(item.checkpoints || []).length ? `
           <section>
             <h4>이 통제에서 확인할 사항</h4>

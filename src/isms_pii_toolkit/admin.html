@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Outfit:wght@600;700&display=swap">
-  <link rel="stylesheet" href="__ADMIN_BASE__/assets/admin.css?v=20260819-3">
+  <link rel="stylesheet" href="__ADMIN_BASE__/assets/admin.css?v=20260819-4">
 </head>
 <body>
   <header class="admin-header">
@@ -59,14 +59,14 @@
     </section>
 
     <section id="deskPanel" hidden>
-      <section class="admin-card issue-card">
-        <div class="desk-head">
+      <section class="admin-card desk-card">
+        <header class="desk-bar">
           <div>
-            <p class="eyebrow">AI 사용권</p>
-            <h1>발급하고 회수합니다</h1>
-            <p>발급한 사용권은 아래 목록에서도 다시 복사할 수 있습니다. 사용자에게만 전달하세요.</p>
+            <p class="eyebrow">콘솔</p>
+            <h1>사용권</h1>
           </div>
-        </div>
+          <p id="passCount">0건</p>
+        </header>
         <form class="issue-form" id="issueForm">
           <label>
             기간
@@ -79,30 +79,20 @@
           </label>
           <label class="issue-note">
             메모
-            <input id="issueNote" name="note" type="text" maxlength="80" placeholder="예: 김민수 / 파일럿">
+            <input id="issueNote" name="note" type="text" maxlength="80" placeholder="이름 또는 용도">
           </label>
-          <button type="submit" class="primary">사용권 발급</button>
+          <button type="submit" class="primary">발급</button>
         </form>
         <p class="form-error" id="issueError" hidden></p>
         <div class="issued-banner" id="issuedBanner" hidden>
           <div class="issued-banner-text">
-            <strong>방금 발급한 사용권</strong>
-            <p>지금 복사해 전달하세요. 목록에서도 다시 확인할 수 있습니다.</p>
+            <strong>방금 발급됨</strong>
+            <p>복사해 전달하세요. 이 목록에서 다시 확인할 수 있습니다.</p>
           </div>
           <div class="issued-token-row">
             <code id="issuedToken"></code>
             <button type="button" id="copyTokenBtn">복사</button>
           </div>
-        </div>
-      </section>
-
-      <section class="admin-card list-card">
-        <div class="list-head">
-          <div>
-            <h2>발급 목록</h2>
-            <p class="list-lead">메모, 사용권, 상태와 남은 기간을 한 화면에서 봅니다.</p>
-          </div>
-          <p id="passCount">0건</p>
         </div>
         <div class="table-wrap">
           <table class="admin-table">
@@ -137,6 +127,6 @@
     </section>
   </main>
   <script>window.ADMIN_BASE = "__ADMIN_BASE__";</script>
-  <script type="module" src="__ADMIN_BASE__/assets/admin.js?v=20260819-3"></script>
+  <script type="module" src="__ADMIN_BASE__/assets/admin.js?v=20260819-4"></script>
 </body>
 </html>

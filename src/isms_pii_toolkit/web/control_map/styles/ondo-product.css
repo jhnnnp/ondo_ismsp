@@ -178,9 +178,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #f4f7fa;
 }
 .page-head-pass.is-active {
-  border-color: #cfe7e1;
-  background: #f3faf7;
+  border-color: #cce7df;
+  background: #eaf7f3;
+  box-shadow: 0 5px 16px rgba(13, 125, 101, .11);
 }
+.page-head-pass.is-active strong { color: #64748b; }
+.page-head-pass.is-active small { color: #0d7d65; }
 .app-workspace .page-head { margin-bottom: 15px; padding: 5px 4px 17px; }
 .app-workspace .page-head__kicker { color: var(--accent-strong); font-size: 9px; font-weight: 800; letter-spacing: .12em; }
 .app-workspace .page-head h1 { color: var(--text); font-size: 1.8rem; letter-spacing: -.05em; }

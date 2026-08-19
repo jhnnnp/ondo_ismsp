@@ -40,9 +40,13 @@ import {
   rankControlsBySearch,
 } from "../../src/isms_pii_toolkit/web/control_map/features/assessment/search.js";
 import {
+  formatPassChip,
   formatPassRemaining,
   remainingFromExpires,
 } from "../../src/isms_pii_toolkit/web/control_map/core/access-pass.js";
+import {
+  renderLegalProse,
+} from "../../src/isms_pii_toolkit/web/control_map/features/assessment/view.js";
 import {
   applyWeakReviewState,
   areaReadiness,
@@ -428,11 +432,37 @@ test("structured intents retrieve compound findings beyond account controls", ()
 });
 
 test("access pass remaining labels include days and hours", () => {
+  assert.equal(formatPassChip((3 * 86400) + (14 * 3600) + 90), "3일 14시간");
   assert.equal(formatPassRemaining((3 * 86400) + (14 * 3600) + 90), "3일 14시간 남음");
-  assert.equal(formatPassRemaining((5 * 3600) + (12 * 60)), "5시간 12분 남음");
+  assert.equal(formatPassChip((5 * 3600) + (12 * 60)), "5시간");
+  assert.equal(formatPassRemaining((5 * 3600) + (12 * 60)), "5시간 남음");
   assert.equal(formatPassRemaining(90), "1분 남음");
   assert.equal(formatPassRemaining(20), "1분 미만 남음");
   const now = Date.parse("2026-08-19T08:00:00Z");
   assert.equal(remainingFromExpires("2026-08-22T08:00:00+00:00", now), 3 * 86400);
   assert.equal(remainingFromExpires(null, now), 0);
+});
+
+test("legal prose splits questions, hangul answers, and casebook headings", () => {
+  const question = renderLegalProse(
+    "「자동차관리법」 제53조의 규정에 의하여 교통안전공단이 자동차관리사업자의 전산자료 제출을 요구할 수 있는지 여부와 「정보통신망이용촉진및정보보호등에관한법률」 제50조의 규정에 의한 개인정보 수집·이용에 대한 고지 및 동의 의무의 적용 여부"
+  );
+  assert.match(question, /legal-reasoning-list/);
+  assert.match(question, /자동차관리법/);
+  assert.match(question, /정보통신망이용촉진/);
+  assert.equal((question.match(/<li>/g) || []).length, 2);
+
+  const answer = renderLegalProse(
+    "가. 「자동차관리법」 제53조의 규정에 의하여 교통안전공단은 자동차관리사업자의 전산자료 제출을 요구할 수 있습니다. 나. 「정보통신망이용촉진및정보보호등에관한법률」 제50조의 규정에 의한 개인정보 수집·이용에 대한 고지 및 동의 의무는 적용되지 않습니다."
+  );
+  assert.match(answer, /legal-hangul-list/);
+  assert.match(answer, /요구할 수 있습니다/);
+  assert.match(answer, /적용되지 않습니다/);
+  assert.equal((answer.match(/<li>/g) || []).length, 2);
+
+  const reasoning = renderLegalProse("행위 주체 내용\n① 자치관리기구의 대표자인 공동주택의 관리사무소장\n② 관리업무를 인계하기 전의 사업주체\n※ 개인정보의 수집출처 고지: 전화권유판매자가 안내하는 것");
+  assert.match(reasoning, /<h5>행위 주체 내용<\/h5>/);
+  assert.match(reasoning, /legal-reasoning-list/);
+  assert.match(reasoning, /legal-note/);
+  assert.equal((reasoning.match(/<li>/g) || []).length, 2);
 });

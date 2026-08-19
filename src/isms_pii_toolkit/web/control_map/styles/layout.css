@@ -1736,17 +1736,21 @@ html { scroll-padding-top: 118px; }
 .page-head-pass-copy {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
   line-height: 1;
 }
 .page-head-pass strong {
-  color: #526276;
+  color: #64748b;
   font-size: 11px;
-  font-weight: 750;
+  font-weight: 650;
   line-height: 1;
+  letter-spacing: 0;
 }
 .page-head-pass small {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--text);
   font-family: var(--font-display);
   font-size: 13px;
@@ -1755,22 +1759,43 @@ html { scroll-padding-top: 118px; }
   letter-spacing: -.03em;
   white-space: nowrap;
 }
-.page-head-pass.is-active {
-  border-color: #cfe7e1;
-  background: #f3faf7;
+.page-head-pass small::before {
+  content: "";
+  width: 1px;
+  height: 11px;
+  background: #c5d0d8;
 }
+.page-head-pass:hover {
+  border-color: #c5d0d8;
+  background: #eef2f6;
+}
+.page-head-pass.is-active {
+  border-color: #cce7df;
+  background: #eaf7f3;
+  box-shadow: 0 5px 16px rgba(13, 125, 101, .1);
+}
+.page-head-pass.is-active:hover { background: #e4f4ef; }
 .page-head-pass.is-active .page-head-pass-icon { background: #d9f1ea; }
-.page-head-pass.is-active .page-head-pass-icon::before { background: #0d7d65; }
-.page-head-pass.is-active strong,
+.page-head-pass.is-active .page-head-pass-icon::before {
+  background: #0d7d65;
+  box-shadow: 0 0 0 4px rgba(13, 125, 101, .12);
+}
+.page-head-pass.is-active strong { color: #64748b; }
 .page-head-pass.is-active small { color: #0d7d65; }
+.page-head-pass.is-active small::before { background: #b7d8d0; }
 .page-head-pass.is-expired {
   border-color: #f0ddba;
   background: #fff8eb;
+  box-shadow: 0 5px 16px rgba(198, 138, 45, .1);
 }
 .page-head-pass.is-expired .page-head-pass-icon { background: #faedcf; }
-.page-head-pass.is-expired .page-head-pass-icon::before { background: #c68a2d; }
-.page-head-pass.is-expired strong,
+.page-head-pass.is-expired .page-head-pass-icon::before {
+  background: #c68a2d;
+  box-shadow: 0 0 0 4px rgba(198, 138, 45, .12);
+}
+.page-head-pass.is-expired strong { color: #64748b; }
 .page-head-pass.is-expired small { color: #a96f1e; }
+.page-head-pass.is-expired small::before { background: #ead4a8; }
 .access-pass-shell { grid-template-columns: 36px minmax(0,1fr); }
 .access-pass-field {
   display: block;

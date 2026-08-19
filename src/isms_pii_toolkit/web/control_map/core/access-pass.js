@@ -1,12 +1,16 @@
-export function formatPassRemaining(seconds) {
+export function formatPassChip(seconds) {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   const days = Math.floor(total / 86400);
   const hours = Math.floor((total % 86400) / 3600);
   const minutes = Math.floor((total % 3600) / 60);
-  if (days > 0) return `${days}일 ${hours}시간 남음`;
-  if (hours > 0) return `${hours}시간 ${minutes}분 남음`;
-  if (minutes > 0) return `${minutes}분 남음`;
-  return "1분 미만 남음";
+  if (days > 0) return `${days}일 ${hours}시간`;
+  if (hours > 0) return `${hours}시간`;
+  if (minutes > 0) return `${minutes}분`;
+  return "1분 미만";
+}
+
+export function formatPassRemaining(seconds) {
+  return `${formatPassChip(seconds)} 남음`;
 }
 
 export function remainingFromExpires(expiresAt, now = Date.now()) {
@@ -45,19 +49,19 @@ function applyChip() {
   chip.classList.toggle("is-active", active);
   chip.classList.toggle("is-expired", passStatus.expiresAt && !active);
   chip.classList.toggle("is-empty", !passStatus.expiresAt && !active);
-  label.textContent = "AI 사용권";
+  label.textContent = "사용권";
   if (active) {
-    meta.textContent = formatPassRemaining(remaining);
-    chip.setAttribute("aria-label", `AI 사용권 ${formatPassRemaining(remaining)}`);
+    meta.textContent = formatPassChip(remaining);
+    chip.setAttribute("aria-label", `사용권 ${formatPassRemaining(remaining)}`);
     return;
   }
   if (passStatus.expiresAt) {
-    meta.textContent = "만료됨";
-    chip.setAttribute("aria-label", "AI 사용권이 만료되었습니다. 다시 등록하세요.");
+    meta.textContent = "만료";
+    chip.setAttribute("aria-label", "사용권이 만료되었습니다. 다시 등록하세요.");
     return;
   }
   meta.textContent = "미등록";
-  chip.setAttribute("aria-label", "AI 사용권을 등록하세요.");
+  chip.setAttribute("aria-label", "사용권을 등록하세요.");
 }
 
 function scheduleTick() {

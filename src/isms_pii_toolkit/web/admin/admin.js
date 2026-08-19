@@ -72,12 +72,18 @@ function setMode(mode) {
   document.body.classList.toggle("is-login", mode === "login");
 }
 
+function shortenToken(value) {
+  const token = String(value || "");
+  if (token.length <= 22) return token;
+  return `${token.slice(0, 12)}…${token.slice(-4)}`;
+}
+
 function tokenCell(token) {
   const value = String(token || "").trim();
   if (!value) return '<span class="token-missing">이전 발급분</span>';
   return `
     <div class="token-row">
-      <code title="${escapeHtml(value)}">${escapeHtml(value)}</code>
+      <code title="${escapeHtml(value)}">${escapeHtml(shortenToken(value))}</code>
       <button type="button" data-copy-token="${escapeHtml(value)}">복사</button>
     </div>
   `;
@@ -97,7 +103,7 @@ function renderPasses(passes) {
     const note = escapeHtml(item.note);
     return `
       <tr data-pass-id="${item.id}">
-        <td class="col-note"><input class="note-input" data-note-input value="${note}" maxlength="80" placeholder="메모 없음" aria-label="메모"></td>
+        <td class="col-note"><input class="note-input" data-note-input value="${note}" maxlength="80" placeholder="—" aria-label="메모"></td>
         <td class="col-token token-cell">${tokenCell(item.token)}</td>
         <td class="col-status"><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
         <td class="col-remain">${formatRemaining(item.remainingSeconds)}</td>
