@@ -1,7 +1,7 @@
 /* Control map tokens styles. Import order is defined in control_map.css. */
 :root {
-      /* 화면 밀도: 브라우저 90% 축소에 맞춤 (control map 전용) */
-      --ui-zoom: 0.90;
+      /* 화면 밀도: 브라우저 100% 축소에 맞춤 (control map 전용) */
+      --ui-zoom: 1.0;
       --bg-1: #f5f5f7;
       --bg-2: #eef1f6;
       --surface: rgba(255, 255, 255, 0.82);
