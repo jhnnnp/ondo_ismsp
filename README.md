@@ -51,6 +51,8 @@ AI는 보고서 문장화만 담당하며 준비도, 갭, N/A, 인과와 통제 
 | `PII_TOOLKIT_ENABLE_DEMO` | `1` | HTML UI 제공 여부 |
 | `OPENAI_API_KEY` / `PII_TOOLKIT_OPENAI_API_KEY` | 없음 | 선택형 AI 보고서 키 |
 | `PII_TOOLKIT_OPENAI_MODEL` | `gpt-4o-mini` | 보고서 모델 |
+| `PII_TOOLKIT_ADMIN_PATH` | 없음 | 관리 콘솔 비밀 경로. 12-64자 한 세그먼트. 없으면 콘솔 비활성 |
+| `PII_TOOLKIT_ADMIN_PASSWORD` | 없음 | 관리 콘솔 비밀번호(8자 이상) |
 | `DATA_GO_KR_SERVICE_KEY` | 없음 | 법령 데이터 동기화 키 |
 
 기존 `PII_TOOLKIT_*` 접두사는 현재 설정 호환성을 위해 유지합니다.
