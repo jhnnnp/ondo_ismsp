@@ -32,7 +32,7 @@ guides = [
 isms-p-api = "isms_pii_toolkit.api:run"
 
 [tool.vercel]
-entrypoint = "api.index:app"
+entrypoint = "index:app"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
