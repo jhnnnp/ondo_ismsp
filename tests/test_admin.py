@@ -64,6 +64,7 @@ def test_admin_page_is_served_only_on_secret_path(monkeypatch: pytest.MonkeyPatc
     assert response.status_code == 200
     assert "사용권 관리" in response.text
     assert 'id="issueForm"' in response.text
+    assert 'rel="icon" href="/favicon.svg"' in response.text
     assert f"{_prefix()}/assets/admin.css" in response.text
     assert 'window.ADMIN_BASE = "' + _prefix() + '"' in response.text
     assert response.headers.get("x-robots-tag") == "noindex, nofollow"

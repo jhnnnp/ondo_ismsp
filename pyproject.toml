@@ -44,6 +44,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 isms_pii_toolkit = [
   "*.html",
+  "web/brand/*",
   "web/landing/*.css",
   "web/landing/*.js",
   "web/admin/*.css",

@@ -42,6 +42,9 @@ def test_root_page_serves_ondo_landing() -> None:
     assert "실제 진단 화면 살펴보기" in response.text
     assert 'href="/controls/map"' in response.text
     assert "/landing/assets/landing.css" in response.text
+    assert 'rel="icon" href="/favicon.svg"' in response.text
+    assert 'href="/favicon.ico"' in response.text
+    assert 'href="/apple-touch-icon.png"' in response.text
     assert "mock-app" in response.text
     assert "data-hero-demo" in response.text
     assert 'data-temp-band="cold"' in response.text
@@ -109,3 +112,25 @@ def test_landing_can_be_disabled(monkeypatch) -> None:
     disabled = TestClient(create_app())
     assert disabled.get("/").status_code == 404
     assert disabled.get("/landing/assets/landing.css").status_code == 404
+    assert disabled.get("/favicon.ico").status_code == 200
+
+
+def test_brand_favicon_is_served() -> None:
+    ico = client.get("/favicon.ico")
+    svg = client.get("/favicon.svg")
+    touch = client.get("/apple-touch-icon.png")
+    assert ico.status_code == 200
+    assert ico.headers["content-type"].startswith("image/x-icon")
+    assert ico.content[:4] == b"\x00\x00\x01\x00"
+    assert svg.status_code == 200
+    assert "image/svg+xml" in svg.headers["content-type"]
+    assert "#18ad88" in svg.text
+    assert touch.status_code == 200
+    assert "image/png" in touch.headers["content-type"]
+    assert touch.content[:8] == b"\x89PNG\r\n\x1a\n"
+
+
+def test_control_map_includes_favicon() -> None:
+    response = client.get("/controls/map")
+    assert 'rel="icon" href="/favicon.svg"' in response.text
+    assert 'href="/favicon.ico"' in response.text

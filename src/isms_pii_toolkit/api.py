@@ -96,10 +96,16 @@ _DEMO_DIR = Path(__file__).resolve().parent
 _CONTROL_MAP_ASSET_DIR = _DEMO_DIR / "web" / "control_map"
 _LANDING_ASSET_DIR = _DEMO_DIR / "web" / "landing"
 _ADMIN_ASSET_DIR = _DEMO_DIR / "web" / "admin"
+_BRAND_ASSET_DIR = _DEMO_DIR / "web" / "brand"
 _WEB_ASSET_MEDIA_TYPES = {
     ".css": "text/css",
     ".js": "text/javascript",
     ".webp": "image/webp",
+}
+_BRAND_ASSETS = {
+    "favicon.ico": "image/x-icon",
+    "favicon.svg": "image/svg+xml",
+    "apple-touch-icon.png": "image/png",
 }
 
 
@@ -143,6 +149,24 @@ def _load_landing_asset(asset_path: str) -> tuple[str | bytes, str]:
 
 def _load_admin_asset(asset_path: str) -> tuple[str | bytes, str]:
     return _load_web_asset(_ADMIN_ASSET_DIR, asset_path)
+
+
+def _load_brand_asset(filename: str) -> tuple[bytes, str]:
+    media_type = _BRAND_ASSETS.get(filename)
+    if media_type is None:
+        raise FileNotFoundError(filename)
+    full_path = _BRAND_ASSET_DIR / filename
+    if not full_path.is_file() or full_path.resolve().parent != _BRAND_ASSET_DIR.resolve():
+        raise FileNotFoundError(filename)
+    return full_path.read_bytes(), media_type
+
+
+def _brand_response(filename: str) -> Response:
+    try:
+        content, media_type = _load_brand_asset(filename)
+    except FileNotFoundError as error:
+        raise HTTPException(status_code=404, detail="Brand asset not found.") from error
+    return Response(content=content, media_type=media_type, headers={"Cache-Control": "no-store"})
 
 
 CONTROL_MAP_HTML = _load_control_map_html()
@@ -360,6 +384,18 @@ def create_app() -> FastAPI:
         if not _demo_enabled():
             raise HTTPException(status_code=404, detail="Demo UI is disabled.")
         return HTMLResponse(content=_load_landing_html(), headers={"Cache-Control": "no-store"})
+
+    @application.get("/favicon.ico", include_in_schema=False)
+    def favicon_ico() -> Response:
+        return _brand_response("favicon.ico")
+
+    @application.get("/favicon.svg", include_in_schema=False)
+    def favicon_svg() -> Response:
+        return _brand_response("favicon.svg")
+
+    @application.get("/apple-touch-icon.png", include_in_schema=False)
+    def apple_touch_icon() -> Response:
+        return _brand_response("apple-touch-icon.png")
 
     @application.get("/health", response_model=HealthResponse, tags=["system"])
     def health() -> HealthResponse:
