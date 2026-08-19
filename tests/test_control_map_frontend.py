@@ -54,6 +54,10 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert "중분류별 미흡 통제" in response.text
     assert "미점검 통제는 제외되며" in response.text
     assert "우선 보완 통제에서 바로 점검" in response.text
+    assert 'id="gapClustersCount"' in response.text
+    assert 'id="gapClustersEmpty"' in response.text
+    assert "result-empty-host" in response.text
+    assert "미흡으로 판정된 통제가 있어야" in response.text
     assert 'id="weakCategories"' not in response.text
     assert "연계 문제" in response.text
     assert 'id="returnToReportBtn"' in response.text

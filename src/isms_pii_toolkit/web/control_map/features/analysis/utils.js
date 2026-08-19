@@ -6,10 +6,142 @@ import { getAssessment } from "../assessment/model.js";
 export function setPanelEmptyState(panel, emptyEl, isEmpty, contentEls = []) {
   if (!panel) return;
   panel.style.display = "";
+  panel.classList.toggle("is-empty", Boolean(isEmpty));
   if (emptyEl) emptyEl.style.display = isEmpty ? "" : "none";
   contentEls.forEach((node) => {
     if (!node) return;
     node.style.display = isEmpty ? "none" : "";
+  });
+}
+
+const EMPTY_ICONS = {
+  cluster: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="8" height="7" rx="1.6"/><rect x="13" y="4" width="8" height="7" rx="1.6"/><rect x="8" y="13" width="8" height="7" rx="1.6"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="12" r="3"/><circle cx="17" cy="12" r="3"/><path d="M10 12h4"/></svg>',
+  ready: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.4 10.7 15.2 16.2 9"/></svg>',
+};
+
+export function analysisStatusSnapshot(analysis = {}) {
+  const raw = analysis.statusCounts || {};
+  const unknown = Number(raw.unknown || 0);
+  const none = Number(raw.none || 0);
+  const partial = Number(raw.partial || 0);
+  const done = Number(raw.done || 0) + Number(raw.evidenced || 0);
+  const na = Number(raw.na || 0);
+  const applicable = Number(analysis.applicableControlCount || 0);
+  const reviewed = Number(analysis.reviewedControlCount || none + partial + done);
+  return {
+    unknown,
+    none,
+    partial,
+    done,
+    na,
+    applicable,
+    reviewed,
+    weak: none + partial,
+    complete: applicable > 0 && reviewed >= applicable,
+  };
+}
+
+export function defaultResultEmptyStats(snapshot = {}) {
+  return [
+    { key: "none", label: "미이행", value: snapshot.none || 0 },
+    { key: "partial", label: "부분 이행", value: snapshot.partial || 0 },
+    { key: "unknown", label: "미점검", value: snapshot.unknown || 0 },
+    { key: "done", label: "이행", value: snapshot.done || 0 },
+  ];
+}
+
+function resultEmptyMeta(stats = []) {
+  if (!stats.length) return "";
+  return `<p class="result-empty-meta">${stats.map((item) => `<span class="level-${escapeHtml(item.key || "")}">${escapeHtml(item.label || "")} <b>${Number(item.value || 0)}</b></span>`).join("")}</p>`;
+}
+
+export function renderResultEmptyState({
+  tone = "idle",
+  icon = "cluster",
+  title = "",
+  body = "",
+  stats = [],
+  ctaLabel = "자가진단 이어가기",
+  ctaHref = "/controls/map/assessment",
+  ctaRoute = "assessment",
+} = {}) {
+  return `
+    <article class="result-empty tone-${escapeHtml(tone)}" role="status">
+      <div class="result-empty-icon" aria-hidden="true">${EMPTY_ICONS[icon] || EMPTY_ICONS.cluster}</div>
+      <div class="result-empty-copy">
+        <strong>${escapeHtml(title)}</strong>
+        <p>${escapeHtml(body)}</p>
+        ${resultEmptyMeta(stats)}
+      </div>
+      <a class="result-empty-cta" href="${escapeHtml(ctaHref)}" data-route="${escapeHtml(ctaRoute)}">${escapeHtml(ctaLabel)}</a>
+    </article>
+  `;
+}
+
+export function gapClusterEmptyMarkup(analysis = {}) {
+  const snapshot = analysisStatusSnapshot(analysis);
+  const stats = defaultResultEmptyStats(snapshot);
+  if (snapshot.complete && snapshot.weak === 0) {
+    return renderResultEmptyState({
+      tone: "ready",
+      icon: "ready",
+      title: "점검한 통제에서 묶을 미흡이 없습니다",
+      body: "미이행·부분 이행이 없어 중분류 보완 묶음을 표시하지 않습니다.",
+      stats,
+      ctaLabel: "보고서 보기",
+      ctaHref: "/controls/map/report",
+      ctaRoute: "report",
+    });
+  }
+  if (snapshot.weak > 0) {
+    return renderResultEmptyState({
+      tone: "wait",
+      icon: "cluster",
+      title: "같은 중분류에서 함께 보완할 항목이 없습니다",
+      body: `미흡 ${snapshot.weak}개는 확인됐지만, 한 중분류에 2개 이상 모여야 카드가 생깁니다.`,
+      stats,
+    });
+  }
+  return renderResultEmptyState({
+    tone: "idle",
+    icon: "cluster",
+    title: "아직 묶을 미흡 통제가 없습니다",
+    body: "같은 중분류에 미이행·부분 이행이 2개 이상일 때 여기에 표시됩니다.",
+    stats,
+  });
+}
+
+export function linkedProblemEmptyMarkup(analysis = {}) {
+  const snapshot = analysisStatusSnapshot(analysis);
+  const stats = defaultResultEmptyStats(snapshot);
+  if (snapshot.complete && snapshot.weak === 0) {
+    return renderResultEmptyState({
+      tone: "ready",
+      icon: "ready",
+      title: "연계할 미흡 통제가 없습니다",
+      body: "미이행·부분 이행이 없어 영향 경로를 띄울 출발점이 없습니다.",
+      stats,
+      ctaLabel: "보고서 보기",
+      ctaHref: "/controls/map/report",
+      ctaRoute: "report",
+    });
+  }
+  if (snapshot.weak > 0) {
+    return renderResultEmptyState({
+      tone: "wait",
+      icon: "link",
+      title: "확인된 미흡 통제 기준의 연계 경로가 없습니다",
+      body: `미흡 ${snapshot.weak}개는 확인됐지만, 다른 통제로 이어지는 경로는 식별되지 않았습니다.`,
+      stats,
+    });
+  }
+  return renderResultEmptyState({
+    tone: "idle",
+    icon: "link",
+    title: "아직 식별된 연계 문제가 없습니다",
+    body: "미흡으로 확인된 통제가 생기면 영향 경로가 여기에 표시됩니다.",
+    stats,
   });
 }
 

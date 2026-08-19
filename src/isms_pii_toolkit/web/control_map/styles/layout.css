@@ -1158,10 +1158,9 @@ button.linkish {
 .category-coverage-progress i { display: block; height: 100%; border-radius: inherit; background: var(--accent); }
 .category-coverage-count { text-align: right; font-family: var(--font-mono); color: var(--muted); }
 .category-coverage-state { text-align: right; font-weight: 700; }
-.category-coverage-state.is-empty,
-.category-coverage-state.is-low { color: var(--danger); }
-.category-coverage-state.is-mid { color: #b45309; }
-.category-coverage-state.is-high { color: var(--accent); }
+.category-coverage-state.is-idle { color: var(--muted-soft); }
+.category-coverage-state.is-progress { color: var(--warning); }
+.category-coverage-state.is-done { color: var(--success); }
 @media (max-width: 720px) {
   .coverage-overview-strip { grid-template-columns: 1fr; }
   .coverage-overview-strip .status-breakdown { grid-template-columns: repeat(2, minmax(0, 1fr)); }

@@ -6,7 +6,7 @@ import { renderReportReview } from "./report-review.js";
 import {
   clampPercent,
   formatPercent,
-  heatmapTone,
+  linkedProblemEmptyMarkup,
 } from "./utils.js";
 import { syncExecutiveReportStream } from "./presentation.js";
 
@@ -88,14 +88,15 @@ export function renderAnalysisSummary(skipHero, { renderConfirmationActions }) {
           </summary>
           <div class="category-coverage-rows">
             ${sortedItems.map((item) => {
-              const stateLabel = item.reviewed >= item.total ? "완료" : (item.reviewed > 0 ? "진행 중" : "미점검");
+              const stateKey = item.reviewed >= item.total ? "done" : (item.reviewed > 0 ? "progress" : "idle");
+              const stateLabel = stateKey === "done" ? "완료" : (stateKey === "progress" ? "진행 중" : "미점검");
               return `
                 <div class="category-coverage-row ${item.pct < 100 ? "is-pending" : "is-complete"}">
                   <span class="category-coverage-id">${escapeHtml(item.categoryId || "-")}</span>
                   <strong>${escapeHtml(item.category)}</strong>
                   <span class="category-coverage-progress" role="progressbar" aria-label="${escapeHtml(item.category)} 점검 완료율" aria-valuenow="${item.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${item.pct}%"></i></span>
                   <span class="category-coverage-count">${item.reviewed}/${item.total}</span>
-                  <span class="category-coverage-state ${heatmapTone(item.pct)}">${stateLabel}</span>
+                  <span class="category-coverage-state is-${stateKey}">${stateLabel}</span>
                 </div>
               `;
             }).join("")}
@@ -164,7 +165,10 @@ export function renderAnalysisSummary(skipHero, { renderConfirmationActions }) {
       ${evidenceRefs.length ? `<details class="link-direct-evidence"><summary>직접 연결을 뒷받침하는 사례집 문구</summary>${evidenceRefs.map((ref) => `<blockquote>${escapeHtml(ref.snippet)}</blockquote><small>${escapeHtml(ref.doc || "")}${ref.ref ? ` · ${escapeHtml(ref.ref)}` : ""}</small>`).join("")}</details>` : `<p class="link-dialog-caution">이 경로에는 직접 인용 근거가 없습니다. 공식 결함 사례는 연계를 증명하지 않으므로 표시하지 않았습니다. 반드시 위 표본 대조 결과로만 연계 문제를 판정하세요.</p>`}`;
     dialog.showModal();
   };
+  const linkedPanel = el("linkedProblemsPanel");
+  if (linkedPanel) linkedPanel.classList.toggle("is-empty", !linkedProblems.length);
   if (linkedProblemsSummary) {
+    linkedProblemsSummary.classList.toggle("is-empty", !linkedProblems.length);
     linkedProblemsSummary.innerHTML = linkedProblems.length
       ? linkedProblems.map((chain) => `
         <article class="linked-problem-card severity-${escapeHtml(chain.severity || "medium")}">
@@ -214,7 +218,7 @@ export function renderAnalysisSummary(skipHero, { renderConfirmationActions }) {
           </div>
         </article>
       `).join("")
-      : `<p class="detail-empty">현재 확인된 미흡 통제를 기준으로 식별된 연계 문제가 없습니다.</p>`;
+      : linkedProblemEmptyMarkup(a);
     linkedProblemsSummary.querySelectorAll("[data-link-evidence]").forEach((button) => {
       button.addEventListener("click", () => {
         const [sourceId, targetId] = button.dataset.linkEvidence.split("::");

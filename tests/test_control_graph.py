@@ -123,6 +123,9 @@ def test_control_map_assets_return_styles_script_and_core_modules() -> None:
     assert "export const state" in state_module.text
     assert analysis_utils.status_code == 200
     assert "export function shortRiskTip" in analysis_utils.text
+    assert "export function renderResultEmptyState" in analysis_utils.text
+    assert "export function gapClusterEmptyMarkup" in analysis_utils.text
+    assert "export function linkedProblemEmptyMarkup" in analysis_utils.text
     assert analysis_gaps.status_code == 200
     assert "export function renderAnalyzeGaps" in analysis_gaps.text
     assert analysis_controller.status_code == 200

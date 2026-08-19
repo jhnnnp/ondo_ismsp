@@ -3,6 +3,7 @@ import { el, escapeHtml } from "../../core/dom.js";
 import { state } from "../../core/state.js";
 import {
   formatNarrativeReport,
+  gapClusterEmptyMarkup,
   levelBadge,
   liveControlLevel,
   setPanelEmptyState,
@@ -89,9 +90,12 @@ export function renderGapClusters(clusters) {
   const panel = el("gapClustersPanel");
   const container = el("gapClusters");
   const empty = el("gapClustersEmpty");
+  const count = el("gapClustersCount");
   if (!panel || !container) return;
+  if (count) count.textContent = `${(clusters || []).length}개 묶음`;
   if (!clusters || !clusters.length) {
     setPanelEmptyState(panel, empty, true, [container]);
+    if (empty) empty.innerHTML = gapClusterEmptyMarkup(state.analysis || {});
     container.innerHTML = "";
     return;
   }
