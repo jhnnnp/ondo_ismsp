@@ -1344,6 +1344,11 @@ body:has(#view-analyze.is-report.active) .page-head {
 .session-done-evidence-row .primary,
 .session-done-evidence-row .ghost {
   flex: 0 0 auto;
+  min-height: 36px;
+  padding: 8px 13px;
+  border-radius: 8px;
+  font-size: 10.5px;
+  font-weight: 750;
 }
 
 .session-evidence-block {

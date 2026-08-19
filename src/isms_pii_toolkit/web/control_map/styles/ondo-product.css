@@ -498,6 +498,8 @@ button.primary, .primary, button.ap-primary { background: var(--btn-primary); bo
 #view-analyze .today-diagnose button[data-diagnose-level="done"].is-active { border-color:#15803d; background:#15803d; }
 #view-analyze .today-status-soft { color:#718192; font-size:9.5px; }
 #view-analyze .session-nav { position:sticky; bottom:0; z-index:3; margin:16px -20px -18px; padding:11px 20px; border-top:1px solid #dfe7ed; border-radius:0 0 14px 14px; background:rgba(255,255,255,.94); backdrop-filter:blur(12px); }
+#view-analyze .session-done-evidence-row .primary,
+#view-analyze .session-done-evidence-row .ghost { min-height:36px; padding:8px 13px; border-radius:8px; font-size:10.5px; font-weight:750; }
 #view-analyze .session-nav-btn { min-height:36px; padding:8px 13px; border-radius:8px; font-size:10.5px; }
 #view-analyze .session-nav-next { border-color:#168f74; background:#168f74; color:#fff; box-shadow:0 7px 16px rgba(22,143,116,.14); }
 
