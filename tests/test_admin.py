@@ -72,6 +72,7 @@ def test_admin_page_is_served_only_on_secret_path(monkeypatch: pytest.MonkeyPatc
     js = client.get(_prefix("/assets/admin.js"))
     assert css.status_code == 200
     assert ".issued-banner" in css.text
+    assert ".admin-table" in css.text
     assert ".login-card" in css.text
     assert 'id="loginCard"' in response.text
     assert "사용권" in response.text

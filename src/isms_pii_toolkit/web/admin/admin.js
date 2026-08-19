@@ -32,12 +32,15 @@ function formatDate(value) {
   if (!value) return "-";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "-";
-  return new Intl.DateTimeFormat("ko-KR", {
+  const parts = new Intl.DateTimeFormat("ko-KR", {
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(date);
+    hour12: false,
+  }).formatToParts(date);
+  const get = (type) => parts.find((part) => part.type === type)?.value || "";
+  return `${get("month")}.${get("day")} ${get("hour")}:${get("minute")}`;
 }
 
 const ADMIN_BASE = String(window.ADMIN_BASE || "").replace(/\/$/, "");
@@ -74,7 +77,7 @@ function tokenCell(token) {
   if (!value) return '<span class="token-missing">이전 발급분</span>';
   return `
     <div class="token-row">
-      <code>${escapeHtml(value)}</code>
+      <code title="${escapeHtml(value)}">${escapeHtml(value)}</code>
       <button type="button" data-copy-token="${escapeHtml(value)}">복사</button>
     </div>
   `;
@@ -94,14 +97,14 @@ function renderPasses(passes) {
     const note = escapeHtml(item.note);
     return `
       <tr data-pass-id="${item.id}">
-        <td><input class="note-input" data-note-input value="${note}" maxlength="80" aria-label="메모"></td>
-        <td class="token-cell">${tokenCell(item.token)}</td>
-        <td><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
-        <td>${formatRemaining(item.remainingSeconds)}</td>
-        <td>${item.durationDays || "-"}일</td>
-        <td>${formatDate(item.createdAt)}</td>
-        <td>${formatDate(item.activatedAt)}</td>
-        <td class="row-actions"><button type="button" class="revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button></td>
+        <td class="col-note"><input class="note-input" data-note-input value="${note}" maxlength="80" placeholder="메모 없음" aria-label="메모"></td>
+        <td class="col-token token-cell">${tokenCell(item.token)}</td>
+        <td class="col-status"><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
+        <td class="col-remain">${formatRemaining(item.remainingSeconds)}</td>
+        <td class="col-days">${item.durationDays || "-"}일</td>
+        <td class="col-date">${formatDate(item.createdAt)}</td>
+        <td class="col-date">${formatDate(item.activatedAt)}</td>
+        <td class="col-action row-actions"><button type="button" class="revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button></td>
       </tr>
     `;
   }).join("");
@@ -209,6 +212,7 @@ el("issueForm")?.addEventListener("submit", async (event) => {
       }),
     });
     el("issuedToken").textContent = payload.token;
+    el("issuedToken").title = payload.token;
     banner.hidden = false;
     el("issueNote").value = "";
     await refreshPasses();
