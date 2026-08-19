@@ -31,6 +31,9 @@ guides = [
 [project.scripts]
 isms-p-api = "isms_pii_toolkit.api:run"
 
+[tool.vercel]
+entrypoint = "api.index:app"
+
 [tool.setuptools]
 package-dir = { "" = "src" }
 

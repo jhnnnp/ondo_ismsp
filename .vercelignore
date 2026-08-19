@@ -1,0 +1,14 @@
+.venv
+node_modules
+tests
+docs
+frontend
+reference-library
+reference-library 2
+*.pdf
+*.zip
+.git
+.github
+.pytest_cache
+htmlcov
+.coverage
