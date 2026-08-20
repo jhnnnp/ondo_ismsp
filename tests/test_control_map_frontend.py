@@ -102,7 +102,7 @@ def test_workspace_has_loading_skeleton_and_current_bundle() -> None:
     assert 'id="workspaceLoadingSkeleton"' in response.text
     assert 'id="sessionPicker" hidden' in response.text
     assert "/controls/map/assets/react-dist/workspace.js?v=20260820-12" in response.text
-    assert "/controls/map/assets/control_map.css?v=20260820-16" in response.text
+    assert "/controls/map/assets/control_map.css?v=20260820-17" in response.text
     analysis_controller = (WEB_ROOT / "features" / "analysis" / "controller.js").read_text(encoding="utf-8")
     router = (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
     assert 'loadingSkeleton.dataset.analysisLoading = "true"' in analysis_controller
