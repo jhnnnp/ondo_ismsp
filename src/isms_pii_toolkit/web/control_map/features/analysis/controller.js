@@ -172,11 +172,19 @@ async function executeAnalysisOnce(switchToAnalyze, options = {}, {
   const isCurrentRequest = () => !signal.aborted && state.activeSessionId === sessionId;
   const reportPanel = el("analysisReportPanel");
   const content = el("analyzeContent");
+  const loadingSkeleton = el("workspaceLoadingSkeleton");
+  const analyzeRoot = el("view-analyze");
   // 확인 목록 갱신은 규칙 엔진만 사용. AI 리포트는 별도 버튼에서만 호출.
   if (switchToAnalyze !== false) {
     switchView("analyze", { skipAutoAnalyze: true });
     content.style.display = "none";
     if (reportPanel) reportPanel.style.display = "none";
+    if (loadingSkeleton) {
+      loadingSkeleton.hidden = false;
+      loadingSkeleton.dataset.analysisLoading = "true";
+      loadingSkeleton.dataset.loadingSessionId = sessionId || "";
+    }
+    analyzeRoot?.setAttribute("aria-busy", "true");
   }
   try {
     const data = await fetchJson("/controls/analyze", {
@@ -232,5 +240,12 @@ async function executeAnalysisOnce(switchToAnalyze, options = {}, {
     if (content) content.style.display = "";
     if (reportPanel) reportPanel.style.display = "none";
     showToast("확인 목록 생성 실패: " + error.message);
+  } finally {
+    if (loadingSkeleton?.dataset.loadingSessionId === (sessionId || "")) {
+      loadingSkeleton.hidden = true;
+      delete loadingSkeleton.dataset.analysisLoading;
+      delete loadingSkeleton.dataset.loadingSessionId;
+      analyzeRoot?.removeAttribute("aria-busy");
+    }
   }
 }

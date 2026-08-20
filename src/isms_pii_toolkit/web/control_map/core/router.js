@@ -495,8 +495,10 @@ async function openDiagnosisSession(sessionId) {
     showSessionManager();
     showToast(`진단을 불러오지 못했습니다: ${error.message}`);
   } finally {
-    if (loadingSkeleton) loadingSkeleton.hidden = true;
-    el("view-analyze")?.removeAttribute("aria-busy");
+    if (loadingSkeleton?.dataset.analysisLoading !== "true") {
+      loadingSkeleton.hidden = true;
+      el("view-analyze")?.removeAttribute("aria-busy");
+    }
     sessionOpening = false;
   }
 }
