@@ -6,6 +6,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from isms_pii_toolkit.access_pass import AccessPassError, admin_console_path, register_pass, resolve_session
+from isms_pii_toolkit.access_pass import _admin_login_counts
 from isms_pii_toolkit.api import create_app
 
 ADMIN_PATH = "n7k2Qm18xW4pLd9c"
@@ -16,6 +17,7 @@ def _prefix(path: str = "") -> str:
 
 
 def _admin_client(monkeypatch: pytest.MonkeyPatch, tmp_path: Path, password: str = "admin-secret") -> TestClient:
+    _admin_login_counts.clear()
     monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_STORE", str(tmp_path / "access-passes.json"))
     monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_REQUIRED", "1")
     monkeypatch.setenv("PII_TOOLKIT_ADMIN_PASSWORD", password)
@@ -85,15 +87,21 @@ def test_admin_page_is_served_only_on_secret_path(monkeypatch: pytest.MonkeyPatc
     assert ".admin-table" in css.text
     assert ".desk-card" in css.text
     assert ".login-card" in css.text
+    assert ".table-toolbar" in css.text
+    assert ".row-link" in css.text
     assert 'id="loginCard"' in response.text
     assert "사용권" in response.text
     assert "초대권" in response.text
     assert 'id="issueKind"' in response.text
     assert "종류" in response.text
     assert 'class="workspace-link"' in response.text
+    assert 'id="selectAll"' in response.text
+    assert 'id="deleteSelectedBtn"' in response.text
+    assert 'id="deleteAllBtn"' in response.text
     assert js.status_code == 200
     assert "ADMIN_BASE" in js.text
     assert "data-delete" in js.text
+    assert "bulk-delete" in js.text
     assert "${days}일권" in js.text
     assert "/admin/passes" not in js.text
     assert "/admin/" not in client.get("/openapi.json").text
@@ -231,3 +239,28 @@ def test_admin_can_delete_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) 
     assert resolve_session(session) is None
     missing = client.delete(_prefix("/passes/missing"))
     assert missing.status_code == 404
+
+
+def test_admin_can_bulk_delete_passes(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    client = _admin_client(monkeypatch, tmp_path)
+    client.post(_prefix("/login"), json={"password": "admin-secret"})
+    first = client.post(_prefix("/passes"), json={"durationDays": 7, "note": "하나"})
+    second = client.post(_prefix("/passes"), json={"kind": "invite", "note": "둘"})
+    third = client.post(_prefix("/passes"), json={"durationDays": 3, "note": "셋"})
+    assert first.status_code == 200
+    assert second.status_code == 200
+    assert third.status_code == 200
+    selected = client.post(
+        _prefix("/passes/bulk-delete"),
+        json={"ids": [first.json()["record"]["id"], second.json()["record"]["id"]]},
+    )
+    assert selected.status_code == 200
+    assert selected.json()["deleted"] == 2
+    remaining = client.get(_prefix("/passes")).json()["passes"]
+    assert [row["id"] for row in remaining] == [third.json()["record"]["id"]]
+    emptied = client.post(_prefix("/passes/bulk-delete"), json={"deleteAll": True})
+    assert emptied.status_code == 200
+    assert emptied.json()["deleted"] == 1
+    assert client.get(_prefix("/passes")).json()["passes"] == []
+    empty = client.post(_prefix("/passes/bulk-delete"), json={"ids": []})
+    assert empty.status_code == 400

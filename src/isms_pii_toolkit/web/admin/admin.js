@@ -103,13 +103,43 @@ function tokenCell(token) {
   `;
 }
 
+function selectedIds() {
+  return [...document.querySelectorAll("#passTableBody [data-select]:checked")]
+    .map((node) => node.closest("tr")?.dataset.passId)
+    .filter(Boolean);
+}
+
+function syncSelection() {
+  const boxes = [...document.querySelectorAll("#passTableBody [data-select]")];
+  const checked = boxes.filter((node) => node.checked);
+  const selectAll = el("selectAll");
+  const meta = el("selectionMeta");
+  const deleteSelected = el("deleteSelectedBtn");
+  const deleteAll = el("deleteAllBtn");
+  if (selectAll) {
+    selectAll.checked = boxes.length > 0 && checked.length === boxes.length;
+    selectAll.indeterminate = checked.length > 0 && checked.length < boxes.length;
+    selectAll.disabled = boxes.length === 0;
+  }
+  if (meta) {
+    meta.textContent = boxes.length === 0
+      ? "선택 없음"
+      : checked.length > 0
+        ? `${checked.length}건 선택`
+        : `${boxes.length}건`;
+  }
+  if (deleteSelected) deleteSelected.disabled = checked.length === 0;
+  if (deleteAll) deleteAll.disabled = boxes.length === 0;
+}
+
 function renderPasses(passes) {
   const body = el("passTableBody");
   const count = el("passCount");
   if (count) count.textContent = `${passes.length}건`;
   if (!body) return;
   if (!passes.length) {
-    body.innerHTML = '<tr class="empty-row"><td colspan="8">발급된 사용권이 없습니다.</td></tr>';
+    body.innerHTML = '<tr class="empty-row"><td colspan="9">발급된 사용권이 없습니다.</td></tr>';
+    syncSelection();
     return;
   }
   body.innerHTML = passes.map((item) => {
@@ -117,6 +147,7 @@ function renderPasses(passes) {
     const note = escapeHtml(item.note);
     return `
       <tr data-pass-id="${item.id}">
+        <td class="col-check"><input class="pass-check" type="checkbox" data-select aria-label="선택"></td>
         <td class="col-note"><input class="note-input" data-note-input value="${note}" maxlength="80" placeholder="—" aria-label="메모"></td>
         <td class="col-token token-cell">${tokenCell(item.token)}</td>
         <td class="col-status"><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
@@ -125,12 +156,13 @@ function renderPasses(passes) {
         <td class="col-date">${formatDate(item.createdAt)}</td>
         <td class="col-date">${formatDate(item.activatedAt)}</td>
         <td class="col-action row-actions">
-          <button type="button" class="revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button>
-          <button type="button" class="delete-btn" data-delete>삭제</button>
+          <button type="button" class="row-link revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button>
+          <button type="button" class="row-link delete-btn" data-delete>삭제</button>
         </td>
       </tr>
     `;
   }).join("");
+  syncSelection();
 }
 
 async function copyText(value, button) {
@@ -281,6 +313,10 @@ el("passTableBody")?.addEventListener("click", async (event) => {
 });
 
 el("passTableBody")?.addEventListener("change", async (event) => {
+  if (event.target.closest("[data-select]")) {
+    syncSelection();
+    return;
+  }
   const input = event.target.closest("[data-note-input]");
   if (!input) return;
   const passId = input.closest("tr")?.dataset.passId;
@@ -289,6 +325,36 @@ el("passTableBody")?.addEventListener("change", async (event) => {
     method: "PATCH",
     body: JSON.stringify({ note: input.value }),
   });
+});
+
+el("selectAll")?.addEventListener("change", () => {
+  const checked = Boolean(el("selectAll")?.checked);
+  document.querySelectorAll("#passTableBody [data-select]").forEach((node) => {
+    node.checked = checked;
+  });
+  syncSelection();
+});
+
+el("deleteSelectedBtn")?.addEventListener("click", async () => {
+  const ids = selectedIds();
+  if (!ids.length) return;
+  if (!window.confirm(`선택한 사용권 ${ids.length}건을 삭제할까요? 목록에서 사라지고 되돌릴 수 없습니다.`)) return;
+  await api("/passes/bulk-delete", {
+    method: "POST",
+    body: JSON.stringify({ ids }),
+  });
+  await refreshPasses();
+});
+
+el("deleteAllBtn")?.addEventListener("click", async () => {
+  const total = document.querySelectorAll("#passTableBody [data-select]").length;
+  if (!total) return;
+  if (!window.confirm(`발급된 사용권 ${total}건을 모두 삭제할까요? 목록에서 사라지고 되돌릴 수 없습니다.`)) return;
+  await api("/passes/bulk-delete", {
+    method: "POST",
+    body: JSON.stringify({ deleteAll: true }),
+  });
+  await refreshPasses();
 });
 
 boot().catch(() => showSetup());

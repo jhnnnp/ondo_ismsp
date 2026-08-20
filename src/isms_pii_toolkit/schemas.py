@@ -853,6 +853,15 @@ class AdminPassIssueResponse(ApiModel):
     record: AdminPassRecordResponse
 
 
+class AdminPassBulkDeleteRequest(ApiModel):
+    ids: list[str] = Field(default_factory=list)
+    delete_all: bool = Field(default=False, alias="deleteAll")
+
+
+class AdminPassBulkDeleteResponse(ApiModel):
+    deleted: int
+
+
 class ReportRewriteRequest(ApiModel):
     text: str = Field(min_length=1, max_length=8_000)
     mode: Literal[

@@ -34,6 +34,7 @@ from .access_pass import (
     clear_admin_session,
     create_admin_session,
     delete_pass,
+    delete_passes,
     issue_pass_record,
     list_passes,
     pass_summary,
@@ -72,6 +73,8 @@ from .schemas import (
     AccessPassRegisterRequest,
     AccessPassStatusResponse,
     AdminLoginRequest,
+    AdminPassBulkDeleteRequest,
+    AdminPassBulkDeleteResponse,
     AdminPassIssueRequest,
     AdminPassIssueResponse,
     AdminPassListResponse,
@@ -553,6 +556,22 @@ def create_app() -> FastAPI:
                 kind=payload.kind,
             )
             return AdminPassIssueResponse(token=token, record=AdminPassRecordResponse(**pass_summary(record)))
+
+        @application.post(
+            f"{admin_prefix}/passes/bulk-delete",
+            response_model=AdminPassBulkDeleteResponse,
+            include_in_schema=False,
+        )
+        def admin_bulk_delete_passes(
+            payload: AdminPassBulkDeleteRequest,
+            http_request: Request,
+        ) -> AdminPassBulkDeleteResponse:
+            _enforce_admin(http_request)
+            try:
+                deleted = delete_passes(pass_ids=payload.ids, delete_all=payload.delete_all)
+            except AccessPassError as error:
+                raise HTTPException(status_code=error.status_code, detail=str(error)) from error
+            return AdminPassBulkDeleteResponse(deleted=deleted)
 
         @application.patch(
             f"{admin_prefix}/passes/{{pass_id}}",

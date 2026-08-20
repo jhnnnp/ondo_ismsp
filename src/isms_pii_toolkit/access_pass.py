@@ -510,6 +510,25 @@ def delete_pass(pass_id: str) -> dict[str, Any]:
     return snapshot
 
 
+def delete_passes(*, pass_ids: list[str] | None = None, delete_all: bool = False) -> int:
+    wanted = {str(item or "").strip() for item in (pass_ids or []) if str(item or "").strip()}
+    if not delete_all and not wanted:
+        raise AccessPassError("삭제할 사용권을 선택하세요.")
+    with _LOCK:
+        payload = load_store()
+        current = list(payload.get("passes") or [])
+        if delete_all:
+            deleted_count = len(current)
+            payload["passes"] = []
+        else:
+            remaining = [item for item in current if item.get("id") not in wanted]
+            deleted_count = len(current) - len(remaining)
+            payload["passes"] = remaining
+        if deleted_count:
+            save_store(payload)
+    return deleted_count
+
+
 def register_pass(token: str, *, now: datetime | None = None) -> tuple[str, dict[str, Any]]:
     cleaned = str(token or "").strip()
     if len(cleaned) < 16:

@@ -78,53 +78,35 @@ body.is-login {
 }
 .brand-copy strong sup { color: var(--accent); font-size: .55em; }
 .brand-copy small { color: var(--muted); font-size: 11px; font-weight: 650; }
-.admin-header-actions { display: flex; align-items: center; gap: 12px; }
-.admin-header-actions a.workspace-link {
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.admin-header-actions a.workspace-link,
+.admin-header-actions button {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  min-height: 0;
-  padding: 0;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 10px;
   border: 0;
+  border-radius: 8px;
   background: transparent;
   color: var(--muted);
   font: inherit;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 650;
   text-decoration: none;
   box-shadow: none;
-}
-.admin-header-actions a.workspace-link svg {
-  width: 13px;
-  height: 13px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.admin-header-actions a.workspace-link:hover {
-  color: var(--text);
-  background: transparent;
-  border-color: transparent;
-}
-.admin-header-actions button {
-  min-height: 34px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  background: #fff;
-  color: var(--muted);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 700;
   cursor: pointer;
-  transition: border-color .16s var(--ease), color .16s var(--ease), background .16s var(--ease);
+  transition: color .16s var(--ease), background .16s var(--ease);
 }
+.admin-header-actions a.workspace-link:hover,
 .admin-header-actions button:hover {
   color: var(--text);
-  border-color: #c5d0d8;
-  background: #f8fafb;
+  background: #f3f5f7;
+  border-color: transparent;
 }
 
 .sr-only {
@@ -359,27 +341,86 @@ button.primary:active { transform: translateY(1px); }
 }
 .issued-banner button { height: 34px; min-height: 34px; }
 
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--line);
+  background: #fafbfc;
+}
+.selection-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.bulk-actions { display: flex; align-items: center; gap: 6px; }
+.bulk-btn {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
+}
+.bulk-btn:hover:not(:disabled) {
+  color: var(--text);
+  background: #f8fafb;
+}
+.bulk-btn.bulk-danger {
+  color: var(--danger);
+  border-color: #fecdd3;
+}
+.bulk-btn.bulk-danger:hover:not(:disabled) { background: #fff1f2; }
+.bulk-btn:disabled {
+  opacity: .38;
+  cursor: default;
+}
+
 .table-wrap { overflow-x: auto; border-top: 1px solid var(--line); }
 .admin-table {
   width: 100%;
-  min-width: 820px;
+  min-width: 860px;
   table-layout: fixed;
   border-collapse: collapse;
   font-size: 13px;
 }
-.col-note { width: 148px; }
+.col-check { width: 40px; }
+.col-note { width: 136px; }
 .col-token { width: auto; }
-.col-status { width: 92px; }
-.col-remain { width: 108px; }
-.col-days { width: 88px; }
-.col-date { width: 96px; }
-.col-action { width: 132px; }
+.col-status { width: 88px; }
+.col-remain { width: 104px; }
+.col-days { width: 80px; }
+.col-date { width: 92px; }
+.col-action { width: 96px; }
 .admin-table th,
 .admin-table td {
   height: 44px;
-  padding: 0 14px;
+  padding: 0 12px;
   border-bottom: 1px solid var(--line);
   text-align: left;
+  vertical-align: middle;
+}
+.admin-table th.col-check,
+.admin-table td.col-check {
+  padding-left: 16px;
+  padding-right: 0;
+}
+.pass-check {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--accent-strong);
+  cursor: pointer;
   vertical-align: middle;
 }
 .admin-table td.col-token,
@@ -483,42 +524,40 @@ button.primary:active { transform: translateY(1px); }
 .kind-invite { background: #eaf7f3; color: #0b5f59; }
 .col-action,
 .row-actions { text-align: right; }
-.row-actions { display: flex; justify-content: flex-end; gap: 6px; }
-.revoke-btn,
-.delete-btn {
-  min-width: 52px;
-  min-height: 28px;
-  padding: 0 9px;
-  border-radius: 8px;
-  background: #fff;
+.row-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2px;
+}
+.row-link {
+  min-width: 0;
+  min-height: 0;
+  height: 24px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
   font: inherit;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 650;
   cursor: pointer;
   white-space: nowrap;
 }
-.revoke-btn {
-  border: 1px solid #fecdd3;
-  color: var(--danger);
-}
+.revoke-btn { color: var(--danger); }
 .revoke-btn:hover:not(:disabled) { background: #fff1f2; }
 .revoke-btn:disabled {
-  border-color: transparent;
-  background: #f8fafc;
   color: #94a3b8;
   cursor: default;
 }
-.delete-btn {
-  border: 1px solid var(--line);
-  color: var(--muted);
-}
-.delete-btn:hover { background: #f8fafb; color: var(--text); }
+.delete-btn { color: var(--muted-soft); }
+.delete-btn:hover { background: #f3f5f7; color: var(--text); }
 
 @media (max-width: 720px) {
   .admin-header { padding-inline: 16px; }
   .admin-main, body.is-login .admin-main { width: auto; padding-inline: 16px; }
   .login-card { padding: 28px 20px; }
-  .desk-bar, .issue-form { padding-inline: 16px; }
+  .desk-bar, .issue-form, .table-toolbar { padding-inline: 16px; }
   .issued-banner { margin-inline: 16px; grid-template-columns: 1fr; }
   .issue-form { grid-template-columns: 1fr; }
 }
