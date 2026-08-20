@@ -671,6 +671,34 @@ function bindEvents() {
   });
 }
 
+function restoreWorkspaceShell(routeId) {
+  if (!state.activeSessionId || routeId === "sessions") {
+    showDiagnosisSessionPicker();
+    return false;
+  }
+  const session = activateDiagnosisSession(state.activeSessionId);
+  if (!session) {
+    showDiagnosisSessionPicker();
+    return false;
+  }
+  pendingRouteId = routeId;
+  showDiagnosisApp();
+  if (routeId === "scope" || !state.organizationProfile) {
+    switchView("assess", { skipProfileGate: true });
+    return true;
+  }
+  const route = ROUTES[routeId] || ROUTES.assessment;
+  setAnalyzeWorkspaceMode(route.workspace || "assessment");
+  switchView("analyze", { skipAutoAnalyze: true });
+  const loadingSkeleton = el("workspaceLoadingSkeleton");
+  if (!appDataLoaded && loadingSkeleton) {
+    loadingSkeleton.hidden = false;
+    el("view-analyze")?.classList.add("is-workspace-loading");
+    el("view-analyze")?.setAttribute("aria-busy", "true");
+  }
+  return true;
+}
+
 export async function bootstrap() {
   configureAssessmentController({
     markAnalysisStale,
@@ -684,11 +712,11 @@ export async function bootstrap() {
   initializeDiagnosisSessions();
   initAccessPass();
   bindEvents();
-  await ensureWorkspaceAccess();
   const initial = parsePath(window.location.pathname);
   const routeId = initial?.id || "sessions";
-  if (state.activeSessionId && routeId !== "sessions") {
-    pendingRouteId = routeId;
+  const restoredShell = restoreWorkspaceShell(routeId);
+  await ensureWorkspaceAccess();
+  if (restoredShell && state.activeSessionId) {
     await openDiagnosisSession(state.activeSessionId);
     return;
   }
