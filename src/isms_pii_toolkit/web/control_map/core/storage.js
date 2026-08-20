@@ -83,6 +83,7 @@ function stateSessionData() {
     reportReview: {},
     analysisHistory: state.analysisHistory,
     organizationProfile: state.organizationProfile,
+    sessionSelectedControlId: state.sessionSelectedControlId,
   });
 }
 
@@ -106,6 +107,7 @@ function applySessionData(data) {
       processesRrn: false,
     }
     : null;
+  state.sessionSelectedControlId = next.sessionSelectedControlId;
   state.analysis = null;
   state.analysisStale = false;
   state.lastAiExecutiveReport = null;

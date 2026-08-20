@@ -32,6 +32,7 @@ import {
   diagnosisSessionPageNumbers,
   paginateDiagnosisSessions,
 } from "../../src/isms_pii_toolkit/web/control_map/features/sessions/view.js";
+import { resolveSessionSelectedId } from "../../src/isms_pii_toolkit/web/control_map/features/session/view.js";
 import {
   compactSearchText,
   controlSearchScore,
@@ -280,6 +281,7 @@ test("diagnosis sessions have independent identifiers and data", () => {
     data: {
       assessments: { "1.1.1": "partial" },
       controlChecks: { "1.1.1": { reviewed: true, policy: false } },
+      sessionSelectedControlId: "1.2.3",
     },
   });
   const copy = duplicateDiagnosisSession(source, {
@@ -294,6 +296,14 @@ test("diagnosis sessions have independent identifiers and data", () => {
   assert.equal(copy.name, "운영 진단 복사본");
   assert.equal(source.data.assessments["1.1.1"], "partial");
   assert.equal(source.data.controlChecks["1.1.1"].policy, false);
+  assert.equal(copy.data.sessionSelectedControlId, "1.2.3");
+});
+
+test("assessment restores the last control and defaults to the first control", () => {
+  const groups = [{ categoryId: "1.1", controls: [{ id: "1.1.1" }, { id: "1.1.2" }] }];
+  assert.equal(resolveSessionSelectedId("1.1.2", groups), "1.1.2");
+  assert.equal(resolveSessionSelectedId(null, groups), "1.1.1");
+  assert.equal(resolveSessionSelectedId("1.2.3", groups), "1.1.1");
 });
 
 test("diagnosis session names trim, collapse spaces, and stay within length", () => {

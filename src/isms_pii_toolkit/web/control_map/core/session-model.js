@@ -34,6 +34,7 @@ export function emptySessionData() {
     reportReview: {},
     analysisHistory: [],
     organizationProfile: null,
+    sessionSelectedControlId: null,
   };
 }
 
@@ -66,6 +67,9 @@ export function normalizeSessionData(value) {
   if (!Object.keys(normalized.organizationProfile).length) {
     normalized.organizationProfile = null;
   }
+  normalized.sessionSelectedControlId = typeof source.sessionSelectedControlId === "string"
+    ? source.sessionSelectedControlId.trim() || null
+    : null;
   return normalized;
 }
 

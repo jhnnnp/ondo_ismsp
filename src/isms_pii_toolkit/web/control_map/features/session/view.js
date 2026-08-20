@@ -7,6 +7,7 @@ import {
 import { el, escapeHtml } from "../../core/dom.js";
 import { navigateTo } from "../../core/routes.js";
 import { state } from "../../core/state.js";
+import { persistActiveDiagnosisSession } from "../../core/storage.js";
 import {
   ensureChecks,
   ensureDomainChecks,
@@ -187,13 +188,15 @@ function priorityIds(rawActions = []) {
     .map((action) => action.controlId);
 }
 
-function resolveSelectedId(priority, groups) {
+export function resolveSessionSelectedId(current, groups) {
   const allIds = new Set(groups.flatMap((g) => g.controls.map((c) => c.id)));
-  const current = state.sessionSelectedControlId;
   if (current && allIds.has(current)) return current;
-  const firstPriority = priority.find((id) => allIds.has(id));
-  if (firstPriority) return firstPriority;
-  return nextIncompleteControlId() || groups[0]?.controls?.[0]?.id || null;
+  return groups[0]?.controls?.[0]?.id || null;
+}
+
+function rememberSelectedControl(controlId) {
+  state.sessionSelectedControlId = controlId || null;
+  persistActiveDiagnosisSession();
 }
 
 function ensureCategoryExpanded(selectedId, groups) {
@@ -318,7 +321,7 @@ function selectSessionControl(controlId, { groups, prioritySet, scrollTree = fal
   if (state.pendingDoneEvidenceControlId && state.pendingDoneEvidenceControlId !== controlId) {
     state.pendingDoneEvidenceControlId = null;
   }
-  state.sessionSelectedControlId = controlId;
+  rememberSelectedControl(controlId);
   const group = categoryGroups.find((g) => g.controls.some((c) => c.id === controlId));
   if (group) state.sessionCollapsedCategories.delete(group.categoryId);
   renderSessionDetail(controlId, actionsMap, priorities);
@@ -574,7 +577,7 @@ function bindDetailHandlers(root, { diagnoseControl, groups, prioritySet } = {})
       const level = btn.getAttribute("data-diagnose-level");
       if (!controlId || !level || !diagnoseControl) return;
       if (level === "done" && !hasRegisteredEvidence(controlId)) {
-        state.sessionSelectedControlId = controlId;
+        rememberSelectedControl(controlId);
         state.pendingDoneEvidenceControlId = controlId;
         reopenSessionDetail(controlId, { diagnoseControl, groups, prioritySet });
         return;
@@ -588,7 +591,7 @@ function bindDetailHandlers(root, { diagnoseControl, groups, prioritySet } = {})
       const controlId = node.getAttribute("data-check-control");
       const key = node.getAttribute("data-check-key");
       if (!controlId || !key) return;
-      state.sessionSelectedControlId = controlId;
+      rememberSelectedControl(controlId);
       setControlCheck(controlId, key, !!node.checked);
     });
   });
@@ -714,7 +717,7 @@ export function renderConfirmationActions(analysis, { diagnoseControl, markAnaly
   }, { none: 0, partial: 0 });
   const groups = filterSessionGroups(sessionCategoryGroups());
   const dashboardGroups = sessionCategoryGroups();
-  const selectedId = resolveSelectedId(priority, groups);
+  const selectedId = resolveSessionSelectedId(state.sessionSelectedControlId, groups);
   state.sessionSelectedControlId = selectedId;
   ensureCategoryExpanded(selectedId, groups);
 
@@ -736,10 +739,13 @@ export function renderConfirmationActions(analysis, { diagnoseControl, markAnaly
   });
 
   const goToControl = (controlId = null, { weak = false } = {}) => {
-    if (weak) applyWeakReviewState(state, controlId, priority);
+    if (weak) {
+      applyWeakReviewState(state, controlId, priority);
+      rememberSelectedControl(state.sessionSelectedControlId);
+    }
     else {
       state.levelFilter = "all";
-      state.sessionSelectedControlId = controlId || nextIncompleteControlId();
+      rememberSelectedControl(controlId || nextIncompleteControlId());
     }
     navigateTo("assessment");
     refreshSessionView();
@@ -812,7 +818,7 @@ export function renderConfirmationActions(analysis, { diagnoseControl, markAnaly
     `;
     progressEl.querySelector("[data-progress-next]")?.addEventListener("click", () => {
       state.levelFilter = "unknown";
-      state.sessionSelectedControlId = nextIncompleteControlId();
+      rememberSelectedControl(nextIncompleteControlId());
       refreshSessionView();
       el("sessionMasterDetail")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
