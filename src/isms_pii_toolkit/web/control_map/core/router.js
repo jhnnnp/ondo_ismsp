@@ -253,6 +253,13 @@ function setAnalyzeWorkspaceMode(mode = "assessment") {
     syncExecutiveReportStream();
     syncAiReportChrome();
   }
+  const loadingSkeleton = el("workspaceLoadingSkeleton");
+  if (loadingSkeleton) {
+    loadingSkeleton.setAttribute(
+      "aria-label",
+      next === "report" ? "보고서를 불러오는 중" : "진단 항목을 불러오는 중",
+    );
+  }
   window.scrollTo({ top: 0, behavior: "auto" });
 }
 

@@ -3222,12 +3222,40 @@ html.is-workspace-locked .desktop-workspace-gate {
 
 #view-analyze.is-workspace-loading #analyzeContent,
 #view-analyze.is-workspace-loading #analysisReportPanel,
-#view-analyze.is-workspace-loading #reportReturnBar {
+#view-analyze.is-workspace-loading #reportReturnBar,
+#view-analyze.is-workspace-loading.is-report #analysisReportPanel {
   display: none !important;
 }
 
 #view-analyze.is-workspace-loading .workspace-loading-skeleton:not([hidden]) {
   display: grid !important;
+}
+
+#view-analyze.is-report.is-workspace-loading .workspace-loading-skeleton:not([hidden]) {
+  padding: 0;
+}
+
+.workspace-skeleton-assessment {
+  display: grid;
+  gap: 16px;
+}
+
+.workspace-skeleton-report {
+  display: none;
+}
+
+#view-analyze.is-report .workspace-skeleton-assessment {
+  display: none;
+}
+
+#view-analyze.is-report .workspace-skeleton-report {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  min-height: min(78vh, 920px);
+  border: 1px solid #e3e9ee;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
 }
 
 .workspace-skeleton-summary,
@@ -3244,6 +3272,30 @@ html.is-workspace-locked .desktop-workspace-gate {
 .workspace-skeleton-columns {
   display: grid;
   grid-template-columns: minmax(260px, .8fr) minmax(0, 1.6fr);
+  gap: 16px;
+}
+
+.workspace-skeleton-report-rail,
+.workspace-skeleton-report-main {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.workspace-skeleton-report-rail {
+  padding: 22px 18px 20px;
+  background: #f8fafb;
+  border-right: 1px solid #e3e9ee;
+}
+
+.workspace-skeleton-report-main {
+  padding: 18px 20px 20px;
+}
+
+.workspace-skeleton-report-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 16px;
 }
 
@@ -3264,6 +3316,7 @@ html.is-workspace-locked .desktop-workspace-gate {
 .workspace-skeleton-block { height: 52px; }
 .workspace-skeleton-panel { height: 180px; }
 .workspace-skeleton-panel.is-small { height: 92px; }
+.workspace-skeleton-panel.is-editor { height: min(56vh, 640px); }
 
 @keyframes workspace-skeleton-shimmer {
   from { background-position: 200% 0; }
@@ -3278,6 +3331,11 @@ html.is-workspace-locked .desktop-workspace-gate {
 
 @media (max-width: 900px) {
   .workspace-skeleton-columns { grid-template-columns: 1fr; }
+  #view-analyze.is-report .workspace-skeleton-report {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .workspace-skeleton-report-rail { border-right: 0; border-bottom: 1px solid #e3e9ee; }
 }
 
 @media (max-width: 860px),

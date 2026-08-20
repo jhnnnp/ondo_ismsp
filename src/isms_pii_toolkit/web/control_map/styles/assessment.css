@@ -523,7 +523,7 @@
   display:none !important;
 }
 
-#view-analyze.is-report #analysisReportPanel {
+#view-analyze.is-report:not(.is-workspace-loading) #analysisReportPanel {
   display:block !important;
   margin:0;
   padding:0;

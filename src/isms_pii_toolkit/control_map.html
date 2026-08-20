@@ -14,7 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260820-13">
+  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260820-14">
   <script>
     (function () {
       try {
@@ -316,24 +316,44 @@
 
         <div class="workspace-loading-skeleton" id="workspaceLoadingSkeleton" role="status"
           aria-label="진단 항목을 불러오는 중" hidden>
-          <div class="workspace-skeleton-summary">
-            <span class="workspace-skeleton-line is-wide"></span>
-            <span class="workspace-skeleton-line is-medium"></span>
-          </div>
-          <div class="workspace-skeleton-columns">
-            <div class="workspace-skeleton-list">
-              <span class="workspace-skeleton-line is-short"></span>
-              <span class="workspace-skeleton-block"></span>
-              <span class="workspace-skeleton-block"></span>
-              <span class="workspace-skeleton-block"></span>
-              <span class="workspace-skeleton-block"></span>
-            </div>
-            <div class="workspace-skeleton-detail">
-              <span class="workspace-skeleton-line is-short"></span>
+          <div class="workspace-skeleton-assessment">
+            <div class="workspace-skeleton-summary">
               <span class="workspace-skeleton-line is-wide"></span>
               <span class="workspace-skeleton-line is-medium"></span>
-              <span class="workspace-skeleton-panel"></span>
-              <span class="workspace-skeleton-panel is-small"></span>
+            </div>
+            <div class="workspace-skeleton-columns">
+              <div class="workspace-skeleton-list">
+                <span class="workspace-skeleton-line is-short"></span>
+                <span class="workspace-skeleton-block"></span>
+                <span class="workspace-skeleton-block"></span>
+                <span class="workspace-skeleton-block"></span>
+                <span class="workspace-skeleton-block"></span>
+              </div>
+              <div class="workspace-skeleton-detail">
+                <span class="workspace-skeleton-line is-short"></span>
+                <span class="workspace-skeleton-line is-wide"></span>
+                <span class="workspace-skeleton-line is-medium"></span>
+                <span class="workspace-skeleton-panel"></span>
+                <span class="workspace-skeleton-panel is-small"></span>
+              </div>
+            </div>
+          </div>
+          <div class="workspace-skeleton-report">
+            <div class="workspace-skeleton-report-rail">
+              <span class="workspace-skeleton-line is-short"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-line is-medium"></span>
+              <span class="workspace-skeleton-line is-wide"></span>
+            </div>
+            <div class="workspace-skeleton-report-main">
+              <div class="workspace-skeleton-report-toolbar">
+                <span class="workspace-skeleton-line is-wide"></span>
+                <span class="workspace-skeleton-line is-short"></span>
+              </div>
+              <span class="workspace-skeleton-panel is-editor"></span>
             </div>
           </div>
         </div>
@@ -526,7 +546,7 @@
     </form>
   </dialog>
 
-  <script type="module" src="/controls/map/assets/react-dist/workspace.js?v=20260820-7"></script>
+  <script type="module" src="/controls/map/assets/react-dist/workspace.js?v=20260820-8"></script>
 
 </body>
 
