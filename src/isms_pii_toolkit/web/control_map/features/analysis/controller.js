@@ -184,6 +184,7 @@ async function executeAnalysisOnce(switchToAnalyze, options = {}, {
       loadingSkeleton.dataset.analysisLoading = "true";
       loadingSkeleton.dataset.loadingSessionId = sessionId || "";
     }
+    analyzeRoot?.classList.add("is-workspace-loading");
     analyzeRoot?.setAttribute("aria-busy", "true");
   }
   try {
@@ -245,6 +246,7 @@ async function executeAnalysisOnce(switchToAnalyze, options = {}, {
       loadingSkeleton.hidden = true;
       delete loadingSkeleton.dataset.analysisLoading;
       delete loadingSkeleton.dataset.loadingSessionId;
+      analyzeRoot?.classList.remove("is-workspace-loading");
       analyzeRoot?.removeAttribute("aria-busy");
     }
   }

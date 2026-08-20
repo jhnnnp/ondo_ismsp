@@ -3220,6 +3220,16 @@ html.is-workspace-locked .desktop-workspace-gate {
 
 .workspace-loading-skeleton[hidden] { display: none; }
 
+#view-analyze.is-workspace-loading #analyzeContent,
+#view-analyze.is-workspace-loading #analysisReportPanel,
+#view-analyze.is-workspace-loading #reportReturnBar {
+  display: none !important;
+}
+
+#view-analyze.is-workspace-loading .workspace-loading-skeleton:not([hidden]) {
+  display: grid !important;
+}
+
 .workspace-skeleton-summary,
 .workspace-skeleton-list,
 .workspace-skeleton-detail {

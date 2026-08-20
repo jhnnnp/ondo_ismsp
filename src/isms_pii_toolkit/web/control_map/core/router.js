@@ -472,6 +472,7 @@ async function openDiagnosisSession(sessionId) {
       switchView("analyze", { skipAutoAnalyze: true });
       if (!appDataLoaded && loadingSkeleton) {
         loadingSkeleton.hidden = false;
+        el("view-analyze")?.classList.add("is-workspace-loading");
         el("view-analyze")?.setAttribute("aria-busy", "true");
       }
     }
@@ -497,6 +498,7 @@ async function openDiagnosisSession(sessionId) {
   } finally {
     if (loadingSkeleton?.dataset.analysisLoading !== "true") {
       loadingSkeleton.hidden = true;
+      el("view-analyze")?.classList.remove("is-workspace-loading");
       el("view-analyze")?.removeAttribute("aria-busy");
     }
     sessionOpening = false;
