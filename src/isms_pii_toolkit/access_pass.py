@@ -497,6 +497,19 @@ def revoke_pass(pass_id: str, *, now: datetime | None = None) -> dict[str, Any]:
     return snapshot
 
 
+def delete_pass(pass_id: str) -> dict[str, Any]:
+    cleaned_id = str(pass_id or "").strip()
+    with _LOCK:
+        payload = load_store()
+        record = _find_by_id(payload, cleaned_id)
+        if record is None:
+            raise AccessPassError("사용권을 찾을 수 없습니다.", status_code=404)
+        payload["passes"] = [item for item in payload["passes"] if item.get("id") != cleaned_id]
+        save_store(payload)
+        snapshot = dict(record)
+    return snapshot
+
+
 def register_pass(token: str, *, now: datetime | None = None) -> tuple[str, dict[str, Any]]:
     cleaned = str(token or "").strip()
     if len(cleaned) < 16:

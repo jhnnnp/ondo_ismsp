@@ -89,8 +89,12 @@ def test_admin_page_is_served_only_on_secret_path(monkeypatch: pytest.MonkeyPatc
     assert "사용권" in response.text
     assert "초대권" in response.text
     assert 'id="issueKind"' in response.text
+    assert "종류" in response.text
+    assert 'class="workspace-link"' in response.text
     assert js.status_code == 200
     assert "ADMIN_BASE" in js.text
+    assert "data-delete" in js.text
+    assert "${days}일권" in js.text
     assert "/admin/passes" not in js.text
     assert "/admin/" not in client.get("/openapi.json").text
     assert ADMIN_PATH not in client.get("/openapi.json").text
@@ -209,3 +213,21 @@ def test_admin_can_issue_invite_pass(tmp_path: Path, monkeypatch: pytest.MonkeyP
     assert listed["kind"] == "invite"
     assert listed["remainingSeconds"] == 0
     assert listed["status"] == "active"
+
+
+def test_admin_can_delete_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    client = _admin_client(monkeypatch, tmp_path)
+    client.post(_prefix("/login"), json={"password": "admin-secret"})
+    issued = client.post(_prefix("/passes"), json={"durationDays": 7, "note": "삭제대상"})
+    pass_id = issued.json()["record"]["id"]
+    token = issued.json()["token"]
+    session, _record = register_pass(token)
+    assert resolve_session(session) is not None
+    deleted = client.delete(_prefix(f"/passes/{pass_id}"))
+    assert deleted.status_code == 200
+    assert deleted.json()["id"] == pass_id
+    listed = client.get(_prefix("/passes")).json()["passes"]
+    assert listed == []
+    assert resolve_session(session) is None
+    missing = client.delete(_prefix("/passes/missing"))
+    assert missing.status_code == 404

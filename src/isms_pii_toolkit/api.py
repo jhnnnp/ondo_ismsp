@@ -33,6 +33,7 @@ from .access_pass import (
     admin_console_path,
     clear_admin_session,
     create_admin_session,
+    delete_pass,
     issue_pass_record,
     list_passes,
     pass_summary,
@@ -549,6 +550,7 @@ def create_app() -> FastAPI:
             token, record = issue_pass_record(
                 duration_days=payload.duration_days,
                 note=payload.note,
+                kind=payload.kind,
             )
             return AdminPassIssueResponse(token=token, record=AdminPassRecordResponse(**pass_summary(record)))
 
@@ -578,6 +580,19 @@ def create_app() -> FastAPI:
             _enforce_admin(http_request)
             try:
                 record = revoke_pass(pass_id)
+            except AccessPassError as error:
+                raise HTTPException(status_code=error.status_code, detail=str(error)) from error
+            return AdminPassRecordResponse(**pass_summary(record))
+
+        @application.delete(
+            f"{admin_prefix}/passes/{{pass_id}}",
+            response_model=AdminPassRecordResponse,
+            include_in_schema=False,
+        )
+        def admin_delete_pass(pass_id: str, http_request: Request) -> AdminPassRecordResponse:
+            _enforce_admin(http_request)
+            try:
+                record = delete_pass(pass_id)
             except AccessPassError as error:
                 raise HTTPException(status_code=error.status_code, detail=str(error)) from error
             return AdminPassRecordResponse(**pass_summary(record))

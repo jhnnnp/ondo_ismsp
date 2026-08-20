@@ -19,8 +19,9 @@ function escapeHtml(value) {
 
 function formatKind(item) {
   if (item.kind === "invite") return "초대권";
-  if (item.durationDays) return `${item.durationDays}일`;
-  return "-";
+  const days = Number(item.durationDays);
+  if (Number.isFinite(days) && days > 0) return `${days}일권`;
+  return "기간권";
 }
 
 function formatPassRemaining(item) {
@@ -120,10 +121,13 @@ function renderPasses(passes) {
         <td class="col-token token-cell">${tokenCell(item.token)}</td>
         <td class="col-status"><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
         <td class="col-remain">${formatPassRemaining(item)}</td>
-        <td class="col-days">${formatKind(item)}</td>
+        <td class="col-days"><span class="kind-label kind-${item.kind === "invite" ? "invite" : "timed"}">${formatKind(item)}</span></td>
         <td class="col-date">${formatDate(item.createdAt)}</td>
         <td class="col-date">${formatDate(item.activatedAt)}</td>
-        <td class="col-action row-actions"><button type="button" class="revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button></td>
+        <td class="col-action row-actions">
+          <button type="button" class="revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button>
+          <button type="button" class="delete-btn" data-delete>삭제</button>
+        </td>
       </tr>
     `;
   }).join("");
@@ -254,14 +258,26 @@ el("passTableBody")?.addEventListener("click", async (event) => {
     await copyText(copyButton.dataset.copyToken, copyButton);
     return;
   }
-  const button = event.target.closest("[data-revoke]");
-  if (!button || button.disabled) return;
-  const row = button.closest("tr");
-  const passId = row?.dataset.passId;
-  if (!passId) return;
-  if (!window.confirm("이 사용권을 회수할까요? 등록된 브라우저에서도 즉시 막을 수 있습니다.")) return;
-  await api(`/passes/${passId}/revoke`, { method: "POST", body: "{}" });
-  await refreshPasses();
+  const revokeButton = event.target.closest("[data-revoke]");
+  if (revokeButton) {
+    if (revokeButton.disabled) return;
+    const row = revokeButton.closest("tr");
+    const passId = row?.dataset.passId;
+    if (!passId) return;
+    if (!window.confirm("이 사용권을 회수할까요? 등록된 브라우저에서도 즉시 막을 수 있습니다.")) return;
+    await api(`/passes/${passId}/revoke`, { method: "POST", body: "{}" });
+    await refreshPasses();
+    return;
+  }
+  const deleteButton = event.target.closest("[data-delete]");
+  if (deleteButton) {
+    const row = deleteButton.closest("tr");
+    const passId = row?.dataset.passId;
+    if (!passId) return;
+    if (!window.confirm("이 사용권을 삭제할까요? 목록에서 사라지고 되돌릴 수 없습니다.")) return;
+    await api(`/passes/${passId}`, { method: "DELETE" });
+    await refreshPasses();
+  }
 });
 
 el("passTableBody")?.addEventListener("change", async (event) => {

@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Outfit:wght@600;700&display=swap">
-  <link rel="stylesheet" href="__ADMIN_BASE__/assets/admin.css?v=20260820-1">
+  <link rel="stylesheet" href="__ADMIN_BASE__/assets/admin.css?v=20260820-2">
 </head>
 <body>
   <header class="admin-header">
@@ -28,7 +28,7 @@
       <span class="brand-copy"><strong>ONDO<sup>°</sup></strong><small>사용권 관리</small></span>
     </a>
     <div class="admin-header-actions">
-      <a href="/workspace">진단 화면</a>
+      <a class="workspace-link" href="/workspace">진단 화면 <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M6 14 14 6M8 6h6v6"/></svg></a>
       <button type="button" id="logoutBtn" hidden>로그아웃</button>
     </div>
   </header>
@@ -113,7 +113,7 @@
                 <th class="col-token">사용권</th>
                 <th class="col-status">상태</th>
                 <th class="col-remain">남은 시간</th>
-                <th class="col-days">기간</th>
+                <th class="col-days">종류</th>
                 <th class="col-date">발급</th>
                 <th class="col-date">등록</th>
                 <th class="col-action"><span class="sr-only">작업</span></th>
@@ -128,6 +128,6 @@
     </section>
   </main>
   <script>window.ADMIN_BASE = "__ADMIN_BASE__";</script>
-  <script type="module" src="__ADMIN_BASE__/assets/admin.js?v=20260820-1"></script>
+  <script type="module" src="__ADMIN_BASE__/assets/admin.js?v=20260820-2"></script>
 </body>
 </html>
