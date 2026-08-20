@@ -157,7 +157,8 @@ test("dashboard priority click state selects the requested weak control", () => 
 });
 
 test("assessment levels round-trip through checklist state", () => {
-  for (const level of ["evidenced", "done", "partial", "none", "unknown"]) {
+  assert.equal(deriveLevel(checksFromLevel("evidenced")), "done");
+  for (const level of ["done", "partial", "none", "unknown"]) {
     assert.equal(deriveLevel(checksFromLevel(level)), level);
   }
 });

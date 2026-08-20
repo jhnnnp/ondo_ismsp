@@ -72,12 +72,11 @@ def test_control_map_page_returns_interactive_ui() -> None:
 
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
-    assert "ISMS-P" in response.text
+    assert "ONDO" in response.text
     assert "/controls/map/assets/control_map.css" in response.text
-    assert "/controls/map/assets/app.js" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js" in response.text
     assert 'script type="module"' in response.text
-    assert "<style>" not in response.text
-    assert "<script>" not in response.text
+    assert 'id="workspaceAccessGate"' in response.text
     assert "포트폴리오" not in response.text
     assert 'id="questPanel"' not in response.text
 
@@ -90,15 +89,11 @@ def test_control_map_assets_return_styles_script_and_core_modules() -> None:
     analysis_utils = client.get("/controls/map/assets/features/analysis/utils.js")
     analysis_gaps = client.get("/controls/map/assets/features/analysis/gaps.js")
     analysis_controller = client.get("/controls/map/assets/features/analysis/controller.js")
-    analysis_overlaps = client.get("/controls/map/assets/features/analysis/overlaps.js")
     analysis_presentation = client.get("/controls/map/assets/features/analysis/presentation.js")
     analysis_summary = client.get("/controls/map/assets/features/analysis/summary.js")
     report_review = client.get(
         "/controls/map/assets/features/analysis/report-review.js"
     )
-    problem_view = client.get("/controls/map/assets/features/analysis/problems.js")
-    certification_controller = client.get("/controls/map/assets/features/certification/controller.js")
-    certification_view = client.get("/controls/map/assets/features/certification/view.js")
     assessment_module = client.get("/controls/map/assets/features/assessment/model.js")
     filter_module = client.get("/controls/map/assets/features/assessment/filter.js")
     assessment_view = client.get("/controls/map/assets/features/assessment/view.js")
@@ -130,22 +125,14 @@ def test_control_map_assets_return_styles_script_and_core_modules() -> None:
     assert "export function renderAnalyzeGaps" in analysis_gaps.text
     assert analysis_controller.status_code == 200
     assert "export function executeAnalysis" in analysis_controller.text
-    assert analysis_overlaps.status_code == 200
-    assert "export function renderMultiGapOverlaps" in analysis_overlaps.text
     assert analysis_presentation.status_code == 200
-    assert "export function renderAnalysisLoading" in analysis_presentation.text
+    assert "export function switchAnalyzeSection" in analysis_presentation.text
     assert "ANALYSIS_STEPS" not in analysis_controller.text
     assert "await sleep(420)" not in analysis_controller.text
     assert analysis_summary.status_code == 200
     assert "export function renderAnalysisSummary" in analysis_summary.text
     assert report_review.status_code == 200
     assert "export function buildReportReviewItems" in report_review.text
-    assert problem_view.status_code == 200
-    assert "export function renderProblemAnalysis" in problem_view.text
-    assert certification_controller.status_code == 200
-    assert "export async function loadCertificationGuide" in certification_controller.text
-    assert certification_view.status_code == 200
-    assert "export function renderCertificationGuide" in certification_view.text
     assert assessment_module.status_code == 200
     assert "export function deriveLevel" in assessment_module.text
     assert filter_module.status_code == 200
@@ -263,7 +250,7 @@ def test_analyze_endpoint_returns_gaps_and_portfolio_summary() -> None:
     assert all(chain["comparisonRows"] for chain in focused["cascadeChains"])
     assert all(chain["decisionRule"] for chain in focused["cascadeChains"])
     assert focused["executiveReport"]
-    assert "ISMS-P 자가진단 확인 요약" in focused["executiveReport"]
+    assert "ISMS-P 자체 점검 결과 보고서" in focused["executiveReport"]
     assert focused["reportSections"]
     assert focused["gapClusters"]
     assert all(
@@ -385,7 +372,8 @@ def test_weak_category_action_targets_a_reviewed_weak_control() -> None:
     assert {stat["label"] for stat in weak_card["stats"]} == {
         "미이행",
         "부분 이행",
-        "이행·증적",
+        "이행",
+        "점검분 이행 참고",
     }
     assert payload["areaCoverage"]["관리체계 수립 및 운영"]["reviewedCount"] == 1
     assert payload["areaCoverage"]["관리체계 수립 및 운영"]["totalCount"] > 1
@@ -540,13 +528,13 @@ def test_analyze_returns_multigap_overlaps_for_crypto_log_bundle() -> None:
     assert {stat["label"] for stat in overlap_card["stats"]} == {
         "일치 통제",
         "위험 수준",
-        "판정 유형",
+        "환경",
     }
 
     log_gap = next(g for g in payload["topGaps"] if g["controlId"] == "2.9.4")
     assert log_gap["overlappingRisks"]
     assert any(item["bundleId"] == "crypto-log-pii" for item in log_gap["overlappingRisks"])
-    assert "다중 갭 겹침" in payload["executiveReport"]
+    assert "6. 반복·연계 미흡" in payload["executiveReport"]
 
 
 def test_multigap_graph_relation_exposes_manual_reason() -> None:

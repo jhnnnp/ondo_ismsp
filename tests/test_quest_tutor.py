@@ -9,6 +9,7 @@ from isms_pii_toolkit.applicability import PHYSICAL_DC_CONTROLS, apply_na_to_ass
 from isms_pii_toolkit.control_assessment import analyze_assessment, bootstrap_assessment
 from isms_pii_toolkit.organization_profile import normalize_organization_profile
 from isms_pii_toolkit.quest_kb import get_quest_overlay, resolve_quest
+from isms_pii_toolkit.report_evaluation import CANONICAL_REPORT_HEADINGS
 from isms_pii_toolkit.verbalize_inference import (
     build_context_packet,
     validate_quest_verbalize_fields,
@@ -108,8 +109,14 @@ def test_quest_verbalize_rejects_invented_action_id() -> None:
     assessments["2.5.4"] = "none"
     structured = analyze_assessment(assessments, organization_profile=CLOUD_PROFILE, verbalize=False)
     packet = build_context_packet(structured)
+    report_body = "\n".join(
+        [
+            f"준비도 {structured['overallReadiness']}% / 갭 {structured['gapCount']}건",
+            *CANONICAL_REPORT_HEADINGS,
+        ]
+    )
     bad = {
-        "executiveReport": f"준비도 {structured['overallReadiness']}% / 갭 {structured['gapCount']}건",
+        "executiveReport": report_body,
         "keyInsights": ["a", "b", "c"],
         "narratives": {},
         "recommendationDetails": [],

@@ -24,9 +24,6 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="diagnosisSessionList"' in response.text
     assert 'id="diagnosisSessionPager"' in response.text
     assert 'id="createDiagnosisSessionBtn"' in response.text
-    assert 'id="manageSessionsBtn"' in response.text
-    assert 'id="assessList"' in response.text
-    assert 'id="analyzeHero"' in response.text
     assert 'id="reportReviewQueue"' not in response.text
     assert 'id="executiveReportStream"' in response.text
     assert 'id="toggleLabBtn"' not in response.text
@@ -40,7 +37,6 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert '<meta name="robots" content="noindex, nofollow">' in response.text
     assert "ensureWorkspaceAccess" in (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
     assert 'class="page-head-status-kicker"' in response.text
-    assert "page-head-pass-icon" not in response.text
     assert 'id="reportEditorReactRoot"' in response.text
     assert 'class="report-editor-bridge"' in response.text
     assert '/controls/map/assets/react-dist/report-editor.js' not in response.text
@@ -49,7 +45,6 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     ).read_text(encoding="utf-8")
     assert "진단 결과 보고서" in response.text
     assert "AI로 초안 작성" in response.text
-    assert 'id="reportComposeOverlay"' in response.text
     assert 'id="reportReturnBar"' in response.text
     assert 'id="linkedProblemsPanel"' in response.text
     assert 'id="linkedProblemsSummary"' in response.text
@@ -74,16 +69,9 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="weakCategories"' not in response.text
     assert "연계 문제" in response.text
     assert 'id="returnToReportBtn"' in response.text
-    assert "우선 통제 목록을 준비하고 있습니다" in response.text
-    assert 'id="reRunAnalyzeBtn"' in response.text
-    assert 'id="sessionBundleBar"' in response.text
-    assert 'data-bundle-mode="chain"' in response.text
-    assert 'data-bundle-mode="area"' in response.text
-    assert 'data-bundle-mode="theme"' in response.text
-    assert 'id="certPanel"' in response.text
-    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-12" in response.text
     assert 'id="workspaceLoadingSkeleton"' in response.text
-    assert 'href="/controls/map/assets/control_map.css"' in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-12" in response.text
+    assert "/controls/map/assets/control_map.css" in response.text
     assert 'id="questPanel"' not in response.text
 
 
@@ -157,8 +145,7 @@ def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:
         ("styles/sessions.css", "text/css", ".diagnosis-launcher"),
         ("styles/profile.css", "text/css", ".profile-inline"),
         ("styles/assessment.css", "text/css", ".assess-shell"),
-        ("styles/analysis.css", "text/css", ".session-bundle-chip"),
-        ("styles/certification.css", "text/css", ".cert-phase-card.is-visible"),
+        ("styles/analysis.css", "text/css", ".analyze-grid"),
         ("app.js", "text/javascript", 'import { bootstrap } from "./core/router.js"'),
         ("react-dist/workspace.js", "text/javascript", "/controls/checklist?compact=true"),
         ("core/desktop-gate.js", "text/javascript", "export function initDesktopWorkspaceGate"),
@@ -285,8 +272,8 @@ def test_analysis_navigation_uses_sidebar_without_duplicate_detail_page() -> Non
     assert "추가 상세 보기" not in html
     assert 'problems: "overview"' in presentation
     assert '["actions", "overview"].includes(next)' in presentation
-    assert 'event.target.closest("[data-scroll-target]")' in presentation
-    assert 'switchAnalyzeDetailTab(tabsByPanel[detailTab.dataset.scrollTarget]' in presentation
+    assert 'event.target.closest("[data-jump-control]")' in presentation
+    assert 'event.target.closest("[data-insight-toggle]")' in presentation
 
 
 def test_dashboard_exposes_priority_insights_and_binds_all_review_buttons() -> None:
@@ -294,15 +281,13 @@ def test_dashboard_exposes_priority_insights_and_binds_all_review_buttons() -> N
     session_view = (
         WEB_ROOT / "features" / "session" / "view.js"
     ).read_text(encoding="utf-8")
+    dashboard = (
+        WEB_ROOT / "features" / "session" / "dashboard.js"
+    ).read_text(encoding="utf-8")
 
-    assert 'id="dashboardInsights"' in html
-    assert 'id="dashboardPriorityList"' in html
-    assert 'id="dashboardSignalGrid"' in html
-    assert 'id="dashboardCategoryList"' in html
-    assert 'id="dashboardAreaTemps"' in html
-    assert 'id="dashboardQueueTitle"' in html
-    assert 'data-dashboard-review-all' in html
     assert 'querySelectorAll("[data-progress-weak]")' in session_view
+    assert "export function buildDashboardViewModel" in dashboard
+    assert "export function applyWeakReviewState" in dashboard
     assert 'href="/workspace/scope"' in html
     assert 'href="/workspace/assessment"' in html
     assert 'href="/workspace/results"' in html
@@ -311,8 +296,7 @@ def test_dashboard_exposes_priority_insights_and_binds_all_review_buttons() -> N
     assert 'href="/workspace"' in html
     assert 'data-route="assessment"' in html
     assert 'navigateTo("assessment")' in session_view
-    assert 'dashboardPriorityList.querySelectorAll("[data-dashboard-control]")' in session_view
-    assert 'dashboardAreaTemps.querySelectorAll("[data-dashboard-area-control]")' in session_view
+    assert "openWeakReview" in session_view
 
 
 def test_session_list_click_does_not_scroll_page_to_detail() -> None:
@@ -353,13 +337,11 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
     html = client.get("/workspace").text
 
     assert 'loadingMode: "priority"' in router
-    assert "우선 진단 항목을 준비하고 있습니다" in presentation
-    assert "확인 목록을 만들고 있습니다" in presentation
-    assert "규칙 엔진이 현재 저장된 진단 데이터를 처리하고 있습니다." in presentation
+    assert 'loadingSkeleton.dataset.analysisLoading = "true"' in controller
+    assert "확인 목록을 이미 갱신하고 있습니다." in controller
     assert "ANALYSIS_STEPS" not in controller
     assert "await sleep(420)" not in controller
     assert 'id="verbalizeToggle"' not in html
-    assert "AI 리포트" not in html
     assert 'id="writeAiReportBtn"' in html
     assert 'id="pageHeadPass"' in html
     assert 'id="accessPassDialog"' in html
@@ -368,7 +350,6 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
     assert "ensureAccessPass" in router
     assert "ensureWorkspaceAccess" in router
     assert "AI로 초안 작성" in html
-    assert 'id="reportComposeOverlay"' in html
     assert 'data-write-ai-report' in html
     assert "AI는 진단 수치와 판정을 변경하지 않습니다" in html
     assert "AI로 재작성" in presentation
@@ -379,7 +360,7 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
     assert "export function cancelActiveAnalysis" in controller
     assert "cancelActiveAnalysis()" in router
     assert "wantAiReport" not in controller
-    assert 'loadingMode || "priority"' in controller
+    assert 'loadingMode: options.loadingMode || "priority"' in router
 
 
 @pytest.mark.parametrize(
