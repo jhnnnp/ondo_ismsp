@@ -20,6 +20,18 @@ export function remainingFromExpires(expiresAt, now = Date.now()) {
   return Math.max(0, Math.floor((expiry - now) / 1000));
 }
 
+export function accessPassDisplay(status, now = Date.now()) {
+  const active = Boolean(status?.active);
+  const invite = active && status?.kind === "invite";
+  const remaining = remainingFromExpires(status?.expiresAt, now);
+  if (invite) return { active: true, meta: "등록됨", label: "초대권이 등록되었습니다." };
+  if (active && remaining > 0) {
+    return { active: true, meta: formatPassChip(remaining), label: `사용권 ${formatPassRemaining(remaining)}` };
+  }
+  if (status?.expiresAt) return { active: false, expired: true, meta: "만료", label: "사용권이 만료되었습니다. 다시 등록하세요." };
+  return { active: false, expired: false, meta: "미등록", label: "사용권을 등록하세요." };
+}
+
 function el(id) {
   return document.getElementById(id);
 }
@@ -48,24 +60,22 @@ function applyChip() {
     return;
   }
   chip.hidden = false;
-  const remaining = remainingFromExpires(passStatus.expiresAt);
-  const active = remaining > 0;
-  chip.classList.toggle("is-active", active);
-  chip.classList.toggle("is-expired", passStatus.expiresAt && !active);
-  chip.classList.toggle("is-empty", !passStatus.expiresAt && !active);
+  const display = accessPassDisplay(passStatus);
+  chip.classList.toggle("is-active", display.active);
+  chip.classList.toggle("is-expired", Boolean(display.expired));
+  chip.classList.toggle("is-empty", !display.active && !display.expired);
   label.textContent = "사용권";
-  if (active) {
-    meta.textContent = formatPassChip(remaining);
-    chip.setAttribute("aria-label", `사용권 ${formatPassRemaining(remaining)}`);
-    return;
-  }
-  if (passStatus.expiresAt) {
-    meta.textContent = "만료";
-    chip.setAttribute("aria-label", "사용권이 만료되었습니다. 다시 등록하세요.");
-    return;
-  }
-  meta.textContent = "미등록";
-  chip.setAttribute("aria-label", "사용권을 등록하세요.");
+  meta.textContent = display.meta;
+  chip.setAttribute("aria-label", display.label);
+  document.querySelectorAll("[data-write-ai-report]").forEach((button) => {
+    if (display.active || !passStatus.required) {
+      button.removeAttribute("data-access-required");
+      button.removeAttribute("title");
+    } else {
+      button.setAttribute("data-access-required", "true");
+      button.setAttribute("title", "클릭하여 사용권을 등록한 뒤 AI 초안을 작성하세요.");
+    }
+  });
 }
 
 function syncWorkspaceInert(locked) {

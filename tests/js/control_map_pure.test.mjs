@@ -40,6 +40,7 @@ import {
   rankControlsBySearch,
 } from "../../src/isms_pii_toolkit/web/control_map/features/assessment/search.js";
 import {
+  accessPassDisplay,
   formatPassChip,
   formatPassRemaining,
   remainingFromExpires,
@@ -445,6 +446,14 @@ test("access pass remaining labels include days and hours", () => {
   const now = Date.parse("2026-08-19T08:00:00Z");
   assert.equal(remainingFromExpires("2026-08-22T08:00:00+00:00", now), 3 * 86400);
   assert.equal(remainingFromExpires(null, now), 0);
+});
+
+test("active invite pass displays as registered without an expiry", () => {
+  assert.deepEqual(
+    accessPassDisplay({ active: true, kind: "invite", expiresAt: null }),
+    { active: true, meta: "등록됨", label: "초대권이 등록되었습니다." },
+  );
+  assert.equal(accessPassDisplay({ active: false, kind: null, expiresAt: null }).meta, "미등록");
 });
 
 test("legal prose splits questions, hangul answers, and casebook headings", () => {
