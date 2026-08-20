@@ -24,8 +24,11 @@ function el(id) {
   return document.getElementById(id);
 }
 
+const LOCK_CLASS = "is-workspace-locked";
+
 let passStatus = {
   required: true,
+  workspaceRequired: true,
   active: false,
   remainingSeconds: 0,
   expiresAt: null,
@@ -33,6 +36,7 @@ let passStatus = {
 };
 let tickTimer = 0;
 let registerResolver = null;
+let workspaceUnlockResolver = null;
 
 function applyChip() {
   const chip = el("pageHeadPass");
@@ -64,6 +68,58 @@ function applyChip() {
   chip.setAttribute("aria-label", "사용권을 등록하세요.");
 }
 
+function syncWorkspaceInert(locked) {
+  const gate = el("workspaceAccessGate");
+  Array.from(document.body.children).forEach((node) => {
+    if (node === gate) return;
+    if (locked) node.setAttribute("inert", "");
+    else node.removeAttribute("inert");
+  });
+}
+
+function lockWorkspace() {
+  document.documentElement.classList.add(LOCK_CLASS);
+  const gate = el("workspaceAccessGate");
+  if (gate) {
+    gate.setAttribute("aria-hidden", "false");
+    gate.removeAttribute("inert");
+  }
+  syncWorkspaceInert(true);
+  const input = el("workspaceAccessInput");
+  if (input && document.activeElement !== input) input.focus();
+}
+
+function unlockWorkspace() {
+  document.documentElement.classList.remove(LOCK_CLASS);
+  const gate = el("workspaceAccessGate");
+  gate?.setAttribute("aria-hidden", "true");
+  syncWorkspaceInert(false);
+  if (workspaceUnlockResolver) {
+    const resolve = workspaceUnlockResolver;
+    workspaceUnlockResolver = null;
+    resolve(true);
+  }
+}
+
+function waitForWorkspaceUnlock() {
+  return new Promise((resolve) => {
+    const previous = workspaceUnlockResolver;
+    workspaceUnlockResolver = (result) => {
+      previous?.(result);
+      resolve(result);
+    };
+  });
+}
+
+function workspaceNeedsLock(status = passStatus) {
+  return Boolean(status.workspaceRequired) && !status.active;
+}
+
+function applyWorkspaceLockFromStatus(status = passStatus) {
+  if (workspaceNeedsLock(status)) lockWorkspace();
+  else unlockWorkspace();
+}
+
 function scheduleTick() {
   window.clearInterval(tickTimer);
   if (!passStatus.required || !passStatus.expiresAt) return;
@@ -71,6 +127,7 @@ function scheduleTick() {
   if (remaining <= 0) {
     passStatus = { ...passStatus, active: false, remainingSeconds: 0 };
     applyChip();
+    applyWorkspaceLockFromStatus(passStatus);
     return;
   }
   const interval = remaining < 3600 ? 1000 : 30000;
@@ -91,6 +148,7 @@ export async function refreshAccessPassStatus() {
   } catch (_) {
     passStatus = {
       required: true,
+      workspaceRequired: true,
       active: false,
       remainingSeconds: 0,
       expiresAt: null,
@@ -99,6 +157,25 @@ export async function refreshAccessPassStatus() {
   }
   applyChip();
   scheduleTick();
+  applyWorkspaceLockFromStatus(passStatus);
+  return passStatus;
+}
+
+async function submitAccessToken(token) {
+  const response = await fetch("/access/register", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(payload.detail || "사용권을 등록하지 못했습니다.");
+  }
+  passStatus = payload;
+  applyChip();
+  scheduleTick();
+  applyWorkspaceLockFromStatus(passStatus);
   return passStatus;
 }
 
@@ -112,21 +189,12 @@ function closeAccessPassDialog(result = false) {
   }
 }
 
-function bindAccessPassDialog() {
-  const dialog = el("accessPassDialog");
-  const form = el("accessPassForm");
-  const input = el("accessPassInput");
-  const errorEl = el("accessPassError");
-  if (!dialog || !form || form.dataset.bound === "1") return;
+function bindTokenForm(formId, inputId, errorId, submitId) {
+  const form = el(formId);
+  const input = el(inputId);
+  const errorEl = el(errorId);
+  if (!form || form.dataset.bound === "1") return;
   form.dataset.bound = "1";
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) closeAccessPassDialog(false);
-  });
-  dialog.addEventListener("cancel", (event) => {
-    event.preventDefault();
-    closeAccessPassDialog(false);
-  });
-  el("accessPassCancelBtn")?.addEventListener("click", () => closeAccessPassDialog(false));
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const token = String(input?.value || "").trim();
@@ -134,29 +202,17 @@ function bindAccessPassDialog() {
     if (token.length < 16) {
       if (errorEl) {
         errorEl.hidden = false;
-        errorEl.textContent = "사용권 문자열을 그대로 붙여넣으세요.";
+        errorEl.textContent = "발급받은 초대 코드를 그대로 붙여넣으세요.";
       }
       input?.focus();
       return;
     }
-    const submit = el("accessPassSubmitBtn");
+    const submit = el(submitId);
     if (submit) submit.disabled = true;
     try {
-      const response = await fetch("/access/register", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.detail || "사용권을 등록하지 못했습니다.");
-      }
-      passStatus = payload;
-      applyChip();
-      scheduleTick();
+      await submitAccessToken(token);
       if (input) input.value = "";
-      closeAccessPassDialog(true);
+      if (formId === "accessPassForm") closeAccessPassDialog(true);
     } catch (error) {
       if (errorEl) {
         errorEl.hidden = false;
@@ -166,6 +222,30 @@ function bindAccessPassDialog() {
       if (submit) submit.disabled = false;
     }
   });
+}
+
+function bindAccessPassDialog() {
+  const dialog = el("accessPassDialog");
+  bindTokenForm("accessPassForm", "accessPassInput", "accessPassError", "accessPassSubmitBtn");
+  if (!dialog || dialog.dataset.bound === "1") return;
+  dialog.dataset.bound = "1";
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) closeAccessPassDialog(false);
+  });
+  dialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeAccessPassDialog(false);
+  });
+  el("accessPassCancelBtn")?.addEventListener("click", () => closeAccessPassDialog(false));
+}
+
+function bindWorkspaceAccessGate() {
+  bindTokenForm(
+    "workspaceAccessForm",
+    "workspaceAccessInput",
+    "workspaceAccessError",
+    "workspaceAccessSubmitBtn",
+  );
 }
 
 export function openAccessPassDialog() {
@@ -193,16 +273,32 @@ export function openAccessPassDialog() {
 export async function ensureAccessPass() {
   const status = await refreshAccessPassStatus();
   if (!status.required || status.active) return true;
+  if (document.documentElement.classList.contains(LOCK_CLASS)) {
+    return waitForWorkspaceUnlock();
+  }
   return openAccessPassDialog();
+}
+
+export async function ensureWorkspaceAccess() {
+  bindWorkspaceAccessGate();
+  const status = await refreshAccessPassStatus();
+  if (!status.workspaceRequired || status.active) {
+    unlockWorkspace();
+    return true;
+  }
+  lockWorkspace();
+  return waitForWorkspaceUnlock();
 }
 
 export function initAccessPass() {
   bindAccessPassDialog();
+  bindWorkspaceAccessGate();
   el("pageHeadPass")?.addEventListener("click", () => {
     openAccessPassDialog();
   });
   window.addEventListener("access-pass:required", () => {
-    openAccessPassDialog();
+    if (workspaceNeedsLock()) lockWorkspace();
+    else openAccessPassDialog();
   });
   const nativeFetch = window.fetch.bind(window);
   window.fetch = async (input, init) => {
@@ -221,5 +317,4 @@ export function initAccessPass() {
     }
     return response;
   };
-  refreshAccessPassStatus();
 }

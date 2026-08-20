@@ -35,6 +35,12 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'href="/docs"' not in response.text
     assert 'id="pageHeadPass"' in response.text
     assert 'id="accessPassDialog"' in response.text
+    assert 'id="workspaceAccessGate"' in response.text
+    assert "초대 코드를 입력하세요" in response.text
+    assert '<meta name="robots" content="noindex, nofollow">' in response.text
+    assert "ensureWorkspaceAccess" in (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
+    assert 'class="page-head-status-kicker"' in response.text
+    assert "page-head-pass-icon" not in response.text
     assert 'id="reportEditorReactRoot"' in response.text
     assert 'class="report-editor-bridge"' in response.text
     assert '/controls/map/assets/react-dist/report-editor.js' in response.text
@@ -77,6 +83,22 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="questPanel"' not in response.text
 
 
+def test_workspace_html_has_access_gate_and_noindex() -> None:
+    response = client.get("/workspace")
+    access_js = (WEB_ROOT / "core" / "access-pass.js").read_text(encoding="utf-8")
+    router = (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
+
+    assert response.status_code == 200
+    assert response.headers.get("x-robots-tag") == "noindex, nofollow"
+    assert '<meta name="robots" content="noindex, nofollow">' in response.text
+    assert 'id="workspaceAccessGate"' in response.text
+    assert 'id="workspaceAccessForm"' in response.text
+    assert "초대 코드를 입력하세요" in response.text
+    assert "export async function ensureWorkspaceAccess" in access_js
+    assert "status.workspaceRequired" in access_js
+    assert "await ensureWorkspaceAccess()" in router
+
+
 def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:
     response = client.get("/workspace")
     html = response.text
@@ -100,7 +122,7 @@ def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:
     [
         ("control_map.css", "text/css", '@import url("./styles/tokens.css")'),
         ("styles/tokens.css", "text/css", ":root"),
-        ("styles/layout.css", "text/css", ".desktop-workspace-gate"),
+        ("styles/layout.css", "text/css", ".workspace-access-gate"),
         ("styles/sessions.css", "text/css", ".diagnosis-launcher"),
         ("styles/profile.css", "text/css", ".profile-inline"),
         ("styles/assessment.css", "text/css", ".assess-shell"),
@@ -108,6 +130,7 @@ def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:
         ("styles/certification.css", "text/css", ".cert-phase-card.is-visible"),
         ("app.js", "text/javascript", 'import { bootstrap } from "./core/router.js"'),
         ("core/desktop-gate.js", "text/javascript", "export function initDesktopWorkspaceGate"),
+        ("core/access-pass.js", "text/javascript", "export async function ensureWorkspaceAccess"),
         ("core/router.js", "text/javascript", "export async function bootstrap"),
         ("core/routes.js", "text/javascript", "export function navigateTo"),
         (
@@ -298,9 +321,10 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
     assert 'id="writeAiReportBtn"' in html
     assert 'id="pageHeadPass"' in html
     assert 'id="accessPassDialog"' in html
-    assert html.index('id="pageHeadPass"') < html.index('id="pageHeadStatus"')
+    assert html.index('id="pageHeadStatus"') < html.index('id="pageHeadPass"')
     assert "initAccessPass" in router
     assert "ensureAccessPass" in router
+    assert "ensureWorkspaceAccess" in router
     assert "AI로 초안 작성" in html
     assert 'id="reportComposeOverlay"' in html
     assert 'data-write-ai-report' in html

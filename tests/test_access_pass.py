@@ -26,6 +26,7 @@ from isms_pii_toolkit.control_assessment import bootstrap_assessment
 def _client(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> TestClient:
     monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_STORE", str(tmp_path / "access-passes.json"))
     monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_REQUIRED", "1")
+    monkeypatch.setenv("PII_TOOLKIT_WORKSPACE_PASS_REQUIRED", "1")
     return TestClient(create_app())
 
 
@@ -81,6 +82,7 @@ def test_report_endpoints_require_registered_pass(tmp_path: Path, monkeypatch: p
     assert registered.status_code == 200
     body = registered.json()
     assert body["required"] is True
+    assert body["workspaceRequired"] is True
     assert body["active"] is True
     assert body["remainingSeconds"] > 6 * 24 * 3600
     assert COOKIE_NAME in client.cookies
@@ -95,6 +97,9 @@ def test_report_endpoints_require_registered_pass(tmp_path: Path, monkeypatch: p
     status = client.get("/access/status")
     assert status.status_code == 200
     assert status.json()["active"] is True
+    workspace = client.get("/workspace")
+    assert 'class="is-workspace-locked"' not in workspace.text
+    assert workspace.headers.get("x-robots-tag") == "noindex, nofollow"
 
 
 def test_status_without_cookie_is_inactive(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -103,16 +108,23 @@ def test_status_without_cookie_is_inactive(tmp_path: Path, monkeypatch: pytest.M
     assert response.status_code == 200
     assert response.json() == {
         "required": True,
+        "workspaceRequired": True,
         "active": False,
         "remainingSeconds": 0,
         "expiresAt": None,
         "durationDays": None,
+        "kind": None,
     }
+    workspace = client.get("/workspace")
+    assert workspace.status_code == 200
+    assert 'class="is-workspace-locked"' in workspace.text
+    assert 'id="workspaceAccessGate"' in workspace.text
 
 
 def test_optional_pass_keeps_ai_report_open(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_STORE", str(tmp_path / "access-passes.json"))
     monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_REQUIRED", "0")
+    monkeypatch.setenv("PII_TOOLKIT_WORKSPACE_PASS_REQUIRED", "1")
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.delenv("PII_TOOLKIT_OPENAI_API_KEY", raising=False)
     client = TestClient(create_app())
@@ -120,7 +132,28 @@ def test_optional_pass_keeps_ai_report_open(tmp_path: Path, monkeypatch: pytest.
     assert response.status_code == 200
     status = client.get("/access/status").json()
     assert status["required"] is False
-    assert status["active"] is True
+    assert status["workspaceRequired"] is True
+    assert status["active"] is False
+    workspace = client.get("/workspace")
+    assert 'class="is-workspace-locked"' in workspace.text
+
+
+def test_open_workspace_still_requires_ai_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_STORE", str(tmp_path / "access-passes.json"))
+    monkeypatch.setenv("PII_TOOLKIT_ACCESS_PASS_REQUIRED", "1")
+    monkeypatch.setenv("PII_TOOLKIT_WORKSPACE_PASS_REQUIRED", "0")
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.delenv("PII_TOOLKIT_OPENAI_API_KEY", raising=False)
+    client = TestClient(create_app())
+    workspace = client.get("/workspace")
+    assert workspace.status_code == 200
+    assert 'class="is-workspace-locked"' not in workspace.text
+    blocked = client.post("/controls/report", json={"assessments": bootstrap_assessment()})
+    assert blocked.status_code == 403
+    status = client.get("/access/status").json()
+    assert status["required"] is True
+    assert status["workspaceRequired"] is False
+    assert status["active"] is False
 
 
 def test_cli_issue_prints_token_once(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

@@ -87,6 +87,8 @@ def test_admin_page_is_served_only_on_secret_path(monkeypatch: pytest.MonkeyPatc
     assert ".login-card" in css.text
     assert 'id="loginCard"' in response.text
     assert "사용권" in response.text
+    assert "초대권" in response.text
+    assert 'id="issueKind"' in response.text
     assert js.status_code == 200
     assert "ADMIN_BASE" in js.text
     assert "/admin/passes" not in js.text
@@ -131,6 +133,7 @@ def test_admin_can_issue_list_note_and_revoke(tmp_path: Path, monkeypatch: pytes
     assert len(rows) == 1
     assert rows[0]["id"] == pass_id
     assert rows[0]["token"] == token
+    assert rows[0]["kind"] == "timed"
     assert "tokenHash" not in str(listed.json())
 
     renamed = client.patch(_prefix(f"/passes/{pass_id}"), json={"note": "김민수"})
@@ -185,3 +188,24 @@ def test_cli_issue_accepts_note(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
     monkeypatch.setattr("sys.stderr", StringIO())
     assert main(["issue", "--days", "7", "--note", "내부"]) == 0
     assert load_store()["passes"][0]["note"] == "내부"
+
+
+def test_admin_can_issue_invite_pass(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    client = _admin_client(monkeypatch, tmp_path)
+    client.post(_prefix("/login"), json={"password": "admin-secret"})
+    issued = client.post(_prefix("/passes"), json={"kind": "invite", "note": "박진한"})
+    assert issued.status_code == 200
+    body = issued.json()
+    assert body["record"]["kind"] == "invite"
+    assert body["record"]["durationDays"] is None
+    assert body["record"]["status"] == "unused"
+    token = body["token"]
+    session, record = register_pass(token)
+    assert record["kind"] == "invite"
+    assert record["expiresAt"] is None
+    assert record["durationDays"] is None
+    assert resolve_session(session) is not None
+    listed = client.get(_prefix("/passes")).json()["passes"][0]
+    assert listed["kind"] == "invite"
+    assert listed["remainingSeconds"] == 0
+    assert listed["status"] == "active"

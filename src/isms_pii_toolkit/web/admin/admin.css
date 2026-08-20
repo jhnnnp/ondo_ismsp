@@ -260,7 +260,7 @@ button.primary:active { transform: translateY(1px); }
 }
 .issue-form {
   display: grid;
-  grid-template-columns: 128px minmax(0, 1fr) 88px;
+  grid-template-columns: 148px minmax(0, 1fr) 88px;
   gap: 10px;
   align-items: end;
   padding: 18px 24px 20px;
@@ -345,7 +345,7 @@ button.primary:active { transform: translateY(1px); }
 .col-token { width: auto; }
 .col-status { width: 92px; }
 .col-remain { width: 108px; }
-.col-days { width: 56px; }
+.col-days { width: 72px; }
 .col-date { width: 96px; }
 .col-action { width: 80px; }
 .admin-table th,

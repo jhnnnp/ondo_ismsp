@@ -7,7 +7,7 @@ import {
   PAGE_KICKER,
   PAGE_TITLE,
 } from "./constants.js";
-import { initAccessPass, ensureAccessPass } from "./access-pass.js";
+import { initAccessPass, ensureAccessPass, ensureWorkspaceAccess } from "./access-pass.js";
 import { confirmAction, el, escapeHtml, fetchJson, showToast } from "./dom.js";
 import { state } from "./state.js";
 import {
@@ -117,11 +117,11 @@ async function applyOrganizationProfile(profile, {
   syncAssessLayout();
   if (runAnalyzeAfter) {
     await runAnalysis(switchToAnalyze, {
-      successToast: toastMessage || "환경을 적용했습니다. 자가진단을 시작하세요.",
+      successToast: toastMessage || false,
       loadingMode: "priority",
     });
-  } else {
-    showToast(toastMessage || "설정을 적용했습니다.");
+  } else if (toastMessage) {
+    showToast(toastMessage);
   }
 }
 
@@ -133,9 +133,7 @@ function ensureAnalyzeResults(options = {}) {
   if (state.analysis || !state.organizationProfile) return null;
   return runAnalysis(true, {
     loadingMode: options.loadingMode || "priority",
-    successToast: options.successToast === undefined
-      ? "자가진단 화면을 준비했습니다."
-      : options.successToast,
+    successToast: options.successToast || false,
   });
 }
 
@@ -144,10 +142,7 @@ function markAnalysisStale() {
   state.analysisStale = true;
   if (state.lastAiExecutiveReport) state.aiReportStale = true;
   const notice = el("analysisStaleNoticeInline");
-  if (notice) {
-    notice.hidden = false;
-    notice.querySelector("span").textContent = "분석 갱신 필요";
-  }
+  if (notice) notice.hidden = false;
   const returnStatus = el("reportReturnStatus");
   if (state.reportReturn && returnStatus) {
     returnStatus.textContent = "진단이 변경되었습니다. 돌아간 뒤 확인 목록을 갱신하세요.";
@@ -267,10 +262,8 @@ function renderStats() {
   headStatus.classList.add(`is-${band.key}`);
   const label = el("pageHeadStatusLabel");
   const meta = el("pageHeadStatusMeta");
-  if (label) {
-    label.textContent = `준비 온도 · ${band.label}`;
-  }
-  if (meta) meta.textContent = `${temperature}°`;
+  if (label) label.textContent = `${temperature}°`;
+  if (meta) meta.textContent = band.label;
 }
 
 function switchView(viewId, options = {}) {
@@ -588,7 +581,7 @@ function bindEvents() {
     if (event.target.closest("[data-run-analysis]")) {
       runAnalysis(true, {
         loadingMode: "priority",
-        successToast: "확인 목록을 갱신했습니다. AI 리포트는 필요할 때만 하세요.",
+        successToast: "확인 목록을 갱신했습니다.",
       });
     }
   });
@@ -619,7 +612,6 @@ function bindEvents() {
     if (button) button.disabled = true;
     try {
       await applyOrganizationProfile(readProfileForm(), {
-        toastMessage: "환경을 적용했습니다. 자가진단을 시작하세요.",
         runAnalyzeAfter: true,
         switchToAnalyze: true,
       });
@@ -659,6 +651,7 @@ export async function bootstrap() {
   initializeDiagnosisSessions();
   initAccessPass();
   bindEvents();
+  await ensureWorkspaceAccess();
   const initial = parsePath(window.location.pathname);
   const routeId = initial?.id || "sessions";
   if (state.activeSessionId && routeId !== "sessions") {

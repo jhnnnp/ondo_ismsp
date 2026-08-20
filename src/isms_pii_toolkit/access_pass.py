@@ -32,6 +32,9 @@ BLOB_HTTP_TIMEOUT = 12
 MIN_DURATION_DAYS = 1
 MAX_DURATION_DAYS = 90
 DEFAULT_DURATION_DAYS = 7
+PASS_KIND_TIMED = "timed"
+PASS_KIND_INVITE = "invite"
+PASS_KINDS = frozenset({PASS_KIND_TIMED, PASS_KIND_INVITE})
 NOTE_MAX_LENGTH = 80
 ADMIN_PASSWORD_MIN_LENGTH = 8
 ADMIN_SESSION_HOURS = 12
@@ -104,8 +107,18 @@ def normalize_note(note: str | None) -> str:
     return str(note or "").strip()[:NOTE_MAX_LENGTH]
 
 
+def _env_flag(name: str, default: str = "1") -> bool:
+    return os.getenv(name, default).lower() not in ("0", "false", "no")
+
+
 def access_pass_required() -> bool:
-    return os.getenv("PII_TOOLKIT_ACCESS_PASS_REQUIRED", "1").lower() not in ("0", "false", "no")
+    """AI report endpoints require a registered pass."""
+    return _env_flag("PII_TOOLKIT_ACCESS_PASS_REQUIRED", "1")
+
+
+def workspace_pass_required() -> bool:
+    """Workspace UI requires a registered pass before the product renders."""
+    return _env_flag("PII_TOOLKIT_WORKSPACE_PASS_REQUIRED", "1")
 
 
 def admin_password() -> str:
@@ -275,6 +288,23 @@ def bounded_duration_days(days: int) -> int:
     return max(MIN_DURATION_DAYS, min(MAX_DURATION_DAYS, int(days)))
 
 
+def normalize_pass_kind(kind: str | None) -> str:
+    value = str(kind or PASS_KIND_TIMED).strip().lower()
+    if value in {PASS_KIND_INVITE, "invitation"}:
+        return PASS_KIND_INVITE
+    return PASS_KIND_TIMED
+
+
+def pass_kind(record: dict[str, Any] | None) -> str:
+    if not record:
+        return PASS_KIND_TIMED
+    return normalize_pass_kind(str(record.get("kind") or PASS_KIND_TIMED))
+
+
+def is_invite_pass(record: dict[str, Any] | None) -> bool:
+    return pass_kind(record) == PASS_KIND_INVITE
+
+
 def remaining_seconds(expires_at: str | None, now: datetime | None = None) -> int:
     expiry = parse_iso(expires_at)
     if expiry is None:
@@ -297,12 +327,16 @@ def pass_lifecycle(record: dict[str, Any], now: datetime | None = None) -> str:
 
 def pass_summary(record: dict[str, Any], now: datetime | None = None) -> dict[str, Any]:
     status = pass_lifecycle(record, now)
-    remaining = remaining_seconds(str(record.get("expiresAt") or ""), now) if status == "active" else 0
+    kind = pass_kind(record)
+    remaining = 0
+    if status == "active" and not is_invite_pass(record):
+        remaining = remaining_seconds(str(record.get("expiresAt") or ""), now)
     return {
         "id": record.get("id"),
         "token": str(record.get("token") or ""),
         "note": record.get("note") or "",
-        "durationDays": record.get("durationDays"),
+        "kind": kind,
+        "durationDays": None if kind == PASS_KIND_INVITE else record.get("durationDays"),
         "createdAt": record.get("createdAt"),
         "activatedAt": record.get("activatedAt"),
         "expiresAt": record.get("expiresAt"),
@@ -312,58 +346,87 @@ def pass_summary(record: dict[str, Any], now: datetime | None = None) -> dict[st
     }
 
 
-def public_status(record: dict[str, Any] | None, *, required: bool | None = None, now: datetime | None = None) -> dict[str, Any]:
-    is_required = access_pass_required() if required is None else required
-    if not is_required:
+def public_status(
+    record: dict[str, Any] | None,
+    *,
+    required: bool | None = None,
+    workspace_required: bool | None = None,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    ai_required = access_pass_required() if required is None else required
+    ui_required = workspace_pass_required() if workspace_required is None else workspace_required
+    if not ai_required and not ui_required:
         return {
             "required": False,
+            "workspaceRequired": False,
             "active": True,
             "remainingSeconds": None,
             "expiresAt": None,
             "durationDays": None,
+            "kind": None,
         }
     if record is None or pass_lifecycle(record, now) != "active":
         return {
-            "required": True,
+            "required": ai_required,
+            "workspaceRequired": ui_required,
             "active": False,
             "remainingSeconds": 0,
             "expiresAt": None if record is None else record.get("expiresAt"),
             "durationDays": None if record is None else record.get("durationDays"),
+            "kind": None if record is None else pass_kind(record),
+        }
+    if is_invite_pass(record):
+        return {
+            "required": ai_required,
+            "workspaceRequired": ui_required,
+            "active": True,
+            "remainingSeconds": None,
+            "expiresAt": None,
+            "durationDays": None,
+            "kind": PASS_KIND_INVITE,
         }
     seconds = remaining_seconds(str(record.get("expiresAt") or ""), now)
     return {
-        "required": True,
+        "required": ai_required,
+        "workspaceRequired": ui_required,
         "active": seconds > 0,
         "remainingSeconds": seconds,
         "expiresAt": record.get("expiresAt"),
         "durationDays": record.get("durationDays"),
+        "kind": PASS_KIND_TIMED,
     }
 
 
 def issue_pass(
     *,
-    duration_days: int = DEFAULT_DURATION_DAYS,
+    duration_days: int | None = DEFAULT_DURATION_DAYS,
     note: str = "",
+    kind: str | None = None,
     now: datetime | None = None,
 ) -> str:
-    token, _record = issue_pass_record(duration_days=duration_days, note=note, now=now)
+    token, _record = issue_pass_record(duration_days=duration_days, note=note, kind=kind, now=now)
     return token
 
 
 def issue_pass_record(
     *,
-    duration_days: int = DEFAULT_DURATION_DAYS,
+    duration_days: int | None = DEFAULT_DURATION_DAYS,
     note: str = "",
+    kind: str | None = None,
     now: datetime | None = None,
 ) -> tuple[str, dict[str, Any]]:
-    days = bounded_duration_days(duration_days)
+    pass_type = normalize_pass_kind(kind)
     created = now or utc_now()
     token = generate_token()
+    days = None if pass_type == PASS_KIND_INVITE else bounded_duration_days(
+        DEFAULT_DURATION_DAYS if duration_days is None else duration_days
+    )
     record = {
         "id": secrets.token_hex(8),
         "tokenHash": hash_secret(token),
         "token": token,
         "note": normalize_note(note),
+        "kind": pass_type,
         "durationDays": days,
         "createdAt": to_iso(created),
         "activatedAt": None,
@@ -453,10 +516,16 @@ def register_pass(token: str, *, now: datetime | None = None) -> tuple[str, dict
         if expires_at is not None and expires_at <= current:
             raise AccessPassError("만료된 사용권입니다.", status_code=403)
         if record.get("activatedAt") is None:
-            days = bounded_duration_days(int(record.get("durationDays") or DEFAULT_DURATION_DAYS))
             record["activatedAt"] = to_iso(current)
-            record["expiresAt"] = to_iso(current + timedelta(days=days))
-            record["durationDays"] = days
+            if is_invite_pass(record):
+                record["kind"] = PASS_KIND_INVITE
+                record["durationDays"] = None
+                record["expiresAt"] = None
+            else:
+                days = bounded_duration_days(int(record.get("durationDays") or DEFAULT_DURATION_DAYS))
+                record["kind"] = PASS_KIND_TIMED
+                record["expiresAt"] = to_iso(current + timedelta(days=days))
+                record["durationDays"] = days
         record["sessionHash"] = session_digest
         save_store(payload)
         snapshot = dict(record)
@@ -475,6 +544,8 @@ def resolve_session(session_token: str | None, *, now: datetime | None = None) -
         return None
     if pass_lifecycle(record, current) != "active":
         return None
+    if is_invite_pass(record):
+        return dict(record)
     if remaining_seconds(str(record.get("expiresAt") or ""), current) <= 0:
         return None
     return dict(record)
@@ -547,15 +618,25 @@ def main(argv: list[str] | None = None) -> int:
         "--days",
         type=int,
         default=DEFAULT_DURATION_DAYS,
-        help=f"첫 등록 후 유효 일수 ({MIN_DURATION_DAYS}-{MAX_DURATION_DAYS})",
+        help=f"첫 등록 후 유효 일수 ({MIN_DURATION_DAYS}-{MAX_DURATION_DAYS}). 초대권에는 쓰지 않습니다.",
+    )
+    issue.add_argument(
+        "--kind",
+        choices=sorted(PASS_KINDS),
+        default=PASS_KIND_TIMED,
+        help="timed: 기간권, invite: 회수 전까지 유효한 초대권",
     )
     issue.add_argument("--note", default="", help="관리용 메모")
     args = parser.parse_args(argv)
     if args.command == "issue":
-        days = bounded_duration_days(args.days)
-        token = issue_pass(duration_days=days, note=args.note)
+        kind = normalize_pass_kind(args.kind)
+        token = issue_pass(duration_days=args.days, note=args.note, kind=kind)
         print(token)
-        print(f"첫 등록 후 {days}일 동안 AI 보고서에 사용할 수 있습니다.", file=sys.stderr)
+        if kind == PASS_KIND_INVITE:
+            print("초대권입니다. 회수하기 전까지 작업대에 사용할 수 있습니다.", file=sys.stderr)
+        else:
+            days = bounded_duration_days(args.days)
+            print(f"첫 등록 후 {days}일 동안 AI 보고서에 사용할 수 있습니다.", file=sys.stderr)
         print("이 문자열은 다시 보여주지 않습니다. 사용자에게만 전달하세요.", file=sys.stderr)
         return 0
     parser.error("unknown command")

@@ -9,7 +9,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from xml.sax.saxutils import escape
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
 
 from . import __version__
 from .control_assessment import analyze_assessment, bootstrap_assessment, certification_guide, list_checklist_controls
@@ -45,6 +45,7 @@ from .access_pass import (
     revoke_pass,
     update_pass_note,
     verify_admin_password,
+    workspace_pass_required,
 )
 from .llm_report_guard import LlmReportGuard, LlmReportLimitError
 from .organization_profile import normalize_organization_profile
@@ -189,10 +190,32 @@ _CONTROL_MAP_PAGES = frozenset({
 })
 
 
-def _workspace_html() -> HTMLResponse:
+_WORKSPACE_ROBOTS_HEADERS = {
+    "Cache-Control": "no-store",
+    "X-Robots-Tag": "noindex, nofollow",
+}
+
+_ROBOTS_TXT = """User-agent: *
+Allow: /
+Disallow: /workspace/
+Disallow: /controls/
+Disallow: /access/
+Disallow: /docs
+Disallow: /redoc
+Disallow: /openapi.json
+"""
+
+
+def _workspace_html(http_request: Request | None = None) -> HTMLResponse:
     if not _demo_enabled():
         raise HTTPException(status_code=404, detail="Demo UI is disabled.")
-    return HTMLResponse(content=_load_control_map_html(), headers={"Cache-Control": "no-store"})
+    html = _load_control_map_html()
+    unlocked = not workspace_pass_required()
+    if http_request is not None and not unlocked:
+        unlocked = resolve_session(http_request.cookies.get(COOKIE_NAME)) is not None
+    if unlocked:
+        html = html.replace('<html lang="ko" class="is-workspace-locked">', '<html lang="ko">', 1)
+    return HTMLResponse(content=html, headers=dict(_WORKSPACE_ROBOTS_HEADERS))
 
 
 def _workspace_location(page: str | None = None) -> str:
@@ -419,6 +442,10 @@ def create_app() -> FastAPI:
             raise HTTPException(status_code=404, detail="Demo UI is disabled.")
         return HTMLResponse(content=_load_landing_html(), headers={"Cache-Control": "no-store"})
 
+    @application.get("/robots.txt", include_in_schema=False)
+    def robots_txt() -> PlainTextResponse:
+        return PlainTextResponse(_ROBOTS_TXT, media_type="text/plain; charset=utf-8")
+
     @application.get("/favicon.ico", include_in_schema=False)
     def favicon_ico() -> Response:
         return _brand_response("favicon.ico")
@@ -556,16 +583,16 @@ def create_app() -> FastAPI:
             return AdminPassRecordResponse(**pass_summary(record))
 
     @application.get("/workspace", response_class=HTMLResponse, include_in_schema=False)
-    def workspace_page() -> HTMLResponse:
-        return _workspace_html()
+    def workspace_page(http_request: Request) -> HTMLResponse:
+        return _workspace_html(http_request)
 
     @application.get("/workspace/{page}", response_class=HTMLResponse, include_in_schema=False)
-    def workspace_subpage(page: str) -> HTMLResponse:
+    def workspace_subpage(page: str, http_request: Request) -> HTMLResponse:
         if page not in _CONTROL_MAP_PAGES:
             raise HTTPException(status_code=404, detail="Control map page not found.")
         if page in {"dashboard", "sessions"}:
             return RedirectResponse(_workspace_location(page), status_code=308)
-        return _workspace_html()
+        return _workspace_html(http_request)
 
     @application.get("/controls/map", include_in_schema=False)
     def control_map_page() -> RedirectResponse:

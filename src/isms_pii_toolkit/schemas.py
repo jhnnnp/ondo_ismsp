@@ -792,10 +792,12 @@ class AccessPassRegisterRequest(ApiModel):
 
 class AccessPassStatusResponse(ApiModel):
     required: bool
+    workspace_required: bool = Field(alias="workspaceRequired")
     active: bool
     remaining_seconds: int | None = Field(default=None, alias="remainingSeconds")
     expires_at: str | None = Field(default=None, alias="expiresAt")
     duration_days: int | None = Field(default=None, alias="durationDays")
+    kind: str | None = None
 
 
 class AdminLoginRequest(ApiModel):
@@ -808,8 +810,20 @@ class AdminSessionResponse(ApiModel):
 
 
 class AdminPassIssueRequest(ApiModel):
-    duration_days: int = Field(default=7, alias="durationDays", ge=1, le=90)
+    kind: Literal["timed", "invite"] = "timed"
+    duration_days: int | None = Field(default=None, alias="durationDays")
     note: str = Field(default="", max_length=80)
+
+    @model_validator(mode="after")
+    def normalize_issue_kind(self) -> "AdminPassIssueRequest":
+        if self.kind == "invite":
+            self.duration_days = None
+            return self
+        days = 7 if self.duration_days is None else int(self.duration_days)
+        if days < 1 or days > 90:
+            raise ValueError("기간권은 1일에서 90일까지 발급할 수 있습니다.")
+        self.duration_days = days
+        return self
 
 
 class AdminPassNoteRequest(ApiModel):
@@ -820,6 +834,7 @@ class AdminPassRecordResponse(ApiModel):
     id: str
     token: str = ""
     note: str = ""
+    kind: str = "timed"
     duration_days: int | None = Field(default=None, alias="durationDays")
     created_at: str | None = Field(default=None, alias="createdAt")
     activated_at: str | None = Field(default=None, alias="activatedAt")

@@ -16,7 +16,8 @@ def test_root_page_serves_ondo_landing() -> None:
     assert "ISMS-P 인증 준비" in response.text
     assert "한 화면에서" in response.text
     assert "101개 통제항목" in response.text
-    assert "무료 자가진단 시작하기" in response.text
+    assert "자가진단 시작하기" in response.text
+    assert "무료 자가진단 시작하기" not in response.text
     assert "DIAGNOSE" in response.text
     assert "NAVIGATE" in response.text
     assert "OPTIMIZE" in response.text
@@ -38,7 +39,7 @@ def test_root_page_serves_ondo_landing() -> None:
     assert "2.5.1 사용자 계정 관리" in response.text
     assert 'data-product-dot="0"' in response.text
     assert "2.5.3 접근권한 정기점검" in response.text
-    assert "회원가입 없이 시작" in response.text
+    assert "초대 코드를 받은 담당자만 입장합니다" in response.text
     assert "통제 점검, 증적 매핑, 보고서는 PC에서 진행합니다" in response.text
     assert "체크리스트와 보고서는 PC 브라우저에서 이어가세요" in response.text
     assert "실제 진단 화면 살펴보기" in response.text
@@ -50,7 +51,7 @@ def test_root_page_serves_ondo_landing() -> None:
     assert "mock-app" in response.text
     assert "data-hero-demo" in response.text
     assert 'data-temp-band="cold"' in response.text
-    assert "냉랭" in response.text
+    assert "초기 단계" in response.text
     assert "16개 중 이행 13" in response.text
     assert "보호대책 선정" in response.text
     assert "본 서비스의 결과는 사용자가 입력한 답변을 기반으로 한 자체 점검 결과이며" in response.text
@@ -108,6 +109,19 @@ def test_workspace_is_at_product_path() -> None:
     response = client.get("/workspace")
     assert response.status_code == 200
     assert "진단을 선택하세요" in response.text
+    assert response.headers.get("x-robots-tag") == "noindex, nofollow"
+    assert '<meta name="robots" content="noindex, nofollow">' in response.text
+    assert 'id="workspaceAccessGate"' in response.text
+    assert "초대 코드를 입력하세요" in response.text
+
+
+def test_robots_txt_blocks_workspace_crawling() -> None:
+    response = client.get("/robots.txt")
+    assert response.status_code == 200
+    assert "text/plain" in response.headers["content-type"]
+    assert "Disallow: /workspace/" in response.text
+    assert "Disallow: /controls/" in response.text
+    assert "Allow: /" in response.text
 
 
 def test_landing_can_be_disabled(monkeypatch) -> None:
@@ -116,6 +130,9 @@ def test_landing_can_be_disabled(monkeypatch) -> None:
     assert disabled.get("/").status_code == 404
     assert disabled.get("/landing/assets/landing.css").status_code == 404
     assert disabled.get("/favicon.ico").status_code == 200
+    robots = disabled.get("/robots.txt")
+    assert robots.status_code == 200
+    assert "Disallow: /workspace/" in robots.text
 
 
 def test_brand_favicon_is_served() -> None:

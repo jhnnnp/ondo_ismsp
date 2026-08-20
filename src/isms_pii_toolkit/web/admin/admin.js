@@ -17,6 +17,19 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
+function formatKind(item) {
+  if (item.kind === "invite") return "초대권";
+  if (item.durationDays) return `${item.durationDays}일`;
+  return "-";
+}
+
+function formatPassRemaining(item) {
+  if (item.kind === "invite") {
+    return item.status === "active" ? "제한 없음" : "-";
+  }
+  return formatRemaining(item.remainingSeconds);
+}
+
 function formatRemaining(seconds) {
   const total = Math.max(0, Math.floor(Number(seconds) || 0));
   if (!total) return "-";
@@ -106,8 +119,8 @@ function renderPasses(passes) {
         <td class="col-note"><input class="note-input" data-note-input value="${note}" maxlength="80" placeholder="—" aria-label="메모"></td>
         <td class="col-token token-cell">${tokenCell(item.token)}</td>
         <td class="col-status"><span class="status status-${item.status}">${STATUS_LABEL[item.status] || item.status}</span></td>
-        <td class="col-remain">${formatRemaining(item.remainingSeconds)}</td>
-        <td class="col-days">${item.durationDays || "-"}일</td>
+        <td class="col-remain">${formatPassRemaining(item)}</td>
+        <td class="col-days">${formatKind(item)}</td>
         <td class="col-date">${formatDate(item.createdAt)}</td>
         <td class="col-date">${formatDate(item.activatedAt)}</td>
         <td class="col-action row-actions"><button type="button" class="revoke-btn" data-revoke ${revoked ? "disabled" : ""}>${revoked ? "회수됨" : "회수"}</button></td>
@@ -210,12 +223,15 @@ el("issueForm")?.addEventListener("submit", async (event) => {
   errorEl.hidden = true;
   banner.hidden = true;
   try {
+    const kindValue = el("issueKind").value;
+    const isInvite = kindValue === "invite";
     const payload = await api("/passes", {
       method: "POST",
-      body: JSON.stringify({
-        durationDays: Number(el("issueDays").value),
-        note: el("issueNote").value,
-      }),
+      body: JSON.stringify(
+        isInvite
+          ? { kind: "invite", note: el("issueNote").value }
+          : { kind: "timed", durationDays: Number(kindValue), note: el("issueNote").value },
+      ),
     });
     el("issuedToken").textContent = payload.token;
     el("issuedToken").title = payload.token;
