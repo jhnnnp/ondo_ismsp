@@ -81,7 +81,7 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'data-bundle-mode="area"' in response.text
     assert 'data-bundle-mode="theme"' in response.text
     assert 'id="certPanel"' in response.text
-    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-9" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-10" in response.text
     assert 'id="workspaceLoadingSkeleton"' in response.text
     assert 'href="/controls/map/assets/control_map.css"' in response.text
     assert 'id="questPanel"' not in response.text
@@ -113,7 +113,7 @@ def test_workspace_has_loading_skeleton_and_current_bundle() -> None:
     assert response.status_code == 200
     assert 'id="workspaceLoadingSkeleton"' in response.text
     assert 'id="sessionPicker" hidden' in response.text
-    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-9" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-10" in response.text
     assert "/controls/map/assets/control_map.css?v=20260820-14" in response.text
     analysis_controller = (WEB_ROOT / "features" / "analysis" / "controller.js").read_text(encoding="utf-8")
     router = (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
@@ -313,6 +313,16 @@ def test_dashboard_exposes_priority_insights_and_binds_all_review_buttons() -> N
     assert 'navigateTo("assessment")' in session_view
     assert 'dashboardPriorityList.querySelectorAll("[data-dashboard-control]")' in session_view
     assert 'dashboardAreaTemps.querySelectorAll("[data-dashboard-area-control]")' in session_view
+
+
+def test_session_list_click_does_not_scroll_page_to_detail() -> None:
+    session_view = (
+        WEB_ROOT / "features" / "session" / "view.js"
+    ).read_text(encoding="utf-8")
+
+    assert 'tree.querySelectorAll("[data-select-control]")' in session_view
+    assert "scrollTree: true,\n        scrollDetail: false," in session_view
+    assert "tree.scrollTop += itemRect.top - treeRect.top" in session_view
 
 
 def test_analysis_overview_uses_one_bounded_scroll_region() -> None:

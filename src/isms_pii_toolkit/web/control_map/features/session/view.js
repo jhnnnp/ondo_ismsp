@@ -307,7 +307,7 @@ function renderMasterTree(groups, selectedId, prioritySet) {
         groups,
         prioritySet,
         scrollTree: true,
-        scrollDetail: true,
+        scrollDetail: false,
       });
     });
   });
@@ -335,7 +335,14 @@ function selectSessionControl(controlId, { groups, prioritySet, scrollTree = fal
     node.classList.toggle("is-collapsed", state.sessionCollapsedCategories.has(id));
   });
   if (scrollTree) {
-    tree.querySelector(`[data-select-control="${CSS.escape(controlId)}"]`)?.scrollIntoView({ block: "nearest" });
+    const treeItem = tree.querySelector(`[data-select-control="${CSS.escape(controlId)}"]`);
+    if (treeItem) {
+      const treeRect = tree.getBoundingClientRect();
+      const itemRect = treeItem.getBoundingClientRect();
+      if (itemRect.top < treeRect.top || itemRect.bottom > treeRect.bottom) {
+        tree.scrollTop += itemRect.top - treeRect.top - tree.clientHeight / 3;
+      }
+    }
   }
   if (scrollDetail) {
     // 카드 재렌더·높이 동기화 후, sticky 헤더를 피해서 상단(Q)으로 이동
