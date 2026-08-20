@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .models import InterpretationRecord, LawArticleRecord, LawDocumentRecord
+from .parser import law_key
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "legal_kb"
 INTERPRETATIONS_DIR = DATA_DIR / "interpretations"
@@ -32,15 +33,9 @@ class LegalRepository:
         ]
 
     def find_law(self, law_name: str) -> LawDocumentRecord | None:
-        wanted = _law_key(law_name)
-        aliases = {
-            "정보통신망법": "정보통신망이용촉진및정보보호등에관한법률",
-            "개인정보보호법": "개인정보보호법",
-        }
-        wanted = aliases.get(wanted, wanted)
+        wanted = law_key(law_name)
         for record in self.all_laws():
-            candidate = aliases.get(_law_key(record.name), _law_key(record.name))
-            if candidate == wanted:
+            if law_key(record.name) == wanted:
                 return record
         return None
 
@@ -113,7 +108,3 @@ def _safe_document_id(value: str) -> str:
     if not safe or safe != value:
         raise ValueError("올바르지 않은 법령 문서 ID입니다.")
     return safe
-
-
-def _law_key(value: str) -> str:
-    return "".join(str(value).split()).replace("ㆍ", "").casefold()

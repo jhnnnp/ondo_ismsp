@@ -489,3 +489,25 @@ test("legal prose splits questions, hangul answers, and casebook headings", () =
   assert.match(reasoning, /legal-note/);
   assert.equal((reasoning.match(/<li>/g) || []).length, 2);
 });
+
+test("legal interpretation prose extracts footnotes, paragraphs, and related laws", () => {
+  const question = renderLegalProse(
+    "정보통신망법 제50조제1항 본문에서는 사전 동의를 받아야 한다고 규정하고 있는바, 일정한 기간 동안 계속적으로 재화등을 공급하는 계약을 체결한 경우 사전 동의를 받지 않아도 되는 기간에 거래기간이 포함되는지?"
+  );
+  assert.match(question, /legal-question-point/);
+  assert.match(question, /legal-article-ref/);
+  assert.ok((question.match(/<p/g) || []).length >= 2);
+
+  const reasoning = renderLegalProse(
+    "먼저 법령의 문언 자체가 비교적 명확한 개념으로 구성되어 있다면 다른 해석방법은 제한될 수밖에 없다고 할 것인데1)1) 대법원 2009. 4. 23. 선고 2006다81035 판결례 참조 , 정보통신망법 제50조제1항제1호에서는 사전 동의를 받지 아니한다고 규정하고 있는바, 기간의 시작일은 거래가 종료된 날이라고 볼 수 없습니다. 그리고 예외규정은 엄격하게 해석할 필요가 있습니다. 따라서 거래기간은 포함되지 않습니다. ※ 법령정비 권고사항 관련 규정을 정비할 필요가 있습니다. 정보통신망 이용촉진 및 정보보호 등에 관한 법률 제50조(영리목적의 광고성 정보 전송 제한) ① 누구든지 사전 동의를 받아야 한다. 1. 거래관계를 통한 경우 2. 전화권유를 하는 경우 ② 수신거부의사를 표시한 경우에는 전송하여서는 아니 된다. <관계 법령>"
+  );
+  assert.match(reasoning, /legal-footnotes/);
+  assert.match(reasoning, /legal-fn-mark/);
+  assert.match(reasoning, /2006다81035/);
+  assert.match(reasoning, /legal-related-laws/);
+  assert.match(reasoning, /legal-text-heading/);
+  assert.match(reasoning, /legal-text-clause/);
+  assert.match(reasoning, /legal-text-item/);
+  assert.match(reasoning, /법령정비 권고사항/);
+  assert.ok((reasoning.match(/<p/g) || []).length >= 4);
+});

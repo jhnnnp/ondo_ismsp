@@ -4,7 +4,16 @@ import re
 from dataclasses import dataclass
 
 from .models import InterpretationRecord, LawReference
-from .parser import extract_law_references
+from .parser import extract_law_references, law_key
+
+
+_GENERIC_KEYWORDS = {
+    "관리", "이용", "수집", "현황", "보안", "보호", "조치", "처리",
+    "제공", "제한", "관련", "기준", "사항", "목적", "동의", "정보",
+    "시스템", "운영", "개발", "외부", "내부", "해당", "경우",
+    "개인정보", "보호조치", "목적의", "법령에", "하여야",
+}
+_SHORT_KEYWORDS_KEEP = {"위탁", "수탁", "외주", "열람", "파기", "접속", "로그"}
 
 
 @dataclass(frozen=True)
@@ -13,11 +22,13 @@ class InterpretationMatch:
     score: int
     reasons: tuple[str, ...]
     review_status: str = "AUTO_SUGGESTED"
+    label: str = "조문 일치"
 
     def to_dict(self) -> dict[str, object]:
         return {
             "interpretationId": self.interpretation_id,
             "matchScore": self.score,
+            "matchLabel": self.label,
             "matchReasons": list(self.reasons),
             "reviewStatus": self.review_status,
         }
@@ -43,23 +54,16 @@ def match_interpretation(
     interpretation: InterpretationRecord,
 ) -> InterpretationMatch | None:
     control_refs = control_law_references(control_record)
+    interp_refs = interpretation_law_references(interpretation)
     score = 0
     reasons: list[str] = []
     has_strong_article_match = False
 
     for control_ref in control_refs:
-        for interpretation_ref in interpretation.related_laws:
-            if _law_key(control_ref.law_name) != _law_key(interpretation_ref.law_name):
+        for interpretation_ref in interp_refs:
+            if law_key(control_ref.law_name) != law_key(interpretation_ref.law_name):
                 continue
-            strong_article_match = (
-                control_ref.article
-                and control_ref.article == interpretation_ref.article
-                and (
-                    control_ref.article in interpretation.title
-                    or len(interpretation.related_laws) <= 3
-                )
-            )
-            if strong_article_match:
+            if control_ref.article and articles_match(control_ref.article, interpretation_ref.article):
                 has_strong_article_match = True
                 score += 50
                 reasons.append(f"{control_ref.law_name} {control_ref.article} 일치")
@@ -68,13 +72,10 @@ def match_interpretation(
                 reasons.append(f"관련 법령 {control_ref.law_name} 일치")
             break
 
-    title = str(control_record.get("title") or "")
-    keywords = [token for token in re.findall(r"[가-힣A-Za-z0-9]{2,}", title) if token not in {"개인정보", "보호조치"}]
-    haystack = " ".join(filter(None, [interpretation.title, interpretation.question, interpretation.answer]))
-    matched = [keyword for keyword in keywords if keyword in haystack]
-    if matched:
-        score += min(20, len(matched) * 5)
-        reasons.append(f"통제 핵심어 일치: {', '.join(matched[:3])}")
+    matched_keywords = _matched_keywords(control_record, interpretation)
+    if matched_keywords:
+        score += min(20, len(matched_keywords) * 5)
+        reasons.append(f"통제 핵심어 일치: {', '.join(matched_keywords[:3])}")
 
     if interpretation.temporal_status == "REVIEW_REQUIRED":
         score -= 25
@@ -93,8 +94,73 @@ def match_interpretation(
         interpretation_id=interpretation.interpretation_id,
         score=max(0, min(100, score)),
         reasons=tuple(dict.fromkeys(reasons)),
+        label=_match_label(score, bool(matched_keywords)),
     )
 
 
-def _law_key(value: str) -> str:
-    return re.sub(r"\s+", "", value).casefold()
+def interpretation_law_references(interpretation: InterpretationRecord) -> list[LawReference]:
+    refs: list[LawReference] = []
+    for text in (interpretation.title, interpretation.question, interpretation.answer):
+        for ref in extract_law_references(text or ""):
+            if ref not in refs:
+                refs.append(ref)
+    for ref in interpretation.related_laws:
+        if ref not in refs:
+            refs.append(ref)
+    return _drop_parent_articles(refs)
+
+
+def articles_match(left: str | None, right: str | None) -> bool:
+    return _article_key(left) == _article_key(right) and bool(_article_key(left))
+
+
+def _drop_parent_articles(refs: list[LawReference]) -> list[LawReference]:
+    branched = {
+        (law_key(ref.law_name), _base_article(ref.article))
+        for ref in refs
+        if _article_branch(ref.article)
+    }
+    out: list[LawReference] = []
+    for ref in refs:
+        base = _base_article(ref.article)
+        if ref.article and not _article_branch(ref.article) and (law_key(ref.law_name), base) in branched:
+            continue
+        out.append(ref)
+    return out
+
+
+def _article_key(article: str | None) -> str:
+    return re.sub(r"\s+", "", article or "")
+
+
+def _base_article(article: str | None) -> str:
+    return re.sub(r"의\d+$", "", _article_key(article))
+
+
+def _article_branch(article: str | None) -> str | None:
+    match = re.search(r"의(\d+)$", _article_key(article))
+    return match.group(1) if match else None
+
+
+def _matched_keywords(control_record: dict[str, object], interpretation: InterpretationRecord) -> list[str]:
+    source = " ".join(filter(None, [
+        str(control_record.get("title") or ""),
+        str(control_record.get("requirement") or ""),
+    ]))
+    keywords = []
+    for token in re.findall(r"[가-힣A-Za-z0-9]{2,}", source):
+        if token in _GENERIC_KEYWORDS or token in keywords:
+            continue
+        if len(token) < 3 and token not in _SHORT_KEYWORDS_KEEP:
+            continue
+        keywords.append(token)
+    haystack = " ".join(filter(None, [interpretation.title, interpretation.question, interpretation.answer]))
+    return [keyword for keyword in keywords if keyword in haystack]
+
+
+def _match_label(score: int, has_keywords: bool) -> str:
+    if score >= 70:
+        return "강한 연결"
+    if has_keywords:
+        return "조문·핵심어 일치"
+    return "조문 일치"

@@ -81,7 +81,7 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'data-bundle-mode="area"' in response.text
     assert 'data-bundle-mode="theme"' in response.text
     assert 'id="certPanel"' in response.text
-    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-10" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-12" in response.text
     assert 'id="workspaceLoadingSkeleton"' in response.text
     assert 'href="/controls/map/assets/control_map.css"' in response.text
     assert 'id="questPanel"' not in response.text
@@ -113,8 +113,8 @@ def test_workspace_has_loading_skeleton_and_current_bundle() -> None:
     assert response.status_code == 200
     assert 'id="workspaceLoadingSkeleton"' in response.text
     assert 'id="sessionPicker" hidden' in response.text
-    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-10" in response.text
-    assert "/controls/map/assets/control_map.css?v=20260820-14" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-12" in response.text
+    assert "/controls/map/assets/control_map.css?v=20260820-16" in response.text
     analysis_controller = (WEB_ROOT / "features" / "analysis" / "controller.js").read_text(encoding="utf-8")
     router = (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
     assert 'loadingSkeleton.dataset.analysisLoading = "true"' in analysis_controller

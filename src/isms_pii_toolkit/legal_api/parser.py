@@ -8,11 +8,17 @@ from .models import InterpretationRecord, LawArticleRecord, LawDocumentRecord
 from .models import LawReference
 
 LAW_GO_KR_BASE = "https://www.law.go.kr"
-_ARTICLE_RE = re.compile(r"제\s*(\d+(?:의\d+)?)\s*조")
+_ARTICLE_RE = re.compile(r"제\s*(\d+)\s*조(?:의\s*(\d+))?")
 _LAW_BLOCK_RE = re.compile(
     r"(?P<law>[가-힣A-Za-z0-9ㆍ·\s]+?(?:법|법률|시행령|시행규칙|규정|기준|고시))\s*"
-    r"(?P<articles>제\s*\d+(?:의\d+)?\s*조(?:\s*(?:,|및|부터|~|-|내지)\s*제?\s*\d+(?:의\d+)?\s*조)*)"
+    r"(?P<articles>제\s*\d+\s*조(?:의\s*\d+)?(?:\s*(?:,|및|부터|~|-|내지)\s*제?\s*\d+\s*조(?:의\s*\d+)?)*)"
 )
+_LAW_NAME_ALIASES = {
+    "정보통신망법": "정보통신망이용촉진및정보보호등에관한법률",
+    "정보통신망이용촉진및정보보호등에관한법률": "정보통신망이용촉진및정보보호등에관한법률",
+}
+_SKIP_LAW_NAME = re.compile(r"^(같은\s*[법조항호]|법|법률|시행령|시행규칙)$")
+_NOISE_LAW_NAME = re.compile(r"(표준국어|사전 참조|판결례|해석례|결정례|이유서|심사보고서)")
 
 
 class LegalXmlError(ValueError):
@@ -111,12 +117,12 @@ def parse_law_document(xml_bytes: bytes, *, metadata: dict[str, str], target: st
             if _local_name(node.tag) != "조문내용":
                 continue
             text = _node_text(node)
-            match = re.match(r"제\s*(\d+(?:의\d+)?)\s*조(?:\(([^)]+)\))?", text)
+            match = re.match(r"제\s*(\d+)\s*조(?:의\s*(\d+))?(?:\(([^)]+)\))?", text)
             if not match:
                 continue
             articles.append(LawArticleRecord(
-                article=f"제{match.group(1)}조",
-                title=(match.group(2) or "").strip() or None,
+                article=format_article(match.group(1), match.group(2)),
+                title=(match.group(3) or "").strip() or None,
                 text=text,
                 effective_date=metadata.get("effectiveDate") or None,
             ))
@@ -154,7 +160,9 @@ def parse_interpretation_detail(
         for text in (
             _find_text(root, "관련법령"),
             _find_text(root, "관련법령내용"),
-            _find_text(root, "이유"),
+            title,
+            _find_text(root, "질의요지", "질의내용"),
+            _find_text(root, "회답", "답변"),
         )
         if text
     ]
@@ -180,21 +188,49 @@ def parse_interpretation_detail(
     )
 
 
+def format_article(number: str, branch: str | None = None) -> str:
+    article = f"제{number}조"
+    if branch:
+        return f"{article}의{branch}"
+    return article
+
+
+def law_key(value: str) -> str:
+    compact = re.sub(r"[\s「」ㆍ·]", "", str(value or "")).casefold()
+    return _LAW_NAME_ALIASES.get(compact, compact)
+
+
 def extract_law_references(text: str) -> list[LawReference]:
     normalized = " ".join(str(text).split())
     refs: list[LawReference] = []
     matches = list(_LAW_BLOCK_RE.finditer(normalized))
+    previous_law = ""
     for index, match in enumerate(matches):
-        law_name = match.group("law").strip(" ,·ㆍ")
+        law_name = _canonical_law_name(match.group("law"), previous_law)
+        if not law_name:
+            continue
+        previous_law = law_name
         # 안내서 표기는 `제16조(제목), 제19조(제목)`처럼 조문명 사이에
         # 괄호가 들어가므로, 다음 법령명이 시작되기 전까지 조문을 모두 수집한다.
         segment_end = matches[index + 1].start() if index + 1 < len(matches) else len(normalized)
         article_segment = normalized[match.start("articles"):segment_end]
-        for article in _ARTICLE_RE.findall(article_segment):
-            ref = LawReference(law_name=law_name, article=f"제{article}조")
+        for number, branch in _ARTICLE_RE.findall(article_segment):
+            ref = LawReference(law_name=law_name, article=format_article(number, branch or None))
             if ref not in refs:
                 refs.append(ref)
     return refs
+
+
+def _canonical_law_name(raw: str, previous: str) -> str | None:
+    name = str(raw or "").strip(" ,·ㆍ「」")
+    if not name or _NOISE_LAW_NAME.search(name):
+        return None
+    if re.fullmatch(r"같은\s*법", name):
+        return previous or None
+    compact = re.sub(r"\s+", "", name)
+    if _SKIP_LAW_NAME.match(name) or len(compact) < 4:
+        return None
+    return name
 
 
 def normalize_law_go_kr_url(path: str) -> str:

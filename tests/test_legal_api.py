@@ -197,6 +197,69 @@ def test_matcher_and_control_legal_basis(tmp_path: Path) -> None:
     assert "정보주체의 동의" in article_17["articleText"]
 
 
+def test_extract_law_references_keeps_branched_articles() -> None:
+    refs = extract_law_references("정보통신망법 제50조의3(영리목적의 광고성 정보 전송의 위탁 등)")
+    assert refs == [LawReference("정보통신망법", "제50조의3")]
+    refs = extract_law_references(
+        "개인정보 보호법 제24조의2, 정보통신망법 제23조의2"
+    )
+    assert LawReference("개인정보 보호법", "제24조의2") in refs
+    assert LawReference("정보통신망법", "제23조의2") in refs
+
+
+def test_matcher_rejects_parent_article_for_branched_control() -> None:
+    control = {
+        "title": "외부자 현황 관리",
+        "requirement": "업무의 일부를 외부에 위탁하거나 외부 시설 또는 서비스를 이용하는 경우 그 현황을 식별하여야 한다.",
+        "laws": ["정보통신망법 제50조의3(영리목적의 광고성 정보 전송의 위탁 등)"],
+    }
+    record = InterpretationRecord(
+        interpretation_id="expc-ads",
+        serial_number="1",
+        title="자동차관리법 광고와 정보통신망법 제50조의8 관련",
+        question="자동차매매업자의 광고가 정보통신망법 제50조의8을 위반하는지?",
+        related_laws=[LawReference("정보통신망법", "제50조")],
+    )
+    assert match_interpretation(control, record) is None
+    assert control_law_references(control) == [LawReference("정보통신망법", "제50조의3")]
+
+
+def test_matcher_does_not_score_generic_title_words() -> None:
+    control = {
+        "title": "외부자 현황 관리",
+        "laws": ["개인정보 보호법 제26조"],
+    }
+    record = InterpretationRecord(
+        interpretation_id="expc-26",
+        serial_number="2",
+        title="개인정보 보호법 제26조 업무위탁",
+        question="수탁사 관리 현황을 외부자에게 위탁할 수 있는지?",
+        related_laws=[LawReference("개인정보 보호법", "제26조")],
+    )
+    match = match_interpretation(control, record)
+    assert match is not None
+    assert match.score == 55
+    assert "외부자" in ",".join(match.reasons)
+    assert "관리" not in ",".join(match.reasons)
+    assert match.label == "조문·핵심어 일치"
+
+
+def test_matcher_treats_network_act_alias_as_same_law() -> None:
+    control = {"title": "광고 전송 위탁", "laws": ["정보통신망법 제50조의3"]}
+    record = InterpretationRecord(
+        interpretation_id="expc-consign",
+        serial_number="3",
+        title="정보통신망 이용촉진 및 정보보호 등에 관한 법률 제50조의3 해석",
+        related_laws=[
+            LawReference("정보통신망 이용촉진 및 정보보호 등에 관한 법률", "제50조의3"),
+        ],
+    )
+    match = match_interpretation(control, record)
+    assert match is not None
+    assert match.score >= 50
+    assert "제50조의3 일치" in ",".join(match.reasons)
+
+
 def test_matcher_rejects_same_law_with_different_article() -> None:
     control = {"title": "개인정보 제3자 제공", "laws": ["개인정보 보호법 제17조"]}
     record = InterpretationRecord(

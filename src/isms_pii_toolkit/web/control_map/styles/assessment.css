@@ -1137,29 +1137,82 @@ body:has(#view-analyze.is-report.active) .page-head {
 .legal-reasoning-content { margin-top: 8px; }
 .legal-reasoning-more .legal-prose { border-top: 1px solid var(--line); margin-top: 9px; padding: 4px 4px 2px; }
 .legal-prose p,
-.legal-reasoning-content p { color: #334155; font-size: 12.5px; line-height: 1.8; margin: 12px 0 0 !important; white-space: normal; }
+.legal-reasoning-content p {
+  color: #334155;
+  font-size: 12.5px;
+  line-height: 1.8;
+  margin: 12px 0 0 !important;
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: keep-all;
+}
 .legal-prose p:first-child,
 .legal-reasoning-content p:first-child { margin-top: 0 !important; }
+.legal-prose > p:not([class]),
+.legal-reasoning-content > p:not([class]),
+.legal-related-laws > p:not([class]) { text-indent: 1em; }
 .legal-prose h5,
-.legal-reasoning-content h5 { color: var(--text); font-size: 12px; margin: 16px 0 8px; padding-left: 9px; position: relative; }
+.legal-reasoning-content h5 { color: var(--text); font-size: 12px; margin: 16px 0 8px; padding-left: 9px; position: relative; text-indent: 0; }
 .legal-prose h5:first-child,
 .legal-reasoning-content h5:first-child { margin-top: 2px; }
 .legal-prose h5::before,
 .legal-reasoning-content h5::before { background: var(--accent); border-radius: 999px; content: ""; height: 14px; left: 0; position: absolute; top: 2px; width: 3px; }
 .legal-reasoning-list,
 .legal-hangul-list,
-.legal-bullet-list { background: var(--panel); border-left: 2px solid color-mix(in srgb, var(--accent) 35%, var(--line)); border-radius: 0 8px 8px 0; margin: 8px 0 4px 2px; padding: 10px 14px 10px 32px; }
+.legal-bullet-list {
+  background: var(--panel);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 0 8px 8px 0;
+  list-style-position: outside;
+  margin: 8px 0 4px 2px;
+  padding: 10px 14px 10px 2.4em;
+}
 .legal-reasoning-list { list-style: decimal; }
-.legal-hangul-list { list-style-type: hangul; }
-.legal-bullet-list { list-style: disc; padding-left: 28px; }
+.legal-hangul-list { list-style-type: hangul; padding-left: 2.6em; }
+.legal-bullet-list { list-style: disc; padding-left: 2.2em; }
 .legal-reasoning-list li,
 .legal-hangul-list li,
-.legal-bullet-list li { display: list-item; line-height: 1.75; margin: 6px 0 !important; padding-left: 4px; }
-.legal-note { background: #f8fafc !important; border-radius: 8px; color: #475569 !important; font-size: 12px !important; margin: 10px 0 0 !important; padding: 8px 10px; }
+.legal-bullet-list li {
+  display: list-item;
+  line-height: 1.75;
+  margin: 6px 0 !important;
+  padding-left: 6px;
+  text-indent: 0;
+  word-break: keep-all;
+}
+.legal-note { background: #f8fafc !important; border-radius: 8px; color: #475569 !important; font-size: 12px !important; margin: 10px 0 0 !important; padding: 8px 10px; text-indent: 0; }
+.legal-cite { color: var(--accent-strong); font-weight: 700; }
+.legal-article-ref { color: #0f766e; font-weight: 650; }
+.legal-precedent { background: #f1f5f9; border-radius: 4px; font-style: normal; padding: 0 4px; }
+.legal-fn-mark { color: var(--accent-strong); font-size: 10px; font-weight: 700; line-height: 0; }
+.legal-question-point {
+  background: color-mix(in srgb, var(--accent) 6%, #fff) !important;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  color: var(--text) !important;
+  font-weight: 650;
+  margin-top: 12px !important;
+  padding: 10px 12px;
+  text-indent: 0;
+}
+.legal-footnotes {
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-top: 14px;
+  padding: 10px 12px;
+}
+.legal-footnotes p { color: #64748b !important; font-size: 11.5px !important; line-height: 1.65; margin: 6px 0 0 !important; text-indent: 0; }
+.legal-footnotes p:first-child { margin-top: 0 !important; }
+.legal-related-laws { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 4px; }
+.legal-related-laws .legal-text-heading { border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.55; margin: 14px 0 8px; padding: 0 0 8px; text-indent: 0; }
+.legal-related-laws .legal-text-heading::before { display: none; }
+.legal-related-laws .legal-text-clause { border-left: 3px solid rgba(15, 118, 110, .4); padding-left: 12px; text-indent: 0; }
+.legal-related-laws .legal-text-item { margin-left: 1.15em !important; padding-left: 1.7em; text-indent: -1.7em; }
+.legal-related-laws .legal-text-subitem { color: #64748b !important; margin-left: 2.2em !important; padding-left: 1.5em; text-indent: -1.5em; }
 .legal-casebook-source { border-top: 1px solid var(--line); color: var(--muted) !important; font-size: 11px !important; margin: 12px 0 0 !important; padding-top: 9px; }
 .legal-warning { padding: 8px 10px; border-radius: 8px; background: #fff4d8; color: #795100 !important; }
-.legal-disclaimer { margin: 10px 0 0 !important; color: var(--muted) !important; font-size: 11px !important; }
-.legal-updated { margin: 5px 0 0 !important; color: var(--muted) !important; font-size: 11px !important; }
+.legal-disclaimer { margin: 10px 0 0 !important; color: var(--muted) !important; font-size: 11px !important; text-indent: 0; }
+.legal-updated { margin: 5px 0 0 !important; color: var(--muted) !important; font-size: 11px !important; text-indent: 0; }
 .legal-source-link, .legal-retry { display: inline-flex; margin-top: 8px; }
 .legal-error { color: #a33 !important; }
 
@@ -1237,15 +1290,15 @@ body:has(#view-analyze.is-report.active) .page-head {
   letter-spacing: 0.03em;
 }
 
-.session-detail-card .detail-block p,
-.session-detail-card .detail-block li {
+.session-detail-card .detail-block > p,
+.session-detail-card .detail-block > ul > li {
   margin: 0;
   font-size: 13px;
   line-height: 1.6;
   color: var(--muted);
 }
 
-.session-detail-card .detail-block ul {
+.session-detail-card .detail-block > ul {
   margin: 0;
   padding-left: 18px;
 }
@@ -2631,8 +2684,8 @@ body:has(#view-analyze.is-report.active) .page-head {
   margin-bottom: 8px;
 }
 
-.assess-row-body .detail-block p,
-.assess-row-body .detail-block li {
+.assess-row-body .detail-block > p,
+.assess-row-body .detail-block > ul > li {
   font-size: 13px;
   line-height: 1.6;
 }
@@ -2657,9 +2710,9 @@ body:has(#view-analyze.is-report.active) .page-head {
   line-break: strict;
 }
 
-.session-detail-card .detail-block ul,
-.session-guide-details ul,
-.assess-row-body .detail-block ul {
+.session-detail-card .detail-block > ul,
+.session-guide-details > ul,
+.assess-row-body .detail-block > ul {
   padding-left: 1.15em;
   list-style-position: outside;
   word-break: keep-all;
@@ -2667,8 +2720,8 @@ body:has(#view-analyze.is-report.active) .page-head {
   line-break: strict;
 }
 
-.session-detail-card .detail-block p,
-.session-guide-details p,
+.session-detail-card .detail-block > p,
+.session-guide-details > p,
 .session-detail-card .today-detail-note {
   word-break: keep-all;
   overflow-wrap: break-word;

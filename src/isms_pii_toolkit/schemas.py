@@ -67,6 +67,7 @@ class LegalInterpretationResponse(ApiModel):
     temporal_status: str = Field(alias="temporalStatus")
     warning: str | None = None
     match_score: int | None = Field(default=None, alias="matchScore")
+    match_label: str | None = Field(default=None, alias="matchLabel")
     match_reasons: list[str] = Field(default_factory=list, alias="matchReasons")
     review_status: str | None = Field(default=None, alias="reviewStatus")
 

@@ -633,12 +633,13 @@
 .defect-dialog-body,.link-dialog-body { gap:12px; max-height:calc(min(88vh,900px) - 108px); padding:22px 28px 28px; }
 .defect-dialog-body section,.link-dialog-body section { background:#fff; }
 .legal-dialog-body { padding:24px 26px; white-space:normal; }
-.legal-dialog-body p { margin:0 0 12px; color:var(--text); font-size:14px; line-height:1.8; }
+.legal-dialog-body p { margin:0 0 12px; color:var(--text); font-size:14px; line-height:1.8; overflow-wrap:break-word; word-break:keep-all; }
+.legal-dialog-body > p:not([class]) { text-indent:1em; }
 .legal-dialog-body p:last-child { margin-bottom:0; }
-.legal-text-heading { margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid var(--line); font-size:16px; }
-.legal-text-clause { padding-left:14px; border-left:3px solid rgba(15,118,110,.45); }
-.legal-text-item { margin-left:18px !important; padding-left:12px; color:var(--muted) !important; }
-.legal-text-subitem { margin-left:34px !important; color:var(--muted) !important; }
+.legal-text-heading { margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid var(--line); font-size:16px; text-indent:0; }
+.legal-text-clause { padding-left:14px; border-left:3px solid rgba(15,118,110,.45); text-indent:0; }
+.legal-text-item { margin-left:1.15em !important; padding-left:1.7em; text-indent:-1.7em; color:var(--muted) !important; }
+.legal-text-subitem { margin-left:2.2em !important; padding-left:1.5em; text-indent:-1.5em; color:var(--muted) !important; }
 @media (max-width:720px) {
   .app-modal { width:calc(100vw - 16px); max-height:calc(100vh - 16px); border-radius:14px; }
   .app-modal-shell { border-radius:14px; }
