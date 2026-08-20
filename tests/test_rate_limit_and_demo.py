@@ -10,4 +10,6 @@ def test_ui_can_be_disabled(monkeypatch) -> None:
     assert client.get("/controls/map").status_code == 404
     assert client.get("/controls/map/dashboard").status_code == 404
     assert client.get("/controls/map/assets/app.js").status_code == 404
+    assert client.get("/workspace").status_code == 404
+    assert client.get("/workspace/assessment").status_code == 404
     assert client.get("/landing/assets/landing.css").status_code == 404

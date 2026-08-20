@@ -1,5 +1,6 @@
 import { AREA_SHORT, LEVEL_LABEL } from "../../core/constants.js";
 import { escapeHtml } from "../../core/dom.js";
+import { APP_BASE } from "../../core/routes.js";
 import { state } from "../../core/state.js";
 import { getAssessment } from "../assessment/model.js";
 
@@ -63,7 +64,7 @@ export function renderResultEmptyState({
   body = "",
   stats = [],
   ctaLabel = "자가진단 이어가기",
-  ctaHref = "/controls/map/assessment",
+  ctaHref = `${APP_BASE}/assessment`,
   ctaRoute = "assessment",
 } = {}) {
   return `
@@ -90,7 +91,7 @@ export function gapClusterEmptyMarkup(analysis = {}) {
       body: "미이행·부분 이행이 없어 중분류 보완 묶음을 표시하지 않습니다.",
       stats,
       ctaLabel: "보고서 보기",
-      ctaHref: "/controls/map/report",
+      ctaHref: `${APP_BASE}/report`,
       ctaRoute: "report",
     });
   }
@@ -123,7 +124,7 @@ export function linkedProblemEmptyMarkup(analysis = {}) {
       body: "미이행·부분 이행이 없어 영향 경로를 띄울 출발점이 없습니다.",
       stats,
       ctaLabel: "보고서 보기",
-      ctaHref: "/controls/map/report",
+      ctaHref: `${APP_BASE}/report`,
       ctaRoute: "report",
     });
   }

@@ -16,7 +16,7 @@ client = TestClient(app)
 
 
 def test_control_map_html_has_required_modular_ui_contract() -> None:
-    response = client.get("/controls/map")
+    response = client.get("/workspace")
 
     assert response.status_code == 200
     assert 'id="profileForm"' in response.text
@@ -29,6 +29,10 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="analyzeHero"' in response.text
     assert 'id="reportReviewQueue"' not in response.text
     assert 'id="executiveReportStream"' in response.text
+    assert 'id="toggleLabBtn"' not in response.text
+    assert 'id="labLinks"' not in response.text
+    assert ">랩</button>" not in response.text
+    assert 'href="/docs"' not in response.text
     assert 'id="pageHeadPass"' in response.text
     assert 'id="accessPassDialog"' in response.text
     assert 'id="reportEditorReactRoot"' in response.text
@@ -73,18 +77,37 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="questPanel"' not in response.text
 
 
+def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:
+    response = client.get("/workspace")
+    html = response.text
+    gate_js = client.get("/controls/map/assets/core/desktop-gate.js")
+
+    assert response.status_code == 200
+    assert 'id="desktopWorkspaceGate"' in html
+    assert "이 진단은 PC에서 진행하세요" in html
+    assert 'id="desktopWorkspaceGateCopy"' in html
+    assert "이 기기에서 계속 보기" in html
+    assert "이 작업대는 PC에 맞춰져 있습니다" in html
+    assert "ondo.narrowWorkspaceContinue" in html
+    assert gate_js.status_code == 200
+    assert "initDesktopWorkspaceGate" in gate_js.text
+    assert "window.prompt(" not in gate_js.text
+    assert "(max-width: 860px)" in gate_js.text
+
+
 @pytest.mark.parametrize(
     ("asset_path", "content_type", "expected"),
     [
         ("control_map.css", "text/css", '@import url("./styles/tokens.css")'),
         ("styles/tokens.css", "text/css", ":root"),
-        ("styles/layout.css", "text/css", "body"),
+        ("styles/layout.css", "text/css", ".desktop-workspace-gate"),
         ("styles/sessions.css", "text/css", ".diagnosis-launcher"),
         ("styles/profile.css", "text/css", ".profile-inline"),
         ("styles/assessment.css", "text/css", ".assess-shell"),
         ("styles/analysis.css", "text/css", ".session-bundle-chip"),
         ("styles/certification.css", "text/css", ".cert-phase-card.is-visible"),
         ("app.js", "text/javascript", 'import { bootstrap } from "./core/router.js"'),
+        ("core/desktop-gate.js", "text/javascript", "export function initDesktopWorkspaceGate"),
         ("core/router.js", "text/javascript", "export async function bootstrap"),
         ("core/routes.js", "text/javascript", "export function navigateTo"),
         (
@@ -167,7 +190,7 @@ def test_refresh_does_not_auto_analyze_but_analyze_view_shows_results() -> None:
     assessment = (
         WEB_ROOT / "features" / "assessment" / "controller.js"
     ).read_text(encoding="utf-8")
-    html = client.get("/controls/map").text
+    html = client.get("/workspace").text
 
     bootstrap = router.split("export async function bootstrap()", maxsplit=1)[1]
     assert "await runAnalysis(false" not in bootstrap
@@ -195,7 +218,7 @@ def test_report_review_control_navigation_has_a_return_path() -> None:
 
 
 def test_analysis_navigation_uses_sidebar_without_duplicate_detail_page() -> None:
-    html = client.get("/controls/map").text
+    html = client.get("/workspace").text
     presentation = (
         WEB_ROOT / "features" / "analysis" / "presentation.js"
     ).read_text(encoding="utf-8")
@@ -212,7 +235,7 @@ def test_analysis_navigation_uses_sidebar_without_duplicate_detail_page() -> Non
 
 
 def test_dashboard_exposes_priority_insights_and_binds_all_review_buttons() -> None:
-    html = client.get("/controls/map").text
+    html = client.get("/workspace").text
     session_view = (
         WEB_ROOT / "features" / "session" / "view.js"
     ).read_text(encoding="utf-8")
@@ -225,13 +248,13 @@ def test_dashboard_exposes_priority_insights_and_binds_all_review_buttons() -> N
     assert 'id="dashboardQueueTitle"' in html
     assert 'data-dashboard-review-all' in html
     assert 'querySelectorAll("[data-progress-weak]")' in session_view
-    assert 'href="/controls/map/dashboard"' in html
-    assert 'href="/controls/map/scope"' in html
-    assert 'href="/controls/map/assessment"' in html
-    assert 'href="/controls/map/results"' in html
-    assert 'href="/controls/map/evidence"' in html
-    assert 'href="/controls/map/report"' in html
-    assert 'data-route="dashboard"' in html
+    assert 'href="/workspace/scope"' in html
+    assert 'href="/workspace/assessment"' in html
+    assert 'href="/workspace/results"' in html
+    assert 'href="/workspace/evidence"' in html
+    assert 'href="/workspace/report"' in html
+    assert 'href="/workspace"' in html
+    assert 'data-route="assessment"' in html
     assert 'navigateTo("assessment")' in session_view
     assert 'dashboardPriorityList.querySelectorAll("[data-dashboard-control]")' in session_view
     assert 'dashboardAreaTemps.querySelectorAll("[data-dashboard-area-control]")' in session_view
@@ -262,7 +285,7 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
     presentation = (
         WEB_ROOT / "features" / "analysis" / "presentation.js"
     ).read_text(encoding="utf-8")
-    html = client.get("/controls/map").text
+    html = client.get("/workspace").text
 
     assert 'loadingMode: "priority"' in router
     assert "우선 진단 항목을 준비하고 있습니다" in presentation
@@ -295,27 +318,44 @@ def test_analysis_loading_reports_real_work_without_staged_ai_progress() -> None
 
 @pytest.mark.parametrize(
     "page",
-    ["dashboard", "scope", "assessment", "results", "evidence", "report", "sessions"],
+    ["scope", "assessment", "results", "evidence", "report"],
 )
 def test_control_map_workspace_pages_serve_the_same_app_shell(page: str) -> None:
-    response = client.get(f"/controls/map/{page}")
+    response = client.get(f"/workspace/{page}")
 
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
     assert 'id="sessionPicker"' in response.text
-    assert 'href="/controls/map/dashboard"' in response.text
+    assert 'href="/workspace/scope"' in response.text
     assert 'data-route="assessment"' in response.text
 
 
 def test_unknown_control_map_page_returns_404() -> None:
     assert client.get("/controls/map/not-a-page").status_code == 404
+    assert client.get("/workspace/not-a-page").status_code == 404
+
+
+def test_legacy_control_map_urls_redirect_to_workspace() -> None:
+    root = client.get("/controls/map", follow_redirects=False)
+    assessment = client.get("/controls/map/assessment", follow_redirects=False)
+    dashboard = client.get("/controls/map/dashboard", follow_redirects=False)
+    sessions = client.get("/workspace/sessions", follow_redirects=False)
+
+    assert root.status_code == 308
+    assert root.headers["location"] == "/workspace"
+    assert assessment.status_code == 308
+    assert assessment.headers["location"] == "/workspace/assessment"
+    assert dashboard.status_code == 308
+    assert dashboard.headers["location"] == "/workspace/assessment"
+    assert sessions.status_code == 308
+    assert sessions.headers["location"] == "/workspace"
 
 
 def test_workspace_navigation_uses_history_api() -> None:
     router = (WEB_ROOT / "core" / "router.js").read_text(encoding="utf-8")
     routes = (WEB_ROOT / "core" / "routes.js").read_text(encoding="utf-8")
 
-    assert 'path: `${APP_BASE}/dashboard`' in routes
+    assert 'export const APP_BASE = "/workspace"' in routes
     assert 'id: "assessment"' in routes
     assert "window.history[method]" in router
     assert 'window.addEventListener("popstate"' in router

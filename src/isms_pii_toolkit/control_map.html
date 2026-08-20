@@ -13,12 +13,56 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260819-10">
+  <link rel="stylesheet" href="/controls/map/assets/control_map.css?v=20260820-2">
   <link rel="stylesheet" href="/controls/map/assets/react-dist/report-editor.css?v=20260819-5">
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("ondo.narrowWorkspaceContinue") === "1") {
+          document.documentElement.classList.add("is-narrow-workspace-ok");
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <style>
+    @media (max-width: 860px), (max-height: 520px) and (pointer: coarse) {
+      html:not(.is-narrow-workspace-ok) { overflow: hidden; }
+      html:not(.is-narrow-workspace-ok) .desktop-workspace-gate {
+        display: grid;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        place-items: center;
+        background: #f4f7f9;
+      }
+    }
+  </style>
 
 </head>
 
 <body>
+  <p class="narrow-workspace-banner" id="narrowWorkspaceBanner" role="status">
+    이 작업대는 PC에 맞춰져 있습니다. 체크리스트와 증적은 넓은 화면에서 이어가세요.
+  </p>
+  <section class="desktop-workspace-gate" id="desktopWorkspaceGate" role="dialog" aria-modal="true" aria-labelledby="desktopWorkspaceGateTitle" aria-hidden="true">
+    <div class="desktop-workspace-gate-card">
+      <a class="diagnosis-brand" href="/" aria-label="ONDO 서비스 홈">
+        <span class="ondo-symbol" aria-hidden="true"><i></i></span>
+        <span class="ondo-wordmark"><strong>ONDO<sup>°</sup></strong></span>
+      </a>
+      <span class="desktop-workspace-gate-kicker">PC WORKSPACE</span>
+      <h1 id="desktopWorkspaceGateTitle" tabindex="-1">이 진단은 PC에서 진행하세요</h1>
+      <p>101개 통제 체크리스트, 증적 매핑, 보고서는 좁은 화면에서 다루기 어렵습니다. 이 주소를 PC 브라우저에서 열어 이어가세요.</p>
+      <div class="desktop-workspace-gate-url">
+        <code id="desktopWorkspaceGateUrl"></code>
+        <button type="button" id="desktopWorkspaceGateCopy">주소 복사</button>
+      </div>
+      <div class="desktop-workspace-gate-actions">
+        <a class="primary" href="/">서비스 홈으로</a>
+        <button type="button" class="linkish" id="desktopWorkspaceGateContinue">이 기기에서 계속 보기</button>
+      </div>
+    </div>
+  </section>
   <section class="diagnosis-launcher" id="sessionPicker" aria-labelledby="sessionPickerTitle">
     <div class="diagnosis-launcher-shell">
       <header class="diagnosis-launcher-head">
@@ -60,23 +104,23 @@
       </a>
       <nav class="sidebar-nav">
         <span class="sidebar-nav-label">진단</span>
-        <a href="/controls/map/scope" data-route="scope" data-sidebar-profile>
+        <a href="/workspace/scope" data-route="scope" data-sidebar-profile>
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span>점검 범위
         </a>
-        <a href="/controls/map/assessment" class="is-active" data-route="assessment" data-sidebar-section="actions" aria-current="page">
+        <a href="/workspace/assessment" class="is-active" data-route="assessment" data-sidebar-section="actions" aria-current="page">
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 9.2 17 19 7"/></svg></span>자가진단
         </a>
-        <a href="/controls/map/results" data-route="results" data-sidebar-result>
+        <a href="/workspace/results" data-route="results" data-sidebar-result>
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V9m7 10V5m7 14v-7"/></svg></span>진단 결과
         </a>
         <span class="sidebar-nav-label sidebar-nav-label--secondary">관리</span>
-        <a href="/controls/map/evidence" data-route="evidence" data-sidebar-evidence>
+        <a href="/workspace/evidence" data-route="evidence" data-sidebar-evidence>
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/></svg></span>증적 관리
         </a>
-        <a href="/controls/map/report" data-route="report" data-sidebar-report>
+        <a href="/workspace/report" data-route="report" data-sidebar-report>
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span>보고서
         </a>
-        <a href="/controls/map" data-route="sessions" data-sidebar-sessions>
+        <a href="/workspace" data-route="sessions" data-sidebar-sessions>
           <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1A7 7 0 0 0 15 6l-.3-2.6h-4L10.4 6a7 7 0 0 0-1.5.9l-2.4-1-2 3.4 2 1.5a7 7 0 0 0 0 2.2l-2 1.5 2 3.4 2.4-1a7 7 0 0 0 1.5.9l.3 2.6h4l.3-2.6a7 7 0 0 0 1.5-.9l2.4 1 2-3.4-2-1.5c.1-.3.1-.7.1-1Z"/></svg></span>진단 관리
         </a>
       </nav>
@@ -105,12 +149,6 @@
               <small id="pageHeadStatusMeta">0 / 101</small>
             </span>
           </div>
-        </div>
-        <div class="top-nav-links" id="topNavLinks">
-          <button type="button" id="toggleLabBtn" aria-expanded="false" aria-controls="labLinks">랩</button>
-          <span class="lab-links" id="labLinks">
-            <a href="/docs">API</a>
-          </span>
         </div>
       </div>
       </div>
@@ -376,7 +414,7 @@
   </dialog>
 
   <script type="module" src="/controls/map/assets/react-dist/report-editor.js?v=20260819-5"></script>
-  <script type="module" src="/controls/map/assets/app.js?v=20260819-6"></script>
+  <script type="module" src="/controls/map/assets/app.js?v=20260820-1"></script>
 
 </body>
 

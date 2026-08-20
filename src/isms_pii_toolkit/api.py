@@ -9,7 +9,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from xml.sax.saxutils import escape
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, Response
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 
 from . import __version__
 from .control_assessment import analyze_assessment, bootstrap_assessment, certification_guide, list_checklist_controls
@@ -113,6 +113,13 @@ def _demo_enabled() -> bool:
     return os.getenv("PII_TOOLKIT_ENABLE_DEMO", "1").lower() not in ("0", "false", "no")
 
 
+def _api_docs_enabled() -> bool:
+    explicit = os.getenv("PII_TOOLKIT_ENABLE_DOCS")
+    if explicit is not None and explicit.strip() != "":
+        return explicit.lower() not in ("0", "false", "no")
+    return os.getenv("VERCEL_ENV", "").lower() != "production"
+
+
 def _load_control_map_html() -> str:
     return (_DEMO_DIR / "control_map.html").read_text(encoding="utf-8")
 
@@ -170,6 +177,7 @@ def _brand_response(filename: str) -> Response:
 
 
 CONTROL_MAP_HTML = _load_control_map_html()
+_WORKSPACE_BASE = "/workspace"
 _CONTROL_MAP_PAGES = frozenset({
     "dashboard",
     "scope",
@@ -179,6 +187,28 @@ _CONTROL_MAP_PAGES = frozenset({
     "report",
     "sessions",
 })
+
+
+def _workspace_html() -> HTMLResponse:
+    if not _demo_enabled():
+        raise HTTPException(status_code=404, detail="Demo UI is disabled.")
+    return HTMLResponse(content=_load_control_map_html(), headers={"Cache-Control": "no-store"})
+
+
+def _workspace_location(page: str | None = None) -> str:
+    if not page or page == "sessions":
+        return _WORKSPACE_BASE
+    if page == "dashboard":
+        return f"{_WORKSPACE_BASE}/assessment"
+    return f"{_WORKSPACE_BASE}/{page}"
+
+
+def _legacy_workspace_redirect(page: str | None = None) -> RedirectResponse:
+    if not _demo_enabled():
+        raise HTTPException(status_code=404, detail="Demo UI is disabled.")
+    if page and page not in _CONTROL_MAP_PAGES:
+        raise HTTPException(status_code=404, detail="Control map page not found.")
+    return RedirectResponse(_workspace_location(page), status_code=308)
 
 
 def _build_report_docx(title: str, content: str) -> bytes:
@@ -359,10 +389,14 @@ def _analyze_control_request(request: AssessRequest) -> dict[str, object]:
 
 
 def create_app() -> FastAPI:
+    docs_enabled = _api_docs_enabled()
     application = FastAPI(
         title="ISMS-P Self-Assessment API",
         description="ISMS-P 자가진단과 통제 분석 기능을 제공합니다.",
         version=__version__,
+        docs_url="/docs" if docs_enabled else None,
+        redoc_url="/redoc" if docs_enabled else None,
+        openapi_url="/openapi.json" if docs_enabled else None,
     )
     report_guard = LlmReportGuard(
         requests_per_minute=_bounded_env_int(
@@ -521,11 +555,21 @@ def create_app() -> FastAPI:
                 raise HTTPException(status_code=error.status_code, detail=str(error)) from error
             return AdminPassRecordResponse(**pass_summary(record))
 
-    @application.get("/controls/map", response_class=HTMLResponse, include_in_schema=False)
-    def control_map_page() -> HTMLResponse:
-        if not _demo_enabled():
-            raise HTTPException(status_code=404, detail="Demo UI is disabled.")
-        return HTMLResponse(content=_load_control_map_html(), headers={"Cache-Control": "no-store"})
+    @application.get("/workspace", response_class=HTMLResponse, include_in_schema=False)
+    def workspace_page() -> HTMLResponse:
+        return _workspace_html()
+
+    @application.get("/workspace/{page}", response_class=HTMLResponse, include_in_schema=False)
+    def workspace_subpage(page: str) -> HTMLResponse:
+        if page not in _CONTROL_MAP_PAGES:
+            raise HTTPException(status_code=404, detail="Control map page not found.")
+        if page in {"dashboard", "sessions"}:
+            return RedirectResponse(_workspace_location(page), status_code=308)
+        return _workspace_html()
+
+    @application.get("/controls/map", include_in_schema=False)
+    def control_map_page() -> RedirectResponse:
+        return _legacy_workspace_redirect()
 
     @application.get("/controls/map/assets/{asset_path:path}", include_in_schema=False)
     def control_map_asset(asset_path: str) -> Response:
@@ -541,13 +585,9 @@ def create_app() -> FastAPI:
             headers={"Cache-Control": "no-store"},
         )
 
-    @application.get("/controls/map/{page}", response_class=HTMLResponse, include_in_schema=False)
-    def control_map_workspace_page(page: str) -> HTMLResponse:
-        if not _demo_enabled():
-            raise HTTPException(status_code=404, detail="Demo UI is disabled.")
-        if page not in _CONTROL_MAP_PAGES:
-            raise HTTPException(status_code=404, detail="Control map page not found.")
-        return HTMLResponse(content=_load_control_map_html(), headers={"Cache-Control": "no-store"})
+    @application.get("/controls/map/{page}", include_in_schema=False)
+    def control_map_workspace_page(page: str) -> RedirectResponse:
+        return _legacy_workspace_redirect(page)
 
     @application.get("/landing/assets/{asset_path:path}", include_in_schema=False)
     def landing_asset(asset_path: str) -> Response:

@@ -68,7 +68,7 @@ def test_unknown_control_and_scenario_return_404() -> None:
 
 
 def test_control_map_page_returns_interactive_ui() -> None:
-    response = client.get("/controls/map")
+    response = client.get("/workspace")
 
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]

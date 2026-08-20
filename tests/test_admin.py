@@ -30,6 +30,8 @@ def test_admin_console_path_rejects_guessable_values(monkeypatch: pytest.MonkeyP
     assert admin_console_path() is None
     monkeypatch.setenv("PII_TOOLKIT_ADMIN_PATH", "controls")
     assert admin_console_path() is None
+    monkeypatch.setenv("PII_TOOLKIT_ADMIN_PATH", "workspace")
+    assert admin_console_path() is None
     monkeypatch.setenv("PII_TOOLKIT_ADMIN_PATH", "short")
     assert admin_console_path() is None
     monkeypatch.setenv("PII_TOOLKIT_ADMIN_PATH", "hidden/nested")
@@ -47,6 +49,14 @@ def test_admin_routes_are_absent_without_secret_path() -> None:
     assert client.get("/docs").status_code == 200
     assert ADMIN_PATH not in client.get("/openapi.json").text
     assert "/admin" not in client.get("/openapi.json").text
+
+
+def test_api_docs_are_hidden_in_production(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("VERCEL_ENV", "production")
+    client = TestClient(create_app())
+    assert client.get("/docs").status_code == 404
+    assert client.get("/redoc").status_code == 404
+    assert client.get("/openapi.json").status_code == 404
 
 
 def test_reserved_admin_path_does_not_mount(monkeypatch: pytest.MonkeyPatch) -> None:

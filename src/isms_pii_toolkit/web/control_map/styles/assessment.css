@@ -1685,8 +1685,8 @@ body:has(#view-analyze.is-report.active) .page-head {
     position: sticky;
     top: 44px;
     z-index: 6;
-    height: calc((100dvh / var(--ui-zoom, 1)) - 56px);
-    max-height: calc((100dvh / var(--ui-zoom, 1)) - 56px);
+    height: calc(100dvh - 56px);
+    max-height: calc(100dvh - 56px);
   }
 }
 

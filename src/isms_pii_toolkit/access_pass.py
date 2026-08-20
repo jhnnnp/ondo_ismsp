@@ -51,6 +51,7 @@ RESERVED_ADMIN_PATHS = frozenset({
     "health",
     "landing",
     "login",
+    "workspace",
     "logout",
     "manage",
     "openapi.json",

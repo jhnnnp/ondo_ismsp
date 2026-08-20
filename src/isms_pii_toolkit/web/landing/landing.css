@@ -119,6 +119,26 @@
     font-weight: 600;
   }
 
+  .desktop-work-note {
+    display: none;
+  }
+
+  @media (max-width: 768px), (max-height: 520px) and (pointer: coarse) {
+    .desktop-work-note {
+      display: block;
+      margin-top: 10px;
+      color: #516273;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .final-cta .desktop-work-note {
+      color: #d7e4eb;
+      font-weight: 500;
+    }
+  }
+
   .data-num {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;

@@ -84,8 +84,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 /* Product shell */
 #appMain {
   grid-template-columns: 194px minmax(0, 1fr);
-  width: min(100%, 1800px);
-  max-width: 1800px;
+  width: 100%;
+  max-width: none;
   background-color: rgba(247,249,251,.92);
   background-image: linear-gradient(180deg, #0c2638 0%, #0a3040 54%, #092938 100%);
   background-size: 194px 100%;
@@ -126,33 +126,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   backdrop-filter: blur(18px) saturate(160%);
 }
 .workspace-context-label { background: #e8f7f3; color: var(--accent-strong); }
-.app-workspace .top-nav-links {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-.app-workspace .top-nav-links > button,
-.app-workspace .top-nav-links > a {
-  min-height: 30px;
-  padding: 0 12px;
-  border: 1px solid #e3eaee;
-  border-radius: 8px;
-  background: #fff;
-  color: #526276;
-  font-size: 11px;
-  font-weight: 700;
-  box-shadow: none;
-}
-.app-workspace .top-nav-links > button:hover,
-.app-workspace .top-nav-links > a:hover {
-  border-color: rgba(24, 173, 136, .32);
-  background: #f4fbf8;
-  color: var(--accent-strong);
-}
 .page-head-status.is-temperature {
   border-color: #cfe7e1;
   background: #f3faf7;

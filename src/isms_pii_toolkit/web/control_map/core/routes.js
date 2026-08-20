@@ -1,4 +1,5 @@
-export const APP_BASE = "/controls/map";
+export const APP_BASE = "/workspace";
+export const LEGACY_APP_BASE = "/controls/map";
 
 export const ROUTES = {
   sessions: {
@@ -50,8 +51,16 @@ export function normalizePath(pathname) {
   return path || "/";
 }
 
-export function parsePath(pathname = globalThis.location?.pathname) {
+function canonicalPath(pathname) {
   const path = normalizePath(pathname);
+  if (path === LEGACY_APP_BASE || path.startsWith(`${LEGACY_APP_BASE}/`)) {
+    return APP_BASE + path.slice(LEGACY_APP_BASE.length);
+  }
+  return path;
+}
+
+export function parsePath(pathname = globalThis.location?.pathname) {
+  const path = canonicalPath(pathname);
   if (path === `${APP_BASE}/sessions`) return ROUTES.sessions;
   if (path === `${APP_BASE}/dashboard`) return ROUTES.assessment;
   return Object.values(ROUTES).find((route) => normalizePath(route.path) === path) || null;

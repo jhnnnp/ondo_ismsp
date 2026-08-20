@@ -39,8 +39,10 @@ def test_root_page_serves_ondo_landing() -> None:
     assert 'data-product-dot="0"' in response.text
     assert "2.5.3 접근권한 정기점검" in response.text
     assert "회원가입 없이 시작" in response.text
+    assert "통제 점검, 증적 매핑, 보고서는 PC에서 진행합니다" in response.text
+    assert "체크리스트와 보고서는 PC 브라우저에서 이어가세요" in response.text
     assert "실제 진단 화면 살펴보기" in response.text
-    assert 'href="/controls/map"' in response.text
+    assert 'href="/workspace"' in response.text
     assert "/landing/assets/landing.css" in response.text
     assert 'rel="icon" href="/favicon.svg"' in response.text
     assert 'href="/favicon.ico"' in response.text
@@ -87,6 +89,7 @@ def test_landing_assets_are_served() -> None:
     assert "data-product-demo" in js.text
     assert "data-product-dot" in js.text
     assert ".mock-app" in css.text
+    assert ".desktop-work-note" in css.text
 
 
 def test_landing_asset_rejects_unknown_or_unsafe_paths() -> None:
@@ -101,8 +104,8 @@ def test_landing_asset_rejects_unknown_or_unsafe_paths() -> None:
         pass
 
 
-def test_control_map_remains_at_dedicated_path() -> None:
-    response = client.get("/controls/map")
+def test_workspace_is_at_product_path() -> None:
+    response = client.get("/workspace")
     assert response.status_code == 200
     assert "진단을 선택하세요" in response.text
 
@@ -131,6 +134,6 @@ def test_brand_favicon_is_served() -> None:
 
 
 def test_control_map_includes_favicon() -> None:
-    response = client.get("/controls/map")
+    response = client.get("/workspace")
     assert 'rel="icon" href="/favicon.svg"' in response.text
     assert 'href="/favicon.ico"' in response.text

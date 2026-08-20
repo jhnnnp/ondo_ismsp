@@ -608,14 +608,6 @@ function bindEvents() {
       runAiReport();
     });
   });
-  el("toggleLabBtn")?.addEventListener("click", () => {
-    const btn = el("toggleLabBtn");
-    const links = el("labLinks");
-    if (!btn || !links) return;
-    const open = btn.getAttribute("aria-expanded") === "true";
-    btn.setAttribute("aria-expanded", open ? "false" : "true");
-    links.classList.toggle("open", !open);
-  });
   el("profileForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!hasSelectedEnvironment()) {
