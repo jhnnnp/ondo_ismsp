@@ -107,9 +107,13 @@ test("dashboard suppresses analysis-derived data when stale", () => {
 
 test("dashboard temperature bands and area readiness follow live assessments", () => {
   assert.equal(temperatureBand(16).key, "cold");
+  assert.equal(temperatureBand(16).label, "초기 단계");
   assert.equal(temperatureBand(40).key, "warming");
+  assert.equal(temperatureBand(40).label, "점검 중");
   assert.equal(temperatureBand(70).key, "rising");
+  assert.equal(temperatureBand(70).label, "안정화");
   assert.equal(temperatureBand(90).key, "ready");
+  assert.equal(temperatureBand(90).label, "준비 완료");
   assert.equal(readinessTemperature({ done: 8, partial: 0, applicable: 50 }), 16);
   assert.deepEqual(assessmentSummary({ done: 8, partial: 0, none: 0, applicable: 50 }), {
     reviewed: 8,

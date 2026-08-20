@@ -127,41 +127,65 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .workspace-context-label { background: #e8f7f3; color: var(--accent-strong); }
 .page-head-status.is-temperature {
-  border-color: #cfe7e1;
-  background: #f3faf7;
+  border-color: #e3e8ee;
+  background: #ffffff;
+  box-shadow: none;
 }
-.page-head-status.is-temperature.is-cold { border-color:#d8e6f5; background:#eef5fd; box-shadow:0 5px 16px rgba(52,127,212,.1); }
-.page-head-status.is-temperature.is-warming { border-color:#f0ddba; background:#fff8eb; box-shadow:0 5px 16px rgba(198,138,45,.11); }
-.page-head-status.is-temperature.is-rising { border-color:#d3ebe4; background:#eef9f6; box-shadow:0 5px 16px rgba(22,143,116,.1); }
-.page-head-status.is-temperature.is-ready { border-color:#cce7df; background:#eaf7f3; box-shadow:0 5px 16px rgba(13,125,101,.11); }
-.page-head-status.is-temperature.is-cold .page-head-status-icon { background:#dfeafa; }
-.page-head-status.is-temperature.is-warming .page-head-status-icon { background:#faedcf; }
+.page-head-status.is-temperature.is-cold,
+.page-head-status.is-temperature.is-warming,
+.page-head-status.is-temperature.is-rising,
+.page-head-status.is-temperature.is-ready {
+  border-color: #e3e8ee;
+  background: #ffffff;
+  box-shadow: none;
+}
+.page-head-status.is-temperature .page-head-status-icon,
+.page-head-status.is-temperature.is-cold .page-head-status-icon,
+.page-head-status.is-temperature.is-warming .page-head-status-icon,
 .page-head-status.is-temperature.is-rising .page-head-status-icon,
-.page-head-status.is-temperature.is-ready .page-head-status-icon { background:#d9f1ea; }
-.page-head-status.is-temperature.is-cold .page-head-status-icon::before { background:#347fd4; box-shadow:0 0 0 4px rgba(52,127,212,.12); }
-.page-head-status.is-temperature.is-warming .page-head-status-icon::before { background:#c68a2d; box-shadow:0 0 0 4px rgba(198,138,45,.12); }
-.page-head-status.is-temperature.is-rising .page-head-status-icon::before { background:#168f74; box-shadow:0 0 0 4px rgba(22,143,116,.12); }
-.page-head-status.is-temperature.is-ready .page-head-status-icon::before { background:#0d7d65; box-shadow:0 0 0 4px rgba(13,125,101,.12); }
-.page-head-status.is-temperature.is-cold strong,.page-head-status.is-temperature.is-cold small { color:#3472b8; }
-.page-head-status.is-temperature.is-warming strong,.page-head-status.is-temperature.is-warming small { color:#a96f1e; }
-.page-head-status.is-temperature.is-rising strong,.page-head-status.is-temperature.is-rising small { color:#168f74; }
-.page-head-status.is-temperature.is-ready strong,.page-head-status.is-temperature.is-ready small { color:#0d7d65; }
-.page-head-pass {
-  border-color: #d7e0e8;
-  background: #f4f7fa;
+.page-head-status.is-temperature.is-ready .page-head-status-icon {
+  background: var(--accent);
 }
+.page-head-status.is-temperature.is-cold .page-head-status-icon { background:#347fd4; }
+.page-head-status.is-temperature.is-warming .page-head-status-icon { background:#c68a2d; }
+.page-head-status.is-temperature.is-rising .page-head-status-icon { background:#168f74; }
+.page-head-status.is-temperature.is-ready .page-head-status-icon { background:#0d7d65; }
+.page-head-status.is-temperature.is-cold .page-head-status-icon::before,
+.page-head-status.is-temperature.is-warming .page-head-status-icon::before,
+.page-head-status.is-temperature.is-rising .page-head-status-icon::before,
+.page-head-status.is-temperature.is-ready .page-head-status-icon::before { display:none; }
+.page-head-status.is-temperature strong {
+  color: #1d1d1f;
+}
+.page-head-status.is-temperature small,
+.page-head-status.is-temperature.is-cold strong,
+.page-head-status.is-temperature.is-cold small,
+.page-head-status.is-temperature.is-warming strong,
+.page-head-status.is-temperature.is-warming small,
+.page-head-status.is-temperature.is-rising strong,
+.page-head-status.is-temperature.is-rising small,
+.page-head-status.is-temperature.is-ready strong,
+.page-head-status.is-temperature.is-ready small {
+  color: #5c6773;
+}
+.page-head-status.is-temperature.is-cold strong,
+.page-head-status.is-temperature.is-warming strong,
+.page-head-status.is-temperature.is-rising strong,
+.page-head-status.is-temperature.is-ready strong {
+  color: #1d1d1f;
+}
+.page-head-pass,
 .page-head-pass.is-active {
-  border-color: #cce7df;
-  background: #eaf7f3;
-  box-shadow: 0 5px 16px rgba(13, 125, 101, .11);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
-.page-head-pass.is-active strong { color: #64748b; }
-.page-head-pass.is-active small { color: #0d7d65; }
+.page-head-pass.is-active strong,
+.page-head-pass.is-active small { color: #8b95a1; }
 .app-workspace .page-head { margin-bottom: 15px; padding: 5px 4px 17px; }
 .app-workspace .page-head__kicker { color: var(--accent-strong); font-size: 9px; font-weight: 800; letter-spacing: .12em; }
 .app-workspace .page-head h1 { color: var(--text); font-size: 1.8rem; letter-spacing: -.05em; }
 .app-workspace .page-head p { color: #637286; }
-.page-head-status strong { color: var(--accent-strong); }
 
 /* Surfaces and controls */
 .panel, .stat-card, .profile-dialog, .assessment-master, .assessment-detail,
@@ -422,8 +446,9 @@ button.primary, .primary, button.ap-primary { background: var(--btn-primary); bo
 #view-analyze .session-master-head strong { color:#17283b; font-size:13px; }
 #view-analyze .session-master-head span { padding:3px 8px; border-radius:99px; background:#edf3f7; color:#65788a; font-size:9px; }
 #view-analyze .session-master-tools { gap:9px; padding:11px 12px; }
-#view-analyze .session-search { min-height:36px; padding:8px 11px; border-color:#dbe4ea; background:#f8fafc; }
+#view-analyze .session-search { min-height:36px; padding:8px 11px 8px 32px; border-color:#dbe4ea; background:#f8fafc; }
 #view-analyze .session-search:focus { border-color:#80b9d6; outline:3px solid rgba(52,127,212,.1); }
+#view-analyze .session-search-icon { stroke:#8a9bab; }
 #view-analyze .session-filter-row { gap:5px; }
 #view-analyze .session-filter-chip,
 #view-analyze .session-bulk-row button { padding:5px 8px; border-color:#dde5eb; background:#fff; font-size:9.5px; }

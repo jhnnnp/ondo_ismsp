@@ -7,10 +7,10 @@ const SEVERITY_LABEL = {
 };
 
 const TEMPERATURE_BANDS = [
-  { min: 80, key: "ready", label: "준비", hint: "핵심 영역이 안정권에 들어왔습니다." },
-  { min: 55, key: "rising", label: "상승", hint: "진단을 이어가면 준비 온도가 더 오릅니다." },
-  { min: 25, key: "warming", label: "예열", hint: "다음 통제를 점검하면 온도가 올라갑니다." },
-  { min: 0, key: "cold", label: "냉랭", hint: "아직 초반입니다. 미점검 통제부터 온도를 올리세요." },
+  { min: 80, key: "ready", label: "준비 완료", hint: "핵심 영역이 준비 완료 구간에 들어왔습니다." },
+  { min: 55, key: "rising", label: "안정화", hint: "핵심 영역이 안정화되고 있습니다. 남은 보완 항목을 이어서 확인하세요." },
+  { min: 25, key: "warming", label: "점검 중", hint: "진단이 진행 중입니다. 다음 통제를 점검하면 온도가 올라갑니다." },
+  { min: 0, key: "cold", label: "초기 단계", hint: "아직 점검 초반입니다. 미점검 통제부터 이어서 확인하세요." },
 ];
 
 function evidenceStats(controlEvidence = {}) {

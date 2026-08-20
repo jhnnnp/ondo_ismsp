@@ -11,7 +11,8 @@ let toastTimer = null;
 export function showToast(message, options = {}) {
   const toast = el("toast");
   if (!toast) return;
-  const raw = String(message || "");
+  const raw = String(message || "").trim();
+  if (!raw) return;
   const inferredTone = /실패|오류|불러오지 못/.test(raw)
     ? "error"
     : /찾을 수 없|없습니다|먼저|필요|변경되었습니다/.test(raw) ? "warning" : "success";
@@ -20,12 +21,15 @@ export function showToast(message, options = {}) {
     ? { title: "확인 필요", icon: "!" }
     : tone === "error"
       ? { title: "처리 실패", icon: "!" }
-      : { title: "완료", icon: "✓" };
+      : { title: "", icon: "✓" };
+  const title = options.title ?? labels.title;
+  const titleEl = toast.querySelector(".toast-copy strong");
   toast.dataset.tone = tone;
   toast.querySelector(".toast-icon").textContent = labels.icon;
-  toast.querySelector(".toast-copy strong").textContent = options.title || labels.title;
+  titleEl.textContent = title;
+  titleEl.hidden = !title;
   toast.querySelector(".toast-copy p").textContent = raw;
-  const duration = options.duration || 3200;
+  const duration = options.duration || (tone === "success" ? 2200 : 4000);
   toast.style.setProperty("--toast-duration", `${duration}ms`);
   toast.classList.remove("show");
   void toast.offsetWidth;

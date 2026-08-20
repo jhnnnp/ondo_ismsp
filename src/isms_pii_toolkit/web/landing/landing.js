@@ -256,10 +256,10 @@
 
     function temperatureBand(value) {
       const n = Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
-      if (n >= 80) return { key: "ready", label: "준비" };
-      if (n >= 55) return { key: "rising", label: "상승" };
-      if (n >= 25) return { key: "warming", label: "예열" };
-      return { key: "cold", label: "냉랭" };
+      if (n >= 80) return { key: "ready", label: "준비 완료" };
+      if (n >= 55) return { key: "rising", label: "안정화" };
+      if (n >= 25) return { key: "warming", label: "점검 중" };
+      return { key: "cold", label: "초기 단계" };
     }
 
     function setTemp(value) {

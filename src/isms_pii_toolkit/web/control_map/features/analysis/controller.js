@@ -224,13 +224,8 @@ async function executeAnalysisOnce(switchToAnalyze, options = {}, {
     if (switchToAnalyze !== false) {
       switchView("analyze", { skipAutoAnalyze: true });
     }
-    if (options.successToast !== false) {
-      showToast(
-        options.successToast
-        || (switchToAnalyze !== false
-          ? "확인 목록을 갱신했습니다. AI 리포트는 필요할 때만 하세요."
-          : "점검을 반영했습니다. 통제 확인을 이어가세요.")
-      );
+    if (options.successToast) {
+      showToast(options.successToast);
     }
   } catch (error) {
     if (error.name === "AbortError" || !isCurrentRequest()) return;

@@ -2,10 +2,21 @@
 .diagnosis-launcher[hidden],
 #appMain[hidden] { display: none !important; }
 
+html:has(.diagnosis-launcher:not([hidden])),
+body:has(.diagnosis-launcher:not([hidden])) {
+  height: 100%;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
 .diagnosis-launcher {
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: clamp(24px, 5vh, 56px) 20px;
+  display: grid;
+  align-items: center;
+  height: 100dvh;
+  max-height: 100dvh;
+  min-height: 0;
+  padding: clamp(16px, 3vh, 40px) 20px;
+  overflow: hidden;
   background:
     linear-gradient(rgba(16, 29, 46, .025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(16, 29, 46, .025) 1px, transparent 1px),
@@ -16,9 +27,14 @@
 }
 
 .diagnosis-launcher-shell {
+  display: flex;
+  flex-direction: column;
   width: min(1080px, 100%);
+  max-height: 100%;
+  min-height: 0;
   margin: 0 auto;
   padding: clamp(24px, 3vw, 38px);
+  overflow: hidden;
   border: 1px solid rgba(16, 29, 46, .075);
   border-radius: 26px;
   background: rgba(255, 255, 255, .96);
@@ -27,7 +43,11 @@
   -webkit-backdrop-filter: blur(18px);
 }
 
-.diagnosis-launcher-head { padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.diagnosis-launcher-head {
+  flex: 0 0 auto;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
 .diagnosis-launcher-topbar { display: flex; align-items: center; justify-content: space-between; }
 .diagnosis-brand { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
 .diagnosis-brand:hover { text-decoration: none; }
@@ -88,7 +108,18 @@
 .diagnosis-storage-note strong { color: var(--text); font-size: 11.5px; }
 .diagnosis-storage-note div span { color: var(--muted-soft); font-size: 10.5px; line-height: 1.5; }
 
-.diagnosis-session-list { display: grid; gap: 11px; margin-top: 22px; }
+.diagnosis-session-list {
+  display: grid;
+  flex: 1 1 auto;
+  align-content: start;
+  gap: 11px;
+  min-height: 0;
+  margin-top: 22px;
+  padding: 2px 4px 10px 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .diagnosis-session-card {
   display: grid;
   grid-template-columns: 42px minmax(210px, 1fr) minmax(210px, 260px) auto;
@@ -193,6 +224,7 @@
 
 .diagnosis-session-pager {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -245,7 +277,17 @@
   letter-spacing: .16em;
   padding: 0 2px;
 }
-.diagnosis-launcher-actions { display: flex; align-items: center; justify-content: flex-end; gap: 9px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); }
+.diagnosis-launcher-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
 .diagnosis-launcher-actions button { min-width: 145px; padding: 11px 17px; }
 .diagnosis-launcher-actions button span { margin-right: 5px; font-size: 14px; }
 .diagnosis-backup-copy { display: grid; gap: 2px; margin-right: auto; color: var(--muted-soft); font-size: 10.5px; }
@@ -290,9 +332,9 @@
 .diagnosis-session-actions > .primary svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .diagnosis-session-copy code { display: inline-flex; width: max-content; max-width: 100%; padding: 0; border: 0; background: transparent; }
 
-/* Desktop project board: a shorter 2 x 2 composition balances the page vertically. */
+/* Desktop project board: header and footer stay put; only the card grid scrolls. */
 @media (min-width: 901px) {
-  .diagnosis-launcher { display: grid; align-items: center; padding-block: 34px; }
+  .diagnosis-launcher { padding-block: 28px; }
   .diagnosis-launcher-shell { padding: 32px 38px 30px; }
   .diagnosis-launcher-head { padding-bottom: 24px; }
   .diagnosis-launcher-intro { grid-template-columns: minmax(0, 620px); gap: 64px; margin-top: 26px; }
@@ -303,7 +345,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 13px;
     margin-top: 18px;
-    min-height: 361px;
   }
   .diagnosis-session-card {
     grid-template-columns: 42px minmax(0, 1fr) auto;
