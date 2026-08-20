@@ -314,6 +314,30 @@
           <button type="button" class="primary" id="returnToReportBtn">확인 목록으로 돌아가기</button>
         </aside>
 
+        <div class="workspace-loading-skeleton" id="workspaceLoadingSkeleton" role="status"
+          aria-label="진단 항목을 불러오는 중" hidden>
+          <div class="workspace-skeleton-summary">
+            <span class="workspace-skeleton-line is-wide"></span>
+            <span class="workspace-skeleton-line is-medium"></span>
+          </div>
+          <div class="workspace-skeleton-columns">
+            <div class="workspace-skeleton-list">
+              <span class="workspace-skeleton-line is-short"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-block"></span>
+              <span class="workspace-skeleton-block"></span>
+            </div>
+            <div class="workspace-skeleton-detail">
+              <span class="workspace-skeleton-line is-short"></span>
+              <span class="workspace-skeleton-line is-wide"></span>
+              <span class="workspace-skeleton-line is-medium"></span>
+              <span class="workspace-skeleton-panel"></span>
+              <span class="workspace-skeleton-panel is-small"></span>
+            </div>
+          </div>
+        </div>
+
         <div class="analyze-grid" id="analyzeContent" style="display:none;">
           <div class="analyze-sec active" data-analyze-panel="actions">
             <section class="panel actions-panel">
@@ -502,7 +526,7 @@
     </form>
   </dialog>
 
-  <script type="module" src="/controls/map/assets/react-dist/workspace.js?v=20260820-2"></script>
+  <script type="module" src="/controls/map/assets/react-dist/workspace.js?v=20260820-3"></script>
 
 </body>
 

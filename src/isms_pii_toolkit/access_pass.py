@@ -547,6 +547,8 @@ def register_pass(token: str, *, now: datetime | None = None) -> tuple[str, dict
         expires_at = parse_iso(record.get("expiresAt"))
         if expires_at is not None and expires_at <= current:
             raise AccessPassError("만료된 사용권입니다.", status_code=403)
+        if is_invite_pass(record) and record.get("sessionHash"):
+            raise AccessPassError("이미 다른 브라우저에 등록된 초대권입니다.", status_code=403)
         if record.get("activatedAt") is None:
             record["activatedAt"] = to_iso(current)
             if is_invite_pass(record):

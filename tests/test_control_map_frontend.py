@@ -81,7 +81,8 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'data-bundle-mode="area"' in response.text
     assert 'data-bundle-mode="theme"' in response.text
     assert 'id="certPanel"' in response.text
-    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-2" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-3" in response.text
+    assert 'id="workspaceLoadingSkeleton"' in response.text
     assert 'href="/controls/map/assets/control_map.css"' in response.text
     assert 'id="questPanel"' not in response.text
 
@@ -100,6 +101,14 @@ def test_workspace_html_has_access_gate_and_noindex() -> None:
     assert "export async function ensureWorkspaceAccess" in access_js
     assert "status.workspaceRequired" in access_js
     assert "await ensureWorkspaceAccess()" in router
+
+
+def test_workspace_has_loading_skeleton_and_current_bundle() -> None:
+    response = client.get("/workspace")
+
+    assert response.status_code == 200
+    assert 'id="workspaceLoadingSkeleton"' in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-3" in response.text
 
 
 def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:

@@ -11,6 +11,7 @@ from isms_pii_toolkit.access_pass import (
     COOKIE_NAME,
     AccessPassError,
     issue_pass,
+    issue_pass_record,
     load_store,
     main,
     public_status,
@@ -55,6 +56,22 @@ def test_expired_pass_cannot_register_again(tmp_path: Path, monkeypatch: pytest.
     register_pass(token, now=now)
     with pytest.raises(AccessPassError, match="만료"):
         register_pass(token, now=now + timedelta(days=4))
+
+
+def test_invite_pass_belongs_to_first_browser_and_cookie_persists(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    first = _client(monkeypatch, tmp_path)
+    token, _ = issue_pass_record(kind="invite", note="single owner")
+
+    registered = first.post("/access/register", json={"token": token})
+    assert registered.status_code == 200
+    assert "Max-Age=31536000" in registered.headers["set-cookie"]
+    assert first.get("/access/status").json()["active"] is True
+
+    second = TestClient(create_app())
+    rejected = second.post("/access/register", json={"token": token})
+    assert rejected.status_code == 403
+    assert "이미 다른 브라우저" in rejected.json()["detail"]
+    assert first.get("/access/status").json()["active"] is True
 
 
 def test_unknown_token_is_rejected(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

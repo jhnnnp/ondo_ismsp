@@ -37,6 +37,7 @@ from .access_pass import (
     delete_pass,
     delete_passes,
     issue_pass_record,
+    is_invite_pass,
     list_passes,
     pass_summary,
     public_status,
@@ -333,14 +334,20 @@ def _cookie_secure(http_request: Request) -> bool:
 
 
 def _apply_access_cookie(response: Response, http_request: Request, session_token: str, record: dict[str, object]) -> None:
-    remaining = remaining_seconds(str(record.get("expiresAt") or ""))
+    # Invite passes do not have an expiry timestamp. Treating their remaining
+    # time as zero used to create a one-second cookie and repeatedly lock the
+    # same user out after a refresh.
+    max_age = 365 * 24 * 60 * 60 if is_invite_pass(record) else max(
+        1,
+        remaining_seconds(str(record.get("expiresAt") or "")),
+    )
     response.set_cookie(
         key=COOKIE_NAME,
         value=session_token,
         httponly=True,
         samesite="lax",
         secure=_cookie_secure(http_request),
-        max_age=max(1, remaining),
+        max_age=max_age,
         path="/",
     )
 

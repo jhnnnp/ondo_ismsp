@@ -457,6 +457,7 @@ async function openDiagnosisSession(sessionId) {
   }
 
   sessionOpening = true;
+  const loadingSkeleton = el("workspaceLoadingSkeleton");
   try {
     showDiagnosisApp();
     syncAssessLayout();
@@ -469,6 +470,10 @@ async function openDiagnosisSession(sessionId) {
       const route = ROUTES[targetRoute] || ROUTES.assessment;
       setAnalyzeWorkspaceMode(route.workspace || "assessment");
       switchView("analyze", { skipAutoAnalyze: true });
+      if (!appDataLoaded && loadingSkeleton) {
+        loadingSkeleton.hidden = false;
+        el("view-analyze")?.setAttribute("aria-busy", "true");
+      }
     }
 
     if (!appDataLoaded) {
@@ -490,6 +495,8 @@ async function openDiagnosisSession(sessionId) {
     showSessionManager();
     showToast(`진단을 불러오지 못했습니다: ${error.message}`);
   } finally {
+    if (loadingSkeleton) loadingSkeleton.hidden = true;
+    el("view-analyze")?.removeAttribute("aria-busy");
     sessionOpening = false;
   }
 }
