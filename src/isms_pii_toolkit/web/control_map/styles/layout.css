@@ -3076,6 +3076,11 @@ button.linkish {
   line-height: 1.65;
 }
 
+.workspace-access-gate-card > p {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
 .desktop-workspace-gate-url {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -3239,6 +3244,7 @@ html.is-workspace-locked .desktop-workspace-gate {
 
 .workspace-access-gate-card .desktop-workspace-gate-actions .linkish {
   justify-content: flex-start;
+  justify-self: start;
   padding: 0;
 }
 
