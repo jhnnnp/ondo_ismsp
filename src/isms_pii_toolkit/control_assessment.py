@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+from functools import lru_cache
 from typing import Literal
 
 from .applicability import apply_na_to_assessments
@@ -896,8 +897,14 @@ def enrich_control(control: dict[str, object]) -> dict[str, object]:
     }
 
 
+@lru_cache(maxsize=1)
+def _cached_checklist_controls() -> tuple[dict[str, object], ...]:
+    """Build the immutable reference checklist once per server process."""
+    return tuple(enrich_control(dict(control)) for control in list_controls())
+
+
 def list_checklist_controls() -> list[dict[str, object]]:
-    return [enrich_control(dict(control)) for control in list_controls()]
+    return list(_cached_checklist_controls())
 
 
 def certification_guide() -> dict[str, object]:

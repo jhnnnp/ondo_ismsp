@@ -43,7 +43,10 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert "page-head-pass-icon" not in response.text
     assert 'id="reportEditorReactRoot"' in response.text
     assert 'class="report-editor-bridge"' in response.text
-    assert '/controls/map/assets/react-dist/report-editor.js' in response.text
+    assert '/controls/map/assets/react-dist/report-editor.js' not in response.text
+    assert 'import("../react-dist/report-editor.js")' in (
+        WEB_ROOT / "core" / "router.js"
+    ).read_text(encoding="utf-8")
     assert "진단 결과 보고서" in response.text
     assert "AI로 초안 작성" in response.text
     assert 'id="reportComposeOverlay"' in response.text

@@ -9,6 +9,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from xml.sax.saxutils import escape
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
 
 from . import __version__
@@ -107,6 +108,8 @@ _WEB_ASSET_MEDIA_TYPES = {
     ".js": "text/javascript",
     ".webp": "image/webp",
 }
+_STATIC_ASSET_HEADERS = {"Cache-Control": "public, max-age=3600, must-revalidate"}
+_REFERENCE_DATA_CACHE_CONTROL = "public, max-age=3600, must-revalidate"
 _BRAND_ASSETS = {
     "favicon.ico": "image/x-icon",
     "favicon.svg": "image/svg+xml",
@@ -425,6 +428,7 @@ def create_app() -> FastAPI:
         redoc_url="/redoc" if docs_enabled else None,
         openapi_url="/openapi.json" if docs_enabled else None,
     )
+    application.add_middleware(GZipMiddleware, minimum_size=1000)
     report_guard = LlmReportGuard(
         requests_per_minute=_bounded_env_int(
             "PII_TOOLKIT_LLM_REPORTS_PER_MINUTE",
@@ -643,7 +647,7 @@ def create_app() -> FastAPI:
         return Response(
             content=content,
             media_type=media_type,
-            headers={"Cache-Control": "no-store"},
+            headers=dict(_STATIC_ASSET_HEADERS),
         )
 
     @application.get("/controls/map/{page}", include_in_schema=False)
@@ -693,7 +697,8 @@ def create_app() -> FastAPI:
         return SimpleCertHintsResponse(**simple_cert_hints(ctx.tags))
 
     @application.get("/controls/checklist", response_model=ChecklistResponse, tags=["isms-p-controls"])
-    def control_checklist() -> ChecklistResponse:
+    def control_checklist(response: Response) -> ChecklistResponse:
+        response.headers["Cache-Control"] = _REFERENCE_DATA_CACHE_CONTROL
         items = list_checklist_controls()
         return ChecklistResponse(
             total=len(items),
@@ -857,7 +862,8 @@ def create_app() -> FastAPI:
         return ScopeDraftResponse(**build_scope_draft(context, review))
 
     @application.get("/controls/dashboard", response_model=DashboardResponse, tags=["isms-p-controls"])
-    def control_dashboard() -> DashboardResponse:
+    def control_dashboard(response: Response) -> DashboardResponse:
+        response.headers["Cache-Control"] = _REFERENCE_DATA_CACHE_CONTROL
         return DashboardResponse(**dashboard_stats())
 
     @application.get("/controls/trace/{scenario_id}", response_model=ScenarioTraceResponse, tags=["isms-p-controls"])
@@ -868,7 +874,13 @@ def create_app() -> FastAPI:
         return ScenarioTraceResponse(**payload)
 
     @application.get("/controls", response_model=ControlListResponse, tags=["isms-p-controls"])
-    def controls(area: str | None = None, category: str | None = None, q: str | None = None) -> ControlListResponse:
+    def controls(
+        response: Response,
+        area: str | None = None,
+        category: str | None = None,
+        q: str | None = None,
+    ) -> ControlListResponse:
+        response.headers["Cache-Control"] = _REFERENCE_DATA_CACHE_CONTROL
         items = filter_controls(area_id=area, category_id=category, query=q)
         return ControlListResponse(total=len(items), controls=[ControlResponse(**item) for item in items])
 

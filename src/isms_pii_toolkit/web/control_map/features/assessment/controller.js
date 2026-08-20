@@ -542,8 +542,8 @@ export function renderAssessList() {
   });
 }
 
-export async function loadChecklist() {
-  const data = await fetchJson("/controls/checklist");
+export async function loadChecklist(prefetchedData = null) {
+  const data = prefetchedData || await fetchJson("/controls/checklist");
   state.checklist = data.controls;
   const before = JSON.stringify([state.assessments, state.controlChecks]);
   state.checklist.forEach((c) => {

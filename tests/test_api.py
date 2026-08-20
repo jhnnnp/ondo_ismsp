@@ -5,6 +5,7 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from isms_pii_toolkit.api import app, run
+from isms_pii_toolkit.control_assessment import _cached_checklist_controls, list_checklist_controls
 
 client = TestClient(app)
 
@@ -21,6 +22,26 @@ def test_root_page_returns_isms_ui() -> None:
     assert "text/html" in response.headers["content-type"]
     assert "ISMS-P" in response.text
     assert "ONDO°" in response.text
+
+
+def test_workspace_assets_are_cacheable_and_large_api_responses_are_compressed() -> None:
+    asset = client.get("/controls/map/assets/app.js")
+    checklist = client.get("/controls/checklist", headers={"Accept-Encoding": "gzip"})
+
+    assert asset.headers["cache-control"] == "public, max-age=3600, must-revalidate"
+    assert checklist.headers["cache-control"] == "public, max-age=3600, must-revalidate"
+    assert checklist.headers["content-encoding"] == "gzip"
+
+
+def test_reference_checklist_is_built_once_per_process() -> None:
+    _cached_checklist_controls.cache_clear()
+
+    first = list_checklist_controls()
+    second = list_checklist_controls()
+
+    assert first == second
+    assert _cached_checklist_controls.cache_info().misses == 1
+    assert _cached_checklist_controls.cache_info().hits == 1
 
 
 def test_legal_basis_endpoints_work_without_external_api_key() -> None:

@@ -100,6 +100,14 @@ import { navigateTo, parsePath, ROUTES, setRouteHandler } from "./routes.js";
 
 let appDataLoaded = false;
 let sessionOpening = false;
+let reportEditorPromise = null;
+
+function ensureReportEditorLoaded() {
+  if (!reportEditorPromise) {
+    reportEditorPromise = import("../react-dist/report-editor.js");
+  }
+  return reportEditorPromise;
+}
 let pendingRouteId = null;
 
 async function applyOrganizationProfile(profile, {
@@ -206,6 +214,7 @@ function setAnalyzeWorkspaceMode(mode = "assessment") {
   if (!root) return;
   const modes = ["assessment", "results", "evidence", "report"];
   const next = modes.includes(mode) ? mode : "assessment";
+  if (next === "report") ensureReportEditorLoaded();
   modes.forEach((name) => root.classList.toggle(`is-${name}`, name === next));
 
   const pageCopy = {
@@ -455,16 +464,15 @@ async function openDiagnosisSession(sessionId) {
     }
 
     if (!appDataLoaded) {
-      const [dashboard, controls] = await Promise.all([
+      const [dashboard, controls, checklist] = await Promise.all([
         fetchJson("/controls/dashboard"),
         fetchJson("/controls"),
+        fetchJson("/controls/checklist"),
       ]);
       state.dashboard = dashboard;
       state.allControls = controls.controls;
-      await loadChecklist();
+      await loadChecklist(checklist);
       appDataLoaded = true;
-    } else {
-      await loadChecklist();
     }
 
     renderProfileContext();
