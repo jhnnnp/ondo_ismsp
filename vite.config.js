@@ -7,10 +7,17 @@ export default defineConfig({
     emptyOutDir: true,
     outDir: "src/isms_pii_toolkit/web/control_map/react-dist",
     rollupOptions: {
-      input: "frontend/report-editor/main.jsx",
+      input: {
+        workspace: "src/isms_pii_toolkit/web/control_map/app.js",
+        "report-editor": "frontend/report-editor/main.jsx",
+      },
       output: {
-        entryFileNames: "report-editor.js",
-        assetFileNames: "report-editor.[ext]",
+        entryFileNames: "[name].js",
+        assetFileNames: (assetInfo) => (
+          assetInfo.name === "report-editor.css"
+            ? "report-editor.css"
+            : "[name].[ext]"
+        ),
       },
     },
   },

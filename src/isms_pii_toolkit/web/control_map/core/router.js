@@ -104,7 +104,15 @@ let reportEditorPromise = null;
 
 function ensureReportEditorLoaded() {
   if (!reportEditorPromise) {
-    reportEditorPromise = import("../react-dist/report-editor.js");
+    if (!document.querySelector('link[data-report-editor-style]')) {
+      const stylesheet = document.createElement("link");
+      stylesheet.rel = "stylesheet";
+      stylesheet.href = "/controls/map/assets/react-dist/report-editor.css?v=20260820-1";
+      stylesheet.dataset.reportEditorStyle = "1";
+      document.head.append(stylesheet);
+    }
+    const reportEditorUrl = "/controls/map/assets/react-dist/report-editor.js?v=20260820-1";
+    reportEditorPromise = import(/* @vite-ignore */ reportEditorUrl);
   }
   return reportEditorPromise;
 }
@@ -464,13 +472,12 @@ async function openDiagnosisSession(sessionId) {
     }
 
     if (!appDataLoaded) {
-      const [dashboard, controls, checklist] = await Promise.all([
+      const [dashboard, checklist] = await Promise.all([
         fetchJson("/controls/dashboard"),
-        fetchJson("/controls"),
-        fetchJson("/controls/checklist"),
+        fetchJson("/controls/checklist?compact=true"),
       ]);
       state.dashboard = dashboard;
-      state.allControls = controls.controls;
+      state.allControls = checklist.controls;
       await loadChecklist(checklist);
       appDataLoaded = true;
     }

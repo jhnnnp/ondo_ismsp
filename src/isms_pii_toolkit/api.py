@@ -176,6 +176,18 @@ def _load_brand_asset(filename: str) -> tuple[bytes, str]:
     return full_path.read_bytes(), media_type
 
 
+def _compact_checklist_item(item: dict[str, object]) -> dict[str, object]:
+    """Keep UI detail data while trimming heavyweight search-only metadata."""
+    compact = dict(item)
+    compact["searchHints"] = []
+    compact["searchEntries"] = [
+        entry
+        for entry in list(item.get("searchEntries") or [])
+        if isinstance(entry, dict) and int(entry.get("weight") or 0) >= 90
+    ]
+    return compact
+
+
 def _brand_response(filename: str) -> Response:
     try:
         content, media_type = _load_brand_asset(filename)
@@ -697,9 +709,11 @@ def create_app() -> FastAPI:
         return SimpleCertHintsResponse(**simple_cert_hints(ctx.tags))
 
     @application.get("/controls/checklist", response_model=ChecklistResponse, tags=["isms-p-controls"])
-    def control_checklist(response: Response) -> ChecklistResponse:
+    def control_checklist(response: Response, compact: bool = False) -> ChecklistResponse:
         response.headers["Cache-Control"] = _REFERENCE_DATA_CACHE_CONTROL
         items = list_checklist_controls()
+        if compact:
+            items = [_compact_checklist_item(item) for item in items]
         return ChecklistResponse(
             total=len(items),
             controls=[ChecklistControlResponse(**item) for item in items],

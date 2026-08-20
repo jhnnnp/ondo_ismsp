@@ -44,7 +44,7 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'id="reportEditorReactRoot"' in response.text
     assert 'class="report-editor-bridge"' in response.text
     assert '/controls/map/assets/react-dist/report-editor.js' not in response.text
-    assert 'import("../react-dist/report-editor.js")' in (
+    assert '"/controls/map/assets/react-dist/report-editor.js?v=20260820-1"' in (
         WEB_ROOT / "core" / "router.js"
     ).read_text(encoding="utf-8")
     assert "진단 결과 보고서" in response.text
@@ -81,7 +81,7 @@ def test_control_map_html_has_required_modular_ui_contract() -> None:
     assert 'data-bundle-mode="area"' in response.text
     assert 'data-bundle-mode="theme"' in response.text
     assert 'id="certPanel"' in response.text
-    assert "/controls/map/assets/app.js" in response.text
+    assert "/controls/map/assets/react-dist/workspace.js?v=20260820-2" in response.text
     assert 'href="/controls/map/assets/control_map.css"' in response.text
     assert 'id="questPanel"' not in response.text
 
@@ -132,6 +132,7 @@ def test_control_map_shows_desktop_workspace_gate_on_narrow_screens() -> None:
         ("styles/analysis.css", "text/css", ".session-bundle-chip"),
         ("styles/certification.css", "text/css", ".cert-phase-card.is-visible"),
         ("app.js", "text/javascript", 'import { bootstrap } from "./core/router.js"'),
+        ("react-dist/workspace.js", "text/javascript", "/controls/checklist?compact=true"),
         ("core/desktop-gate.js", "text/javascript", "export function initDesktopWorkspaceGate"),
         ("core/access-pass.js", "text/javascript", "export async function ensureWorkspaceAccess"),
         ("core/router.js", "text/javascript", "export async function bootstrap"),

@@ -44,6 +44,18 @@ def test_reference_checklist_is_built_once_per_process() -> None:
     assert _cached_checklist_controls.cache_info().hits == 1
 
 
+def test_compact_checklist_preserves_ui_data_and_trims_search_metadata() -> None:
+    full = client.get("/controls/checklist").json()
+    compact = client.get("/controls/checklist?compact=true").json()
+
+    assert compact["total"] == full["total"]
+    assert compact["controls"][0]["checklistItems"] == full["controls"][0]["checklistItems"]
+    assert compact["controls"][0]["officialRequirement"] == full["controls"][0]["officialRequirement"]
+    assert len(client.get("/controls/checklist?compact=true").content) < len(
+        client.get("/controls/checklist").content
+    ) / 2
+
+
 def test_legal_basis_endpoints_work_without_external_api_key() -> None:
     basis = client.get("/controls/3.1.5/legal-basis")
     assert basis.status_code == 200
